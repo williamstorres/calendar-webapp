@@ -1,6 +1,12 @@
 import { makeAutoObservable } from "mobx";
 
+export enum Views {
+  Month,
+  Week,
+  Day,
+}
 export default class CalendarStore {
+  selectedView: Views = Views.Month;
   month: number = 0;
   year: number = 0;
   day: number = 0;
@@ -36,6 +42,10 @@ export default class CalendarStore {
   setMonth(month: number, year: number) {
     this.month = month;
     this.year = year;
+  }
+
+  setSelectedView(view: Views) {
+    this.selectedView = view;
   }
 
   hydrate = (initData: CalendarStore) => {
