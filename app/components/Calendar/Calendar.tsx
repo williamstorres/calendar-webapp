@@ -5,69 +5,42 @@ import CalendarViewSelector from "../CalendarViewSelector";
 import { observer } from "mobx-react-lite";
 import { formatDate } from "@/app/libs/format";
 import { useStore } from "@/app/store/storeContext";
-import { useEffect, useRef, useState } from "react";
-
-const getPreviousMonth = (month: number, year: number) => {
-  if (month === 0) {
-    return { month: 11, year: year - 1 };
-  }
-  return { month: month - 1, year: year };
-};
-const getNextMonth = (month: number, year: number) => {
-  if (month === 11) {
-    return { month: 1, year: year + 1 };
-  }
-  return { month: month + 1, year: year };
-};
+import { useState } from "react";
+import CalendarsContainer from "../CalendarsContainer";
+import { CalendarType } from "@/app/types/CalendarType";
 
 export const Calendar = observer(() => {
   const store = useStore();
-  const [calendars, setCalendars] = useState([
-    getPreviousMonth(store.month, store.year),
+  const [calendars, setCalendars] = useState<CalendarType[]>([
     { month: store.month, year: store.year },
-    getNextMonth(store.month, store.year),
   ]);
-  const calendarContainer = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = calendarContainer.current;
-    if (container) container.scrollLeft = 390;
-  }, []);
 
   const handlePreviousMonth = () => {
     store.previousMonth();
-    setCalendars([
-      getPreviousMonth(store.month, store.year),
-      { month: store.month, year: store.year },
-      getNextMonth(store.month, store.year),
-    ]);
+    updateCalendarsList();
   };
 
   const handleNextMonth = () => {
-    store.previousMonth();
-    setCalendars([
-      getPreviousMonth(store.month, store.year),
-      { month: store.month, year: store.year },
-      getNextMonth(store.month, store.year),
-    ]);
+    store.nextMont();
+    updateCalendarsList();
   };
 
   const handleToday = () => {
     store.today();
-    setCalendars([
-      getPreviousMonth(store.month, store.year),
-      { month: store.month, year: store.year },
-      getNextMonth(store.month, store.year),
-    ]);
+    updateCalendarsList();
   };
 
-  const handleScroll = () => {
-    const currentContainer = calendarContainer.current;
-    if (currentContainer && currentContainer.style.visibility === "") {
-      currentContainer.style.visibility = "visible";
-      currentContainer.style.scrollBehavior = "smooth";
-      return;
-    }
+  const updateCalendarsList = () => {
+    setCalendars([{ month: store.month, year: store.year }]);
+  };
+
+  const generateCalendars = (calendar: CalendarType) => {
+    return (
+      <CalendarContent
+        key={`${calendar.year}${calendar.month}`}
+        item={calendar}
+      />
+    );
   };
 
   return (
@@ -103,19 +76,9 @@ export const Calendar = observer(() => {
         </div>
       </div>
       <div className="w-screen">
-        <div
-          ref={calendarContainer}
-          className="flex flex-row overflow-x-auto snap-x snap-mandatory invisible"
-          onScroll={handleScroll}
-        >
-          {calendars.map((calendar) => (
-            <CalendarContent
-              key={`${calendar.year}${calendar.month}`}
-              month={calendar.month}
-              year={calendar.year}
-            />
-          ))}
-        </div>
+        <CalendarsContainer items={calendars}>
+          {generateCalendars}
+        </CalendarsContainer>
       </div>
     </>
   );

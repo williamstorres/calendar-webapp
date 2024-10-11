@@ -10,6 +10,8 @@ import {
 import CalendarContentDays from "../CalendarContentDays";
 import CalendarContentHeaders from "../CalendarContentHeaders";
 import { DayOfMonth } from "@/app/types/DayOfMonth";
+import { useRef } from "react";
+import { CalendarType } from "@/app/types/CalendarType";
 
 // TODO mover a util
 const getDayOfWeekMondayStart = (date: Date) => {
@@ -48,23 +50,22 @@ const getCalendarDays = (month: number, year: number): DayOfMonth[] => {
 };
 
 export type CalendarContentProps = {
-  month: number;
-  year: number;
+  item: CalendarType;
 };
-export const CalendarContent = observer(
-  ({ month, year }: CalendarContentProps) => {
-    const daysOfMonth = getCalendarDays(month, year);
+export const CalendarContent = observer(({ item }: CalendarContentProps) => {
+  const calendarContentRef = useRef<HTMLDivElement>(null);
+  const daysOfMonth = getCalendarDays(item.month, item.year);
 
-    return (
-      <div
-        data-testid="calendar-container"
-        className="w-screen shrink-0 snap-start snap-always bg-gray-500 grid grid-cols-7 gap-y-0.5"
-      >
-        <CalendarContentHeaders />
-        <CalendarContentDays daysOfMonth={daysOfMonth} />
-      </div>
-    );
-  },
-);
+  return (
+    <div
+      ref={calendarContentRef}
+      data-testid="calendar-container"
+      className="w-screen shrink-0 snap-start snap-always bg-gray-500 grid grid-cols-7 gap-y-0.5"
+    >
+      <CalendarContentHeaders />
+      <CalendarContentDays daysOfMonth={daysOfMonth} />
+    </div>
+  );
+});
 
 export default CalendarContent;

@@ -33,6 +33,11 @@ export default class CalendarStore {
     this.day = defaultDate.getDate();
   }
 
+  setMonth(month: number, year: number) {
+    this.month = month;
+    this.year = year;
+  }
+
   hydrate = (initData: CalendarStore) => {
     this.month = initData.month;
     this.year = initData.year;
