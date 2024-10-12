@@ -6,7 +6,7 @@ import { useStore } from "@/app/store/storeContext";
 import { twJoin } from "tailwind-merge";
 import { Views } from "@/app/store/calendarStore";
 import { isWithinInterval } from "date-fns";
-import CalendarWeekHours from "../CalendarWeekHours";
+import CalendarHours from "../CalendarHours";
 
 type CaledarWeekProps = {
   daysOfWeek: DayOfMonth[];
@@ -27,11 +27,13 @@ export const CalendarWeek = observer(({ daysOfWeek }: CaledarWeekProps) => {
             : "hidden"),
       )}
     >
-      {store.selectedView === Views.Month &&
+      {store.selectedView === Views.Month ? (
         daysOfWeek.map((day) => (
           <CalendarDay key={formatDate(day.date, "yyyyMMdd")} day={day} />
-        ))}
-      {store.selectedView === Views.Week && <CalendarWeekHours />}
+        ))
+      ) : (
+        <CalendarHours />
+      )}
     </div>
   );
 });

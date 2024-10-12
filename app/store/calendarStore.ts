@@ -26,8 +26,15 @@ export default class CalendarStore {
     return this.date.getDate();
   }
 
+  get selectedViewIsMonth() {
+    return this.selectedView === Views.Month;
+  }
   get selectedViewIsWeek() {
     return this.selectedView === Views.Week;
+  }
+
+  get selectedViewIsDay() {
+    return this.selectedView === Views.Day;
   }
 
   get month() {
