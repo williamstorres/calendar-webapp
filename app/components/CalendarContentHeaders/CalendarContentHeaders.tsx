@@ -1,5 +1,7 @@
 import { getDaysOfWeek } from "@/app/libs/date";
+import { Views } from "@/app/store/calendarStore";
 import { useStore } from "@/app/store/storeContext";
+import { isSameDay } from "date-fns";
 import { observer } from "mobx-react-lite";
 import { twJoin } from "tailwind-merge";
 
@@ -16,24 +18,40 @@ export const CalendarContentHeaders = observer(() => {
     "Domingo",
   ];
   const daysOfWeek = getDaysOfWeek(store.date);
+  const today = new Date();
   return (
     <div
       className={twJoin(
-        "tw-screen grid grid-cols-7 gap-y-0.5 bg-primary",
-        store.selectedViewIsWeek && "pl-10",
+        "w-screen min-h-14 grid grid-cols-7 gap-y-0.5 bg-primary",
+        !store.selectedViewIsMonth && "pl-10",
       )}
     >
       {daysOfTheWeekNames.map((dayName, index) => (
-        <div
+        <button
           key={dayName}
           role="calendar-day-header"
           className="p-2 text-xs text-center font-bold flex flex-col"
+          onClick={() => {
+            store.setDate(daysOfWeek[index]);
+            store.setSelectedView(Views.Day);
+          }}
         >
           <span>{dayName.substring(0, 3)}</span>
-          {store.selectedViewIsWeek && (
-            <span>{daysOfWeek[index].getDate()}</span>
+          {!store.selectedViewIsMonth && (
+            <span
+              className={twJoin(
+                store.selectedViewIsDay &&
+                  isSameDay(store.date, daysOfWeek[index]) &&
+                  "rounded-full bg-blue-600 p-1",
+                store.selectedViewIsWeek &&
+                  isSameDay(today, daysOfWeek[index]) &&
+                  "rounded-full bg-blue-600 p-1",
+              )}
+            >
+              {daysOfWeek[index].getDate()}
+            </span>
           )}
-        </div>
+        </button>
       ))}
     </div>
   );
