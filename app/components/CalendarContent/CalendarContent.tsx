@@ -1,12 +1,10 @@
 "use client";
 import { observer } from "mobx-react-lite";
 import {
-  eachDayOfInterval,
   startOfMonth,
   endOfMonth,
   getDayOfYear,
   eachWeekOfInterval,
-  addDays,
 } from "date-fns";
 import CalendarContentHeaders from "../CalendarContentHeaders";
 import { DayOfMonth } from "@/app/types/DayOfMonth";
@@ -14,6 +12,7 @@ import { useRef } from "react";
 import { CalendarType } from "@/app/types/CalendarType";
 import { formatDate } from "@/app/libs/format";
 import CalendarWeek from "../CalendarWeek";
+import { getDaysOfWeek } from "@/app/libs/date";
 
 const getCalendarWeeksWithDays = (
   month: number,
@@ -25,10 +24,7 @@ const getCalendarWeeksWithDays = (
   const weeks = eachWeekOfInterval({ start, end });
 
   return weeks.map((weekStartDay) =>
-    eachDayOfInterval({
-      start: weekStartDay,
-      end: addDays(weekStartDay, 6),
-    }).map((date) => ({
+    getDaysOfWeek(weekStartDay).map((date) => ({
       date: date,
       dayOfMonth: date.getDate(),
       dayOfYear: getDayOfYear(date),
@@ -46,8 +42,8 @@ export const CalendarContent = observer(({ item }: CalendarContentProps) => {
   return (
     <div
       ref={calendarContentRef}
-      data-testid="calendar-container"
-      className="w-screen"
+      data-testid="calendar-content"
+      className="w-screen bg-primary h-full"
     >
       <CalendarContentHeaders />
       {weeksOfMonth.map((week) => (

@@ -1,3 +1,11 @@
+import {
+  subMonths,
+  subWeeks,
+  addMonths,
+  addWeeks,
+  subDays,
+  addDays,
+} from "date-fns";
 import { makeAutoObservable } from "mobx";
 
 export enum Views {
@@ -6,51 +14,63 @@ export enum Views {
   Day,
 }
 export default class CalendarStore {
-  selectedView: Views = Views.Month;
-  month: number = 0;
-  year: number = 0;
-  day: number = 0;
+  selectedView = Views.Month;
+  date = new Date();
 
   constructor() {
     makeAutoObservable(this);
     this.today();
   }
 
-  previousMonth() {
-    if (this.month === 0) {
-      this.month = 12;
-      this.year--;
-    }
-    this.month--;
+  get day() {
+    return this.date.getDate();
   }
 
-  nextMont() {
-    if (this.month === 11) {
-      this.month = -1;
-      this.year++;
-    }
-    this.month++;
+  get selectedViewIsWeek() {
+    return this.selectedView === Views.Week;
   }
 
-  today() {
-    const defaultDate = new Date();
-    this.month = defaultDate.getMonth();
-    this.year = defaultDate.getFullYear();
-    this.day = defaultDate.getDate();
+  get month() {
+    return this.date.getMonth();
   }
 
-  setMonth(month: number, year: number) {
-    this.month = month;
-    this.year = year;
+  get year() {
+    return this.date.getFullYear();
   }
 
   setSelectedView(view: Views) {
     this.selectedView = view;
   }
 
+  setDate(date: Date) {
+    this.date = date;
+  }
+
+  previousMonth() {
+    this.date = subMonths(this.date, 1);
+  }
+  nextMonth() {
+    this.date = addMonths(this.date, 1);
+  }
+  previousWeek() {
+    this.date = subWeeks(this.date, 1);
+  }
+  nextWeek() {
+    this.date = addWeeks(this.date, 1);
+  }
+  previousDay() {
+    this.date = subDays(this.date, 1);
+  }
+  nextDay() {
+    this.date = addDays(this.date, 1);
+  }
+
+  today() {
+    const defaultDate = new Date();
+    this.date = defaultDate;
+  }
+
   hydrate = (initData: CalendarStore) => {
-    this.month = initData.month;
-    this.year = initData.year;
-    this.day = initData.day;
+    this.date = initData.date;
   };
 }
