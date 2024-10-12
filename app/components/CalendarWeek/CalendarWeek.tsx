@@ -17,7 +17,8 @@ export const CalendarWeek = observer(({ daysOfWeek }: CaledarWeekProps) => {
     <div
       className={twJoin(
         "w-screen bg-primary overflow-hidden",
-        store.selectedView === Views.Month && "grid grid-cols-7 gap-y-0.5",
+        store.selectedView === Views.Month &&
+          "grid grid-cols-7 gap-y-0.5 border-t-2 border-secondary",
         store.selectedView === Views.Week &&
           (isWithinInterval(store.date, {
             start: daysOfWeek[0].date,

@@ -31,7 +31,10 @@ export const Calendar = observer(() => {
       <CalendarViewSelector />
       <div className="flex justify-between">
         <div className="flex">
-          <h2 role="month-label" className="font-bold text-lg px-2 py-3">
+          <h2
+            role="month-label"
+            className="font-bold text-lg px-2 py-3 capitalize"
+          >
             {formatDate(new Date(store.year, store.month, 1), "MMMM")}
           </h2>
           <h3 className="text-lg py-3">{store.year}</h3>
