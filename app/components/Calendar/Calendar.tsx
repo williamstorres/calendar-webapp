@@ -14,6 +14,10 @@ export const Calendar = observer(() => {
   const [calendars, setCalendars] = useState<CalendarType[]>([]);
 
   useEffect(() => {
+    store.fethMonthlyEvents();
+  }, [store]);
+
+  useEffect(() => {
     setCalendars([{ month: store.month, year: store.year }]);
   }, [store.month, store.year]);
 

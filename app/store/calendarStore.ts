@@ -7,6 +7,8 @@ import {
   addDays,
 } from "date-fns";
 import { makeAutoObservable } from "mobx";
+import { getMonthlyEvents } from "../services/eventsService";
+import { CalendarEvent } from "../types/CalendarEvent";
 
 export enum Views {
   Month,
@@ -14,8 +16,11 @@ export enum Views {
   Day,
 }
 export default class CalendarStore {
+  isLoading = false;
   selectedView = Views.Month;
   date = new Date();
+  events: CalendarEvent[] = [];
+  error: string = "";
 
   constructor() {
     makeAutoObservable(this);
@@ -45,6 +50,10 @@ export default class CalendarStore {
     return this.date.getFullYear();
   }
 
+  get hasError() {
+    return this.error === "";
+  }
+
   setSelectedView(view: Views) {
     this.selectedView = view;
   }
@@ -71,10 +80,25 @@ export default class CalendarStore {
   nextDay() {
     this.date = addDays(this.date, 1);
   }
+  clearError() {
+    this.error = "";
+  }
 
   today() {
     const defaultDate = new Date();
     this.date = defaultDate;
+  }
+
+  async fethMonthlyEvents() {
+    this.isLoading = true;
+    this.events = await getMonthlyEvents(this.date)
+      .catch((err) => {
+        console.error(err);
+        this.error = "Ha ocurrido un error al obtener los eventos";
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
   }
 
   hydrate = (initData: CalendarStore) => {
