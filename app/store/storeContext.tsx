@@ -1,3 +1,4 @@
+"use client";
 import React, { createContext, ReactNode, useContext } from "react";
 import CalendarStore from "./calendarStore";
 
@@ -9,7 +10,7 @@ const initializeStore = (initData = null) => {
   // check if we already declare store (client Store), otherwise create one
   const store = clientStore ?? new CalendarStore();
   // hydrate to store if receive initial data
-  if (initData) store.hydrate(initData);
+  if (!clientStore && initData) store.hydrate(initData);
 
   // Create a store on every server request
   if (typeof window === "undefined") return store;

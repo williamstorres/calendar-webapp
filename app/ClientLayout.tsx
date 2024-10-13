@@ -1,8 +1,14 @@
-"use client"; // Marcar como Client Component
-
 import { ReactNode } from "react";
 import { StoreProvider } from "./store/storeContext";
+import { getMonthlyEvents } from "./services/eventsService";
 
-export default function ClientLayout({ children }: { children: ReactNode }) {
-  return <StoreProvider>{children}</StoreProvider>;
+export default async function ClientLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  console.log("ClientLayour");
+  const events = await getMonthlyEvents(new Date());
+  const initialData = { events };
+  return <StoreProvider initialData={initialData}>{children}</StoreProvider>;
 }

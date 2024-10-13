@@ -1,7 +1,7 @@
 export enum CalendarEventColors {
   Blue = "#2563eb",
 }
-export type CalendarEvent = {
+export type CalendarEventType = {
   id: string;
   title: string;
   description: string;

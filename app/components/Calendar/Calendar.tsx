@@ -4,22 +4,12 @@ import CalendarViewSelector from "../CalendarViewSelector";
 import { observer } from "mobx-react-lite";
 import { formatDate } from "@/app/libs/format";
 import { useStore } from "@/app/store/storeContext";
-import { useEffect, useState } from "react";
 import CalendarsContainer from "../CalendarsContainer";
 import { CalendarType } from "@/app/types/CalendarType";
 import CalendarNavigationButtons from "../CalendarNavigationButtons";
 
 export const Calendar = observer(() => {
   const store = useStore();
-  const [calendars, setCalendars] = useState<CalendarType[]>([]);
-
-  useEffect(() => {
-    store.fethMonthlyEvents();
-  }, [store]);
-
-  useEffect(() => {
-    setCalendars([{ month: store.month, year: store.year }]);
-  }, [store.month, store.year]);
 
   const generateCalendars = (calendar: CalendarType) => {
     return (
@@ -46,7 +36,7 @@ export const Calendar = observer(() => {
         <CalendarNavigationButtons />
       </div>
       <div className="w-screen">
-        <CalendarsContainer items={calendars}>
+        <CalendarsContainer items={store.calendars}>
           {generateCalendars}
         </CalendarsContainer>
       </div>

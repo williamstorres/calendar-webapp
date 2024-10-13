@@ -8,7 +8,8 @@ import {
 } from "date-fns";
 import { makeAutoObservable } from "mobx";
 import { getMonthlyEvents } from "../services/eventsService";
-import { CalendarEvent } from "../types/CalendarEvent";
+import { CalendarEventType } from "../types/CalendarEvent";
+import { CalendarType } from "../types/CalendarType";
 
 export enum Views {
   Month,
@@ -19,7 +20,8 @@ export default class CalendarStore {
   isLoading = false;
   selectedView = Views.Month;
   date = new Date();
-  events: CalendarEvent[] = [];
+  events: Record<string, CalendarEventType[]> = {};
+  calendars: CalendarType[] = [];
   error: string = "";
 
   constructor() {
@@ -83,10 +85,12 @@ export default class CalendarStore {
   clearError() {
     this.error = "";
   }
-
   today() {
-    const defaultDate = new Date();
-    this.date = defaultDate;
+    this.calendars = [{ month: this.month, year: this.year }];
+  }
+
+  getDayEvents(day: string) {
+    return this.events[day] ?? [];
   }
 
   async fethMonthlyEvents() {
@@ -95,13 +99,15 @@ export default class CalendarStore {
       .catch((err) => {
         console.error(err);
         this.error = "Ha ocurrido un error al obtener los eventos";
+        return {} as Record<string, CalendarEventType[]>;
       })
       .finally(() => {
         this.isLoading = false;
       });
   }
 
-  hydrate = (initData: CalendarStore) => {
-    this.date = initData.date;
+  hydrate = (initData: { events: Record<string, CalendarEventType[]> }) => {
+    this.events = initData.events;
+    return this;
   };
 }

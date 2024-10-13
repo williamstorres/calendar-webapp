@@ -13,6 +13,7 @@ type CaledarWeekProps = {
 };
 export const CalendarWeek = observer(({ daysOfWeek }: CaledarWeekProps) => {
   const store = useStore();
+
   return (
     <div
       className={twJoin(
@@ -29,9 +30,12 @@ export const CalendarWeek = observer(({ daysOfWeek }: CaledarWeekProps) => {
       )}
     >
       {store.selectedView === Views.Month ? (
-        daysOfWeek.map((day) => (
-          <CalendarDay key={formatDate(day.date, "yyyyMMdd")} day={day} />
-        ))
+        daysOfWeek.map((day) => {
+          const key = formatDate(day.date, "yyyyMMdd");
+          const events = store.getDayEvents(key);
+
+          return <CalendarDay key={key} day={day} events={events} />;
+        })
       ) : (
         <CalendarHours />
       )}
