@@ -1,40 +1,46 @@
-import { getDaysOfWeek, hoursOfDay } from "@/app/libs/date";
+import { generateDateAsKey, hoursOfDay } from "@/app/libs/date";
 import { formatHour } from "@/app/libs/format";
 import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
+import CalendarEventsWeek from "../CalendarEventsWeek";
+import CalendarEventsDay from "../CalendarEventsDay";
 
 export const CalendarHours = observer(() => {
   const store = useStore();
 
   const generateHour = (hour: number) => {
     return (
-      <div
-        key={hour}
-        className="h-20 text-xs border-t-2 border-secondary ml-10 first:mt-4"
-      >
+      <div key={hour} className="h-20 text-xs w-min ml-10 first:mt-4">
         <div className="-translate-x-8 -translate-y-2 w-min absolute">
           {formatHour(hour)}
         </div>
-        {store.selectedViewIsWeek ? (
-          <div className="grid grid-cols-7">
-            {getDaysOfWeek(store.date).map((date) => (
-              <div
-                key={date.getDate()}
-                className="h-20 border-r-2 border-secondary last:border-0"
-              ></div>
-            ))}
-          </div>
-        ) : (
-          <div></div>
-        )}
       </div>
     );
   };
 
   return (
-    <>
-      {hoursOfDay.map(generateHour)}
-      {generateHour(0)}
-    </>
+    <div className="w-screen flex">
+      <div className="w-min">
+        {hoursOfDay.map(generateHour)}
+        {generateHour(0)}
+      </div>
+      <div className="relative w-full">
+        <div className="absolute w-full h-full mt-4">
+          {hoursOfDay.map((hour) => (
+            <div key={hour} className="h-20 border-t-2 border-secondary"></div>
+          ))}
+          <div className="h-20 border-t-2 border-secondary"></div>
+        </div>
+        {store.selectedViewIsWeek ? (
+          <CalendarEventsWeek />
+        ) : (
+          <div className="w-full relative mt-4 z-10">
+            <CalendarEventsDay
+              events={store.events[generateDateAsKey(store.date)] ?? []}
+            />
+          </div>
+        )}
+      </div>
+    </div>
   );
 });

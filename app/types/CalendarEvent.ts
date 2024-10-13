@@ -5,8 +5,9 @@ export type CalendarEventType = {
   id: string;
   title: string;
   description: string;
-  startDateTime: Date;
-  endDateTime: Date;
+  startDateTime: string;
+  endDateTime: string;
+  durationInMinutes: number;
   isAllDay: boolean;
   color: CalendarEventColors;
 };

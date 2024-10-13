@@ -26,7 +26,7 @@ export default class CalendarStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.today();
+    this.calendars = [{ month: this.month, year: this.year }];
   }
 
   get day() {
@@ -62,30 +62,32 @@ export default class CalendarStore {
 
   setDate(date: Date) {
     this.date = date;
+    this.fethMonthlyEvents();
   }
 
   previousMonth() {
-    this.date = subMonths(this.date, 1);
+    this.setDate(subMonths(this.date, 1));
   }
   nextMonth() {
-    this.date = addMonths(this.date, 1);
+    this.setDate(addMonths(this.date, 1));
   }
   previousWeek() {
-    this.date = subWeeks(this.date, 1);
+    this.setDate(subWeeks(this.date, 1));
   }
   nextWeek() {
-    this.date = addWeeks(this.date, 1);
+    this.setDate(addWeeks(this.date, 1));
   }
   previousDay() {
-    this.date = subDays(this.date, 1);
+    this.setDate(subDays(this.date, 1));
   }
   nextDay() {
-    this.date = addDays(this.date, 1);
+    this.setDate(addDays(this.date, 1));
   }
   clearError() {
     this.error = "";
   }
   today() {
+    this.setDate(new Date());
     this.calendars = [{ month: this.month, year: this.year }];
   }
 
