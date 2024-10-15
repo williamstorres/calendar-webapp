@@ -2,35 +2,42 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+Primero para poder instalar las dependencias se está utilizando pnpm debido al performance que ofrece a diferencia de npm, se debe instalar siguiendo las instrucciones del siguiente link
+
+También es posible utilizar npm, pero eso va a generar un nuevo package-lock.json y no utilizar el de pnpm
+
+### Instalación de dependencies
+
+1.- PNPM: Se debe ejecutar el siguiente comando
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2.- NPM: Se debe ejecutar el siguiente comando
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm dev
+```
 
-## Learn More
+## Inicar base de datos local para pruebas
 
-To learn more about Next.js, take a look at the following resources:
+Para no tener que instalar postgress se puede utilizar el siguiente comando docker:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+docker run --name my-postgres -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -e POSTGRES_DB=calendarapp -p 5432:5432 -d postgres
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Crear base de datos
 
-## Deploy on Vercel
+Para crear las tablas, debido a que se utiliza el ORM drizzle, se debe ejecutar el siguiente comando:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npx drizzle-kit push
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+En caso de actualizar las mismas se debe volver a ejecutar
