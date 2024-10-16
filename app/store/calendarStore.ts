@@ -7,7 +7,11 @@ import {
   addDays,
 } from "date-fns";
 import { makeAutoObservable } from "mobx";
-import { addNewEvent, getMonthlyEvents } from "../services/eventsService";
+import {
+  addNewEvent,
+  getMonthlyEvents,
+  updateEvent,
+} from "../services/eventsService";
 import { CalendarEventType } from "../types/CalendarEvent";
 import { CalendarType } from "../types/CalendarType";
 import { generateDateAsKey } from "../libs/date";
@@ -104,9 +108,14 @@ export default class CalendarStore {
     this.showEventForm = true;
   }
 
-  saveEvent(event: CalendarEventType) {
-    if (event.id) return this.updateEvent(event);
-    addNewEvent(event);
+  async saveEvent(event: CalendarEventType) {
+    console.log(event);
+    if (event.id) {
+      await this.updateEvent(event);
+    } else {
+      await this.addNewEvent(event);
+    }
+    this.showEventForm = false;
   }
 
   cleanSelectedEvent() {
@@ -148,8 +157,15 @@ export default class CalendarStore {
   }
 
   async updateEvent(event: CalendarEventType) {
-    console.log(event);
     this.isLoading = true;
+    await updateEvent(event)
+      .catch((err) => {
+        console.error(err);
+        this.error = "Ha ocurrido un error al actualizar el evento";
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
     this.fethMonthlyEvents();
   }
 

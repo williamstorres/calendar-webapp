@@ -38,7 +38,10 @@ export const EventForm = () => {
     resolver: zodResolver(eventFormSchema),
     defaultValues,
   });
-  const handleSave = useSaveEventForm(store.saveEvent);
+  const handleSave = useSaveEventForm(
+    async (event) =>
+      await store.saveEvent({ ...event, id: store.selectedEvent?.id }),
+  );
 
   const isAllDay = watch("isAllDay");
 
@@ -53,7 +56,7 @@ export const EventForm = () => {
   }, [isAllDay, setValue, defaultValues.startTime, defaultValues.endTime]);
 
   return (
-    <div className="w-screen h-[90%] p-8 bg-background  fixed bottom-0 rounded-t-3xl shadow-[0px_-8px_10px_0px_#1a202c]">
+    <div className="w-screen h-[90%] p-8 bg-background z-[1000] fixed bottom-0 rounded-t-3xl shadow-[0px_-8px_10px_0px_#1a202c]">
       <form onSubmit={handleSubmit(handleSave)}>
         <div className="grid grid-cols-2 mt-0 w-full mb-8 items-center">
           <Button

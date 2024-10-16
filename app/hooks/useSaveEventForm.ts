@@ -1,5 +1,5 @@
 import { tzOffset } from "@date-fns/tz";
-import { addMinutes, differenceInMinutes } from "date-fns";
+import { addDays, addMinutes, differenceInMinutes } from "date-fns";
 import { FormFields } from "../components/EventForm/eventFormSchema";
 import { setTime } from "../libs/date";
 import { CalendarEventType } from "../types/CalendarEvent";
@@ -17,7 +17,7 @@ export const useSaveEventForm =
     onSave({
       ...data,
       startDateTime,
-      endDateTime,
+      endDateTime: endTime === "00:00" ? addDays(endDateTime, 1) : endDateTime,
       durationInMinutes: differenceInMinutes(endDateTime, startDateTime),
     });
   };

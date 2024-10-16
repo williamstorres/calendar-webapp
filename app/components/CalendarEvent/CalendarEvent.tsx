@@ -21,8 +21,15 @@ export const CalendarEvent = observer(
     const width = 100 / overlaping;
     const top = WeekEventHeightInRem * startHour;
 
+    const handleEventClick = () => {
+      console.log(JSON.stringify(event));
+      store.selectedEvent = event;
+      store.showEventForm = true;
+    };
+
     return (
-      <div
+      <button
+        onClick={handleEventClick}
         style={{
           top: `${top}rem`,
           left:
@@ -37,7 +44,7 @@ export const CalendarEvent = observer(
         )}
       >
         {event.title}
-      </div>
+      </button>
     );
   },
 );
