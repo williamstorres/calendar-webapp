@@ -26,7 +26,7 @@ export const CalendarWeek = observer(({ daysOfWeek }: CaledarWeekProps) => {
       className={twJoin(
         "w-screen bg-primary overflow-hidden h-full",
         store.selectedViewIsMonth &&
-          "grid grid-cols-7 gap-y-0.5 border-t-2 border-secondary",
+          "grid grid-cols-7 gap-y-0.5 border-t-2 border-zinc-600",
         !store.selectedViewIsMonth && !showWeek && "hidden",
       )}
     >
@@ -34,6 +34,7 @@ export const CalendarWeek = observer(({ daysOfWeek }: CaledarWeekProps) => {
         daysOfWeek.map((day) => {
           const key = formatDate(day.date, "yyyyMMdd");
           const events = store.getDayEvents(key);
+          //console.log(events);
 
           return <CalendarDay key={key} day={day} events={events} />;
         })}

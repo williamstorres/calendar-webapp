@@ -1,7 +1,10 @@
 "use client";
+import "dotenv/config";
 import { Suspense, use } from "react";
 const mockingEnabledPromise =
-  typeof window !== "undefined" && process.env.NODE_ENV === "development"
+  typeof window !== "undefined" &&
+  process.env.NODE_ENV === "development" &&
+  process.env.ENABLE_MOCK_SERVER === "true"
     ? import("../mocks/browser").then(async ({ worker }) => {
         await worker.start({
           onUnhandledRequest: "bypass",

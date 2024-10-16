@@ -2,12 +2,13 @@ export enum CalendarEventColors {
   Blue = "#2563eb",
 }
 export type CalendarEventType = {
-  id: string;
+  id?: string;
   title: string;
+  location: string;
   description: string;
-  startDateTime: string;
-  endDateTime: string;
-  durationInMinutes: number;
+  startDateTime: Date;
+  endDateTime: Date;
+  durationInMinutes?: number;
   isAllDay: boolean;
-  color: CalendarEventColors;
+  color?: CalendarEventColors;
 };

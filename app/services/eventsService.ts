@@ -1,9 +1,15 @@
 import axios from "axios";
+import { CalendarEventType } from "../types/CalendarEvent";
 
-const baseUrl = "http://localhost:3000/api";
+const API = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+});
 export const getMonthlyEvents = async (date: Date) => {
-  console.log("getting events");
-  return axios
-    .get(`${baseUrl}/events?month=${date.getMonth()}&${date.getFullYear()}`)
-    .then((response) => response.data);
+  return API.get(
+    `/events?month=${date.getMonth()}&year=${date.getFullYear()}`,
+  ).then((response) => response.data);
+};
+
+export const addNewEvent = async (newEvent: CalendarEventType) => {
+  return API.post(`/events`, newEvent).then((response) => response.data);
 };

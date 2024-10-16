@@ -16,7 +16,7 @@ export const CalendarDay = ({ day, events }: CalendarDayProps) => {
         {day.dayOfMonth}
       </span>
       {events.map((event) => (
-        <CalendarEvent key={event.id} event={event} />
+        <CalendarEvent key={event.id} event={event} overlaping={1} index={0} />
       ))}
     </div>
   );

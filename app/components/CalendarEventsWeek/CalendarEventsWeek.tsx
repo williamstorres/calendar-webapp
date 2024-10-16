@@ -23,7 +23,7 @@ export const CalendarEventsWeek = observer(() => {
       {daysOfWeek.map((date) => (
         <div
           key={date.getDate()}
-          className="border-r-2 border-secondary last:border-0 w-full relative"
+          className="border-r-2 border-zinc-600 last:border-0 w-full relative"
         >
           <CalendarEventsDay
             events={weekEvents[generateDateAsKey(date)] ?? []}

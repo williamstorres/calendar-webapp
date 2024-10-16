@@ -4,13 +4,18 @@ import {
   eachWeekOfInterval,
   endOfMonth,
   endOfWeek,
+  format,
   getDayOfYear,
+  setHours,
+  setMinutes,
   startOfMonth,
   startOfWeek,
 } from "date-fns";
 import { formatDate } from "./format";
 import { DayOfMonth } from "../types/DayOfMonth";
 import { CalendarEventType } from "../types/CalendarEvent";
+
+export const TimeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 export const getDaysOfWeek = (date: Date) =>
   eachDayOfInterval({
@@ -64,4 +69,15 @@ export const countEventsOverlaping = (
     }
   });
   return overlaping;
+};
+
+const TimeDivisor = ":";
+export const setTime = (date: Date, time: string) => {
+  if (!time) return date;
+  const [hours, minutes] = time.split(TimeDivisor).map((num) => Number(num));
+  return setMinutes(setHours(date, hours), minutes);
+};
+
+export const getTime = (date: Date) => {
+  return format(date, "HH:mm");
 };

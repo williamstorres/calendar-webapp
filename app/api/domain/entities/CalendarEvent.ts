@@ -12,6 +12,7 @@ export const CalendarEvent = z.object({
   endDateTime: z.coerce.date(),
   isAllDay: z.boolean().default(false),
   color: z.string().nullable().default(null),
+  durationInMinutes: z.number().nullable(),
 });
 export type CalendarEvent = Readonly<z.infer<typeof CalendarEvent>>;
 

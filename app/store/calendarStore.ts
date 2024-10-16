@@ -7,9 +7,10 @@ import {
   addDays,
 } from "date-fns";
 import { makeAutoObservable } from "mobx";
-import { getMonthlyEvents } from "../services/eventsService";
+import { addNewEvent, getMonthlyEvents } from "../services/eventsService";
 import { CalendarEventType } from "../types/CalendarEvent";
 import { CalendarType } from "../types/CalendarType";
+import { generateDateAsKey } from "../libs/date";
 
 export enum Views {
   Month,
@@ -18,11 +19,13 @@ export enum Views {
 }
 export default class CalendarStore {
   isLoading = false;
+  showEventForm = false;
   selectedView = Views.Month;
   date = new Date();
   events: Record<string, CalendarEventType[]> = {};
   calendars: CalendarType[] = [];
   error: string = "";
+  selectedEvent: CalendarEventType | undefined;
 
   constructor() {
     makeAutoObservable(this);
@@ -62,6 +65,7 @@ export default class CalendarStore {
 
   setDate(date: Date) {
     this.date = date;
+    this.calendars = [{ month: this.month, year: this.year }];
     this.fethMonthlyEvents();
   }
 
@@ -95,9 +99,30 @@ export default class CalendarStore {
     return this.events[day] ?? [];
   }
 
+  editEvent(event: CalendarEventType) {
+    this.selectedEvent = event;
+    this.showEventForm = true;
+  }
+
+  saveEvent(event: CalendarEventType) {
+    if (event.id) return this.updateEvent(event);
+    addNewEvent(event);
+  }
+
+  cleanSelectedEvent() {
+    delete this.selectedEvent;
+  }
+
   async fethMonthlyEvents() {
     this.isLoading = true;
     this.events = await getMonthlyEvents(this.date)
+      .then((response) => {
+        return {
+          ...response,
+          startDateTime: new Date(response.startDateTime),
+          endDateTime: new Date(response.endDateTime),
+        };
+      })
       .catch((err) => {
         console.error(err);
         this.error = "Ha ocurrido un error al obtener los eventos";
@@ -106,6 +131,26 @@ export default class CalendarStore {
       .finally(() => {
         this.isLoading = false;
       });
+  }
+
+  async addNewEvent(newEvent: CalendarEventType) {
+    this.isLoading = true;
+    this.events[generateDateAsKey(newEvent.startDateTime)]?.push(newEvent);
+    await addNewEvent(newEvent)
+      .catch((err) => {
+        console.error(err);
+        this.error = "Ha ocurrido un error al agregar el evento";
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
+    this.fethMonthlyEvents();
+  }
+
+  async updateEvent(event: CalendarEventType) {
+    console.log(event);
+    this.isLoading = true;
+    this.fethMonthlyEvents();
   }
 
   hydrate = (initData: { events: Record<string, CalendarEventType[]> }) => {

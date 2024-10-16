@@ -1,45 +1,42 @@
 "use client";
 import CalendarContent from "../CalendarContent";
-import CalendarViewSelector from "../CalendarViewSelector";
 import { observer } from "mobx-react-lite";
-import { formatDate } from "@/app/libs/format";
 import { useStore } from "@/app/store/storeContext";
 import CalendarsContainer from "../CalendarsContainer";
 import { CalendarType } from "@/app/types/CalendarType";
-import CalendarNavigationButtons from "../CalendarNavigationButtons";
+import { PlusIcon } from "@heroicons/react/24/solid";
+import EventForm from "../EventForm";
+import CalendarHeader from "../CalendarHeader";
 
 export const Calendar = observer(() => {
   const store = useStore();
 
-  const generateCalendars = (calendar: CalendarType) => {
-    return (
-      <CalendarContent
-        key={`${calendar.year}${calendar.month}`}
-        item={calendar}
-      />
-    );
-  };
+  const generateCalendars = (calendar: CalendarType) => (
+    <CalendarContent
+      key={`${calendar.year}${calendar.month}`}
+      item={calendar}
+    />
+  );
 
   return (
     <>
-      <CalendarViewSelector />
-      <div className="flex justify-between">
-        <div className="flex">
-          <h2
-            role="month-label"
-            className="font-bold text-lg px-2 py-3 capitalize"
-          >
-            {formatDate(new Date(store.year, store.month, 1), "MMMM")}
-          </h2>
-          <h3 className="text-lg py-3">{store.year}</h3>
-        </div>
-        <CalendarNavigationButtons />
-      </div>
+      <CalendarHeader selectedMonth={store.month} selectedYear={store.year} />
       <div className="w-screen">
         <CalendarsContainer items={store.calendars}>
           {generateCalendars}
         </CalendarsContainer>
       </div>
+      {!store.showEventForm && (
+        <button
+          className="bg-secondary px-2 my-2 mx-2 rounded-full fixed bottom-5 right-5 aspect-square z-[1000]"
+          onClick={() => {
+            store.showEventForm = true;
+          }}
+        >
+          <PlusIcon className="size-10" />
+        </button>
+      )}
+      {store.showEventForm && <EventForm />}
     </>
   );
 });

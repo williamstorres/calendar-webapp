@@ -4,6 +4,7 @@ import {
   text,
   timestamp,
   varchar,
+  numeric,
 } from "drizzle-orm/pg-core";
 
 const timestamps = {
@@ -28,5 +29,6 @@ export const calendarEventsTable = pgTable("calendar_events", {
   endDateTime: timestamp({ mode: "date" }).notNull(),
   isAllDay: boolean().notNull().default(false),
   color: varchar({ length: 5 }),
+  durationInMinutes: numeric().notNull(),
   ...timestamps,
 });
