@@ -1,6 +1,7 @@
+export const dynamic = "force-dynamic";
+
 import Calendar from "./components/Calendar";
 
-export default async function Home() {
-  console.log("Home");
+export default function Home() {
   return <Calendar />;
 }

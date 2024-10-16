@@ -8,7 +8,11 @@ export type CalendarEventType = {
   description: string;
   startDateTime: Date;
   endDateTime: Date;
-  durationInMinutes?: number;
+  durationInMinutes: number;
   isAllDay: boolean;
   color?: CalendarEventColors;
+};
+
+export type ServerData = {
+  events: Record<string, CalendarEventType[]>;
 };

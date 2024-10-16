@@ -1,12 +1,13 @@
 "use client";
 import React, { createContext, ReactNode, useContext } from "react";
 import CalendarStore from "./calendarStore";
+import { ServerData } from "../types/CalendarEvent";
 
 const StoreContext = createContext<CalendarStore | null>(null);
 
 let clientStore: CalendarStore;
 
-const initializeStore = (initData = null) => {
+const initializeStore = (initData: ServerData | null = null) => {
   // check if we already declare store (client Store), otherwise create one
   const store = clientStore ?? new CalendarStore();
   // hydrate to store if receive initial data
@@ -21,7 +22,7 @@ const initializeStore = (initData = null) => {
 
 interface StoreProviderProps {
   children: ReactNode; // Añade children como parte de las props
-  initialData?: never;
+  initialData?: ServerData;
 }
 export const StoreProvider: React.FC<StoreProviderProps> = ({
   children,

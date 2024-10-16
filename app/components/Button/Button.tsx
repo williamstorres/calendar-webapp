@@ -19,7 +19,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={twMerge("h-8", className, disabled && "text-opacity-50")}
+      className={twMerge("h-8 disabled:text-opacity-50", className)}
       type={type}
       onClick={onClick}
       disabled={disabled}
