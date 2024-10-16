@@ -24,6 +24,7 @@ export const usersTable = pgTable("users", {
 export const calendarEventsTable = pgTable("calendar_events", {
   id: varchar({ length: 21 }).primaryKey(),
   title: varchar({ length: 255 }).notNull(),
+  location: varchar({ length: 255 }).notNull(),
   description: text(),
   startDateTime: timestamp({ mode: "date" }).notNull(),
   endDateTime: timestamp({ mode: "date" }).notNull(),

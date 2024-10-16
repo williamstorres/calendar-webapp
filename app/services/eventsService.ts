@@ -13,3 +13,9 @@ export const getMonthlyEvents = async (date: Date) => {
 export const addNewEvent = async (newEvent: CalendarEventType) => {
   return API.post(`/events`, newEvent).then((response) => response.data);
 };
+
+export const updateEvent = async (event: CalendarEventType) => {
+  return API.put(`/events?id=${event.id}`, event).then(
+    (response) => response.data,
+  );
+};
