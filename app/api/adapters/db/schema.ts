@@ -5,7 +5,9 @@ import {
   timestamp,
   varchar,
   integer,
+  json,
 } from "drizzle-orm/pg-core";
+import { Location } from "../../domain/entities/CalendarEvent";
 
 const timestamps = {
   deleted: boolean().notNull().default(false),
@@ -24,7 +26,7 @@ export const usersTable = pgTable("users", {
 export const calendarEventsTable = pgTable("calendar_events", {
   id: varchar({ length: 21 }).primaryKey(),
   title: varchar({ length: 255 }).notNull(),
-  location: varchar({ length: 255 }),
+  location: json().$type<Location>().notNull(),
   description: text(),
   startDateTime: timestamp({ mode: "date" }).notNull(),
   endDateTime: timestamp({ mode: "date" }).notNull(),

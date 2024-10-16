@@ -4,10 +4,18 @@ export const CalendarEventId = z.string().default("");
 
 export type CalendarEventId = z.infer<typeof CalendarEventId>;
 
+export const Location = z.object({
+  id: z.number(),
+  name: z.string(),
+  region: z.string(),
+  country: z.string(),
+});
+export type Location = z.infer<typeof Location>;
+
 export const CalendarEvent = z.object({
   id: CalendarEventId,
   title: z.string(),
-  location: z.string().nullable().default(null),
+  location: Location,
   description: z.string().nullable().default(null),
   startDateTime: z.coerce.date(),
   endDateTime: z.coerce.date(),
