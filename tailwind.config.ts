@@ -8,11 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        xxs: "0.6rem",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: "#18181b",
-        secondary: "#71717a",
+        secondary: "#2563eb",
       },
     },
   },
