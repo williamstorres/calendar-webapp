@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Location } from "../entities/CalendarEvent";
 
 const WeatherConditionSchema = z.object({
   text: z.string(),
@@ -34,4 +35,4 @@ export type GetWeather = (
   days: number,
 ) => Promise<WeatherResponse>;
 
-export type AutocompleteLocations = (search: string) => Promise<Location[]>;
+export type GetLocations = (query: string) => Promise<Location[]>;

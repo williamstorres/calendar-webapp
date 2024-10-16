@@ -16,5 +16,5 @@ export async function GET(request: NextRequest) {
 
   const result = await getWeatherInfo({ logger, getWeather: getWeather })(data);
 
-  return Response.json(result);
+  return Response.json(result.value);
 }

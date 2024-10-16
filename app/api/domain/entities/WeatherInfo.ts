@@ -5,3 +5,8 @@ export const GetWeatherFiltersSchema = z.object({
   date: z.coerce.date(),
 });
 export type GetWeatherFilters = z.infer<typeof GetWeatherFiltersSchema>;
+
+export const GetLocationsFiltersSchema = z.object({
+  query: z.coerce.string(),
+});
+export type GetLocationsFilters = z.infer<typeof GetLocationsFiltersSchema>;
