@@ -9,6 +9,7 @@ import {
 import { makeAutoObservable } from "mobx";
 import {
   addNewEvent,
+  deleteEvent,
   getMonthlyEvents,
   updateEvent,
 } from "../services/eventsService";
@@ -123,51 +124,62 @@ export default class CalendarStore {
   }
 
   async fethMonthlyEvents() {
-    this.isLoading = true;
-    this.events = await getMonthlyEvents(this.date)
-      .then((response) => {
-        return {
-          ...response,
-          startDateTime: new Date(response.startDateTime),
-          endDateTime: new Date(response.endDateTime),
-        };
-      })
-      .catch((err) => {
-        console.error(err);
-        this.error = "Ha ocurrido un error al obtener los eventos";
-        return {} as Record<string, CalendarEventType[]>;
-      })
-      .finally(() => {
-        this.isLoading = false;
-      });
+    this.events = await this.loading(
+      getMonthlyEvents(this.date)
+        .then((response) => {
+          return {
+            ...response,
+            startDateTime: new Date(response.startDateTime),
+            endDateTime: new Date(response.endDateTime),
+          };
+        })
+        .catch((err) => {
+          console.error(err);
+          this.error = "Ha ocurrido un error al obtener los eventos";
+          return {} as Record<string, CalendarEventType[]>;
+        }),
+    );
   }
 
   async addNewEvent(newEvent: CalendarEventType) {
-    this.isLoading = true;
     this.events[generateDateAsKey(newEvent.startDateTime)]?.push(newEvent);
-    await addNewEvent(newEvent)
-      .catch((err) => {
+    await this.loading(
+      addNewEvent(newEvent).catch((err) => {
         console.error(err);
         this.error = "Ha ocurrido un error al agregar el evento";
-      })
-      .finally(() => {
-        this.isLoading = false;
-      });
+      }),
+    );
     this.fethMonthlyEvents();
   }
 
   async updateEvent(event: CalendarEventType) {
-    this.isLoading = true;
-    await updateEvent(event)
-      .catch((err) => {
+    await this.loading(
+      updateEvent(event).catch((err) => {
         console.error(err);
         this.error = "Ha ocurrido un error al actualizar el evento";
-      })
-      .finally(() => {
-        this.isLoading = false;
-      });
+      }),
+    );
     this.fethMonthlyEvents();
   }
+
+  async deleteEvent() {
+    if (!this.selectedEvent?.id) return;
+    await this.loading(
+      deleteEvent(this.selectedEvent.id).catch((err) => {
+        console.error(err);
+        this.error = "Ha ocurrido un error al eliminar el evento";
+      }),
+    );
+    this.cleanSelectedEvent();
+    this.fethMonthlyEvents();
+  }
+
+  loading = async <T>(prom: Promise<T>) => {
+    this.isLoading = true;
+    return prom.finally(() => {
+      this.isLoading = false;
+    });
+  };
 
   hydrate = (initData: { events: Record<string, CalendarEventType[]> }) => {
     this.events = initData.events;

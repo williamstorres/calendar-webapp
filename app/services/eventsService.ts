@@ -19,3 +19,7 @@ export const updateEvent = async (event: CalendarEventType) => {
     (response) => response.data,
   );
 };
+
+export const deleteEvent = async (id: string) => {
+  return API.delete(`/events?id=${id}`);
+};

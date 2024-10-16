@@ -117,6 +117,14 @@ export const EventForm = () => {
             Hora de termino
           </InputField>
         </div>
+        {store.selectedEvent?.id && (
+          <Button
+            onClick={() => store.deleteEvent()}
+            className="text-red-500 justify-self-end"
+          >
+            Eliminar
+          </Button>
+        )}
       </form>
     </div>
   );

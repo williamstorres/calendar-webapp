@@ -1,7 +1,7 @@
 import { DeleteEvent } from "../ports/eventRepository";
 import { CalendarEventId } from "../entities/CalendarEvent";
 import { Logger } from "../ports/logger";
-import { Left } from "@/app/api/core/Either";
+import { Left, Right } from "@/app/api/core/Either";
 
 type DeleteEventDependencies = {
   logger: Logger;
@@ -12,10 +12,11 @@ const deleteEvent =
   async (id: CalendarEventId) => {
     logger.debug(`deleting event ${id}`);
 
-    const result = await deleteEvent(id).catch((error) => {
-      logger.error(error);
-      return Left("Ha ocurrido un error al eliminar el evento");
-    });
-    return result;
+    return deleteEvent(id)
+      .then(() => Right(null))
+      .catch((error) => {
+        logger.error(error);
+        return Left("Ha ocurrido un error al eliminar el evento");
+      });
   };
 export default deleteEvent;
