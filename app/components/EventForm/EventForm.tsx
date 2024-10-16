@@ -9,6 +9,7 @@ import { useSaveEventForm } from "@/app/hooks/useSaveEventForm";
 import { addHours, format, setMinutes } from "date-fns";
 import { getTime } from "@/app/libs/date";
 import { useStore } from "@/app/store/storeContext";
+import { Switch } from "../UI";
 
 export const EventForm = () => {
   const store = useStore();
@@ -95,9 +96,7 @@ export const EventForm = () => {
         >
           Fecha
         </InputField>
-        <InputField type={InputFieldType.Checkbox} {...register("isAllDay")}>
-          Todo el día?
-        </InputField>
+        <Switch>Todo el día?</Switch>
         <div className="flex w-full place-content-between">
           <InputField
             type={InputFieldType.Time}
