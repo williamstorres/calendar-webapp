@@ -17,6 +17,25 @@ const config: Config = {
         primary: "#18181b",
         secondary: "#2563eb",
       },
+      keyframes: {
+        slide: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+        "slide-up": {
+          "0%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        "slide-down": {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(100%)" },
+        },
+      },
+      animation: {
+        slide: "slide 2s infinite linear",
+        "slide-up": "slide-up 0.2s ease-out forwards",
+        "slide-down": "slide-down 0.2s ease-out forwards",
+      },
     },
   },
   plugins: [],

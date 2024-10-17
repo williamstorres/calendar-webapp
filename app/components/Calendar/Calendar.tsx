@@ -6,6 +6,7 @@ import CalendarsContainer from "../CalendarsContainer";
 import { CalendarType } from "@/app/types/CalendarType";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import CalendarHeader from "../CalendarHeader";
+import { Loading } from "../UI";
 
 export const Calendar = observer(() => {
   const store = useStore();
@@ -19,6 +20,7 @@ export const Calendar = observer(() => {
 
   return (
     <>
+      <Loading loading={store.isLoading} />
       <CalendarHeader selectedMonth={store.month} selectedYear={store.year} />
       <div className="w-screen">
         <CalendarsContainer items={store.calendars}>
