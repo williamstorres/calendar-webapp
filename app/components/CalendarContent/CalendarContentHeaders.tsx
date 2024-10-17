@@ -5,7 +5,17 @@ import { isSameDay } from "date-fns";
 import { observer } from "mobx-react-lite";
 import { twJoin } from "tailwind-merge";
 
-export const CalendarContentHeaders = observer(() => {
+/**
+ * Componente `CalendarContentHeaders` que renderiza los encabezados de los días de la semana
+ * en un calendario.
+ *
+ * Este componente muestra los nombres de los días de la semana y permite seleccionar un día
+ * específico. Cuando un día es seleccionado, actualiza la fecha y cambia la vista del calendario
+ * al modo "día".
+ *
+ * @returns {JSX.Element} Un elemento que representa los encabezados de los días de la semana.
+ */
+export const CalendarContentHeaders: React.FC = observer(() => {
   const store = useStore();
 
   const daysOfTheWeekNames = [

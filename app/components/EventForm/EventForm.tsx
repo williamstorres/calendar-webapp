@@ -22,7 +22,18 @@ type LocationAutocomplete = Location & AutocompleteOption;
 
 const initialDate = setMinutes(addHours(new Date(), 1), 0);
 
-export const EventForm = observer(() => {
+/**
+ * Componente que renderiza un formulario para crear o editar un evento en el calendario.
+ * Utiliza el estado global del almacén y proporciona funcionalidades para manejar la entrada del usuario
+ * y el envío del formulario.
+ *
+ * @component
+ * @example
+ * return (
+ *   <EventForm />
+ * );
+ */
+export const EventForm: React.FC = observer(() => {
   const store = useStore();
   const [selectedLocation, setSelectedLocation] =
     useState<LocationAutocomplete>(

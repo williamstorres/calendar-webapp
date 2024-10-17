@@ -6,6 +6,29 @@ import { twJoin } from "tailwind-merge";
 export type AutocompleteOption = {
   text: string;
 };
+/**
+ * Componente `Autocomplete` que permite la selección de opciones a través de un campo de texto.
+ *
+ * Este componente utiliza `react-hook-form` para manejar el estado del formulario
+ * y proporciona un menú desplegable con opciones seleccionables.
+ *
+ * @template T
+ * @param {AutocompleteProps<T extends AutocompleteOption>} props - Props del componente.
+ * @param {React.Ref} ref - Referencia al elemento de entrada.
+ * @returns {JSX.Element} El componente `Autocomplete`.
+ *
+ * @example
+ * const options = [{ text: 'Option 1' }, { text: 'Option 2' }];
+ *
+ * <Autocomplete
+ *   name="autocomplete"
+ *   setValue={(value) => console.log(value)}
+ *   options={options}
+ *   error={null}
+ * >
+ *   Select an option
+ * </Autocomplete>
+ */
 type AutocompleteProps<T extends AutocompleteOption> =
   React.ComponentPropsWithoutRef<"input"> & {
     name: string;
@@ -45,7 +68,7 @@ export const Autocomplete = forwardRef<
           {options.map((option, index) => (
             <li
               key={index}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+              className="px-4 py-2 cursor-pointer"
               onClick={() => setValue(option)}
             >
               {option.text}

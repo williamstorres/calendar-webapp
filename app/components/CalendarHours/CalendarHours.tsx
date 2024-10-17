@@ -5,6 +5,14 @@ import { observer } from "mobx-react-lite";
 import CalendarEventsWeek from "../CalendarEventsWeek";
 import CalendarEventsDay from "../CalendarEventsDay";
 
+/**
+ * Componente `CalendarHours` que representa las horas del día en el calendario.
+ *
+ * Este componente muestra una lista de horas y organiza eventos según la vista seleccionada,
+ * ya sea en formato semanal o diario. Utiliza MobX para gestionar el estado del calendario.
+ *
+ * @returns {JSX.Element} El componente `CalendarHours`, que incluye horas del día y eventos asociados.
+ */
 export const CalendarHours: React.FC = observer(() => {
   const store = useStore();
 

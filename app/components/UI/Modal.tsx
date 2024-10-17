@@ -6,7 +6,16 @@ import { CalendarEventView } from "../CalendarEventView/CalendarEventView";
 import { twJoin } from "tailwind-merge";
 import { useEffect, useState } from "react";
 
-export const Modal = observer(() => {
+/**
+ * Componente `Modal` que muestra un formulario de evento o una vista de evento.
+ *
+ * Este componente utiliza el contexto del estado para determinar si debe mostrar
+ * el formulario de evento o la vista de evento. La visibilidad del modal se
+ * anima y se gestiona mediante un estado local.
+ *
+ * @returns {JSX.Element|null} Un elemento que representa el modal, o null si no debe mostrarse.
+ */
+export const Modal: React.FC = observer(() => {
   const { showEventForm, showEventView } = useStore();
   const [showModal, setShowModal] = useState(false);
 

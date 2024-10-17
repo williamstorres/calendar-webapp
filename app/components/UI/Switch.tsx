@@ -1,8 +1,24 @@
 import { forwardRef, useId } from "react";
 
-type SwitchProps = {
+type SwitchProps = React.ComponentPropsWithoutRef<"input"> & {
   children: string;
-} & React.ComponentPropsWithoutRef<"input">;
+};
+
+/**
+ * Componente `Switch` que representa un interruptor de tipo checkbox.
+ *
+ * Este componente permite al usuario alternar un valor booleano.
+ * El `Switch` está diseñado para ser accesible y estilizado con Tailwind CSS.
+ *
+ * @param {Object} props - Las propiedades del componente.
+ * @param {string} props.children - El texto que se muestra junto al interruptor.
+ * @param {string} [props.defaultValue] - El valor predeterminado del interruptor.
+ * @param {function} [props.onChange] - Función que se llama cuando el estado del interruptor cambia.
+ * @param {string} [props.name] - El nombre del interruptor, utilizado para identificarlo en formularios.
+ * @param {React.Ref} ref - Referencia al elemento input.
+ *
+ * @returns {JSX.Element} Un elemento que representa el interruptor.
+ */
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
   { children, defaultValue, onChange, name }: SwitchProps,
   ref,

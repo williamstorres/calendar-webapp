@@ -4,7 +4,16 @@ import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
 import { twJoin } from "tailwind-merge";
 
-export const CalendarViewSelector = observer(() => {
+/**
+ * Componente `CalendarViewSelector` que permite al usuario seleccionar la vista
+ * del calendario entre Mes, Semana o Día.
+ *
+ * Este componente utiliza el estado global del store para gestionar la vista
+ * seleccionada y actualizarla cuando el usuario interactúa con las etiquetas.
+ *
+ * @returns {JSX.Element} El selector de vista del calendario.
+ */
+export const CalendarViewSelector: React.FC = observer(() => {
   const store = useStore();
 
   const baseLabelStyle =

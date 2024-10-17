@@ -10,13 +10,22 @@ type ButtonProps = React.ComponentPropsWithoutRef<"input"> & {
   type?: ButtonType;
   onClick?: () => void;
 };
-export const Button = ({
+/**
+ * Componente `Button` que representa un botón estilizado.
+ *
+ * Este componente acepta un texto como hijos y opcionalmente puede recibir un
+ * tipo de botón, un manejador de clics y clases adicionales para el estilo.
+ *
+ * @param {ButtonProps} props - Propiedades del componente.
+ * @returns {JSX.Element} Un botón HTML que ejecuta la función `onClick` cuando es presionado.
+ */
+export const Button: React.FC<ButtonProps> = ({
   children,
   type,
   onClick,
   className,
   disabled,
-}: ButtonProps) => {
+}) => {
   return (
     <button
       className={twMerge("h-8 disabled:text-opacity-50", className)}

@@ -9,6 +9,15 @@ type CalendarEventsWeekDayProps = {
   children: React.ReactNode;
   dayOfYear: string;
 };
+/**
+ * Componente `CalendarEventsWeekDay` que representa un día en la semana dentro del calendario.
+ *
+ * Este componente utiliza la funcionalidad de arrastrar y soltar para permitir la interacción
+ * con los eventos de ese día.
+ *
+ * @param {CalendarEventsWeekDayProps} props - Props del componente.
+ * @returns {JSX.Element} El componente `CalendarEventsWeekDay`.
+ */
 const CalendarEventsWeekDay: React.FC<CalendarEventsWeekDayProps> = ({
   children,
   dayOfYear,
