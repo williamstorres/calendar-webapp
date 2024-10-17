@@ -5,7 +5,7 @@ import { z } from "zod";
 export const eventFormSchema = z
   .object({
     title: z.string().min(1, "Debes ingresar el titulo del evento"),
-    location: z.string(),
+    location: z.string().min(1, "Debes ingresar la ubicación"),
     description: z.string(),
     date: z.coerce.date(),
     isAllDay: z.boolean(),

@@ -1,5 +1,7 @@
 import { useId, forwardRef } from "react";
 import { FieldError } from "react-hook-form";
+import { InputFieldError } from "./InputFieldError";
+import { twJoin } from "tailwind-merge";
 
 export type AutocompleteOption = {
   text: string;
@@ -33,7 +35,10 @@ export const Autocomplete = forwardRef<
         ref={ref}
         autoComplete="off"
         type="text"
-        className="w-full px-4 py-2 bg-primary rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+        className={twJoin(
+          "w-full px-4 py-2 bg-primary rounded-md focus:outline-none focus:ring focus:ring-blue-300",
+          error && "border-red-500 border",
+        )}
       />
       {options && options.length > 0 && (
         <ul className="absolute z-10 w-full bg-primary border border-gray-300 rounded-md mt-1 max-h-40 overflow-y-auto px-4">
@@ -48,9 +53,7 @@ export const Autocomplete = forwardRef<
           ))}
         </ul>
       )}
-      <span className="text-sm text-red-500 min-h-10 w-full">
-        {error && error.message}
-      </span>
+      <InputFieldError error={error} />
     </div>
   );
 });

@@ -1,11 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
-import InputField from "../Field";
-import { InputFieldType } from "../Field/InputField";
-import { Button, ButtonType } from "../Button/Button";
 import { useSaveEventForm } from "@/app/hooks/useSaveEventForm";
 import { addHours, format, setMinutes } from "date-fns";
 import { useStore } from "@/app/store/storeContext";
-import { Switch, Autocomplete, AutocompleteOption } from "../UI";
+import {
+  Switch,
+  Autocomplete,
+  AutocompleteOption,
+  InputTextArea,
+  InputFieldType,
+  InputField,
+  Button,
+  ButtonType,
+} from "../UI";
 import { Location } from "@/app/api/domain/entities/CalendarEvent";
 import { getLocations } from "@/app/services/locationsService";
 import { useDebounce } from "@/app/hooks/useDebounce";
@@ -109,10 +115,11 @@ export const EventForm = observer(() => {
         {...register("location")}
         options={locations}
         setValue={setLocation}
+        error={errors.location}
       >
         Ubicación
       </Autocomplete>
-      <InputField {...register("description")}>Descripción</InputField>
+      <InputTextArea {...register("description")}>Descripción</InputTextArea>
       <InputField
         type={InputFieldType.Date}
         {...register("date")}
