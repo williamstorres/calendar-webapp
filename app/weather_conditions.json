@@ -1,0 +1,194 @@
+{
+  "1000": {
+    "day": "Soleado",
+    "night": "Despejado"
+  },
+  "1003": {
+    "day": "Parcialmente nublado",
+    "night": "Parcialmente nublado"
+  },
+  "1006": {
+    "day": "Nublado",
+    "night": "Nublado"
+  },
+  "1009": {
+    "day": "Cubierto",
+    "night": "Cubierto"
+  },
+  "1030": {
+    "day": "Neblina",
+    "night": "Neblina"
+  },
+  "1063": {
+    "day": "Posible lluvia dispersa",
+    "night": "Posible lluvia dispersa"
+  },
+  "1066": {
+    "day": "Posible nieve dispersa",
+    "night": "Posible nieve dispersa"
+  },
+  "1069": {
+    "day": "Posible aguanieve dispersa",
+    "night": "Posible aguanieve dispersa"
+  },
+  "1072": {
+    "day": "Posible llovizna helada dispersa",
+    "night": "Posible llovizna helada dispersa"
+  },
+  "1087": {
+    "day": "Posibles tormentas",
+    "night": "Posibles tormentas"
+  },
+  "1114": {
+    "day": "Nieve soplada",
+    "night": "Nieve soplada"
+  },
+  "1117": {
+    "day": "Tormenta de nieve",
+    "night": "Tormenta de nieve"
+  },
+  "1135": {
+    "day": "Niebla",
+    "night": "Niebla"
+  },
+  "1147": {
+    "day": "Niebla helada",
+    "night": "Niebla helada"
+  },
+  "1150": {
+    "day": "Llovizna ligera dispersa",
+    "night": "Llovizna ligera dispersa"
+  },
+  "1153": {
+    "day": "Llovizna ligera",
+    "night": "Llovizna ligera"
+  },
+  "1168": {
+    "day": "Llovizna helada",
+    "night": "Llovizna helada"
+  },
+  "1171": {
+    "day": "Llovizna helada fuerte",
+    "night": "Llovizna helada fuerte"
+  },
+  "1180": {
+    "day": "Lluvia ligera dispersa",
+    "night": "Lluvia ligera dispersa"
+  },
+  "1183": {
+    "day": "Lluvia ligera",
+    "night": "Lluvia ligera"
+  },
+  "1186": {
+    "day": "Lluvia moderada a intervalos",
+    "night": "Lluvia moderada a intervalos"
+  },
+  "1189": {
+    "day": "Lluvia moderada",
+    "night": "Lluvia moderada"
+  },
+  "1192": {
+    "day": "Lluvia fuerte a intervalos",
+    "night": "Lluvia fuerte a intervalos"
+  },
+  "1195": {
+    "day": "Lluvia fuerte",
+    "night": "Lluvia fuerte"
+  },
+  "1198": {
+    "day": "Lluvia helada ligera",
+    "night": "Lluvia helada ligera"
+  },
+  "1201": {
+    "day": "Lluvia helada moderada o fuerte",
+    "night": "Lluvia helada moderada o fuerte"
+  },
+  "1204": {
+    "day": "Aguanieve ligera",
+    "night": "Aguanieve ligera"
+  },
+  "1207": {
+    "day": "Aguanieve moderada o fuerte",
+    "night": "Aguanieve moderada o fuerte"
+  },
+  "1210": {
+    "day": "Nieve ligera dispersa",
+    "night": "Nieve ligera dispersa"
+  },
+  "1213": {
+    "day": "Nieve ligera",
+    "night": "Nieve ligera"
+  },
+  "1216": {
+    "day": "Nieve moderada dispersa",
+    "night": "Nieve moderada dispersa"
+  },
+  "1219": {
+    "day": "Nieve moderada",
+    "night": "Nieve moderada"
+  },
+  "1222": {
+    "day": "Nieve fuerte dispersa",
+    "night": "Nieve fuerte dispersa"
+  },
+  "1225": {
+    "day": "Nieve fuerte",
+    "night": "Nieve fuerte"
+  },
+  "1237": {
+    "day": "Granizo",
+    "night": "Granizo"
+  },
+  "1240": {
+    "day": "Chubasco ligero",
+    "night": "Chubasco ligero"
+  },
+  "1243": {
+    "day": "Chubasco moderado o fuerte",
+    "night": "Chubasco moderado o fuerte"
+  },
+  "1246": {
+    "day": "Chubasco torrencial",
+    "night": "Chubasco torrencial"
+  },
+  "1249": {
+    "day": "Chubascos de aguanieve ligera",
+    "night": "Chubascos de aguanieve ligera"
+  },
+  "1252": {
+    "day": "Chubascos de aguanieve moderada o fuerte",
+    "night": "Chubascos de aguanieve moderada o fuerte"
+  },
+  "1255": {
+    "day": "Chubascos de nieve ligera",
+    "night": "Chubascos de nieve ligera"
+  },
+  "1258": {
+    "day": "Chubascos de nieve moderada o fuerte",
+    "night": "Chubascos de nieve moderada o fuerte"
+  },
+  "1261": {
+    "day": "Chubascos ligeros de granizo",
+    "night": "Chubascos ligeros de granizo"
+  },
+  "1264": {
+    "day": "Chubascos moderados o fuertes de granizo",
+    "night": "Chubascos moderados o fuertes de granizo"
+  },
+  "1273": {
+    "day": "Lluvia ligera dispersa con truenos",
+    "night": "Lluvia ligera dispersa con truenos"
+  },
+  "1276": {
+    "day": "Lluvia moderada o fuerte con truenos",
+    "night": "Lluvia moderada o fuerte con truenos"
+  },
+  "1279": {
+    "day": "Nieve ligera dispersa con truenos",
+    "night": "Nieve ligera dispersa con truenos"
+  },
+  "1282": {
+    "day": "Nieve moderada o fuerte con truenos",
+    "night": "Nieve moderada o fuerte con truenos"
+  }
+}

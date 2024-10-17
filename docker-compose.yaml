@@ -20,6 +20,10 @@ services:
       - postgres
     environment:
       DATABASE_URL: postgres://user:password@postgres:5432/calendarapp
+      ENABLE_MOCK_SERVER: false
+      NEXT_PUBLIC_API_URL: http://localhost:3000/api
+      WEATHER_API_BASE_URL: https://api.weatherapi.com/v1/
+      WEATHER_APIKEY: 217a531c18eb4a48a70200600241310
 
 volumes:
   postgres_data:

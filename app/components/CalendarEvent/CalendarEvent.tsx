@@ -4,6 +4,7 @@ import { CalendarEventType } from "@/app/types/CalendarEvent";
 import { getHours } from "date-fns";
 import { minutesInHour } from "date-fns/constants";
 import { observer } from "mobx-react-lite";
+import { useCallback } from "react";
 import { twJoin } from "tailwind-merge";
 
 type CalendarEventProps = {
@@ -21,11 +22,10 @@ export const CalendarEvent = observer(
     const width = 100 / overlaping;
     const top = WeekEventHeightInRem * startHour;
 
-    const handleEventClick = () => {
-      console.log(JSON.stringify(event));
+    const handleEventClick = useCallback(() => {
       store.selectedEvent = event;
-      store.showEventForm = true;
-    };
+      store.showEventView = true;
+    }, [event, store]);
 
     return (
       <button

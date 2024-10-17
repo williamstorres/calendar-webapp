@@ -31,6 +31,7 @@ export default class CalendarStore {
   calendars: CalendarType[] = [];
   error: string = "";
   selectedEvent: CalendarEventType | undefined;
+  showEventView = false;
 
   constructor() {
     makeAutoObservable(this);
