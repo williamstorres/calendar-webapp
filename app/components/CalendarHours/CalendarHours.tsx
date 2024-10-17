@@ -4,6 +4,7 @@ import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
 import CalendarEventsWeek from "../CalendarEventsWeek";
 import CalendarEventsDay from "../CalendarEventsDay";
+import { setHours } from "date-fns";
 
 /**
  * Componente `CalendarHours` que representa las horas del día en el calendario.
@@ -25,7 +26,10 @@ export const CalendarHours: React.FC = observer(() => {
       </div>
     );
   };
-
+  const handleOnClickToAddNewEvent = (hour: number) => {
+    store.setDate(setHours(store.date, hour));
+    store.setShowEventForm(true);
+  };
   return (
     <div className="w-screen flex">
       <div className="w-min">
@@ -35,7 +39,11 @@ export const CalendarHours: React.FC = observer(() => {
       <div className="relative w-full">
         <div className="absolute w-full h-full mt-4">
           {hoursOfDay.map((hour) => (
-            <div key={hour} className="h-20 border-t-2 border-zinc-600"></div>
+            <div
+              key={hour}
+              className="h-20 border-t-2 border-zinc-600"
+              onClick={() => handleOnClickToAddNewEvent(hour)}
+            ></div>
           ))}
           <div className="h-20 border-t-2 border-secondary"></div>
         </div>

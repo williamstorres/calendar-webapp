@@ -26,10 +26,11 @@ type CalendarEventsDayProps = {
 export const CalendarEventsDay: React.FC<CalendarEventsDayProps> = ({
   events,
   date,
-}) => {
+}: CalendarEventsDayProps): JSX.Element => {
   const { setNodeRef } = useDroppable({
     id: generateDateAsKey(date),
   });
+
   return (
     <div ref={setNodeRef}>
       {events.map((event, index) => (

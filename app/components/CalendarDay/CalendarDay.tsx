@@ -24,7 +24,10 @@ type CalendarDayProps = {
  * const events = [{ id: "event1", ... }, { id: "event2", ... }];
  * <CalendarDay day={day} events={events} />
  */
-export const CalendarDay: React.FC<CalendarDayProps> = ({ day, events }) => {
+export const CalendarDay: React.FC<CalendarDayProps> = ({
+  day,
+  events,
+}: CalendarDayProps): JSX.Element => {
   const { setNodeRef } = useDroppable({
     id: generateDateAsKey(day.date),
   });

@@ -34,10 +34,13 @@ export const CalendarContent: React.FC<CalendarContentProps> = observer(
     const store = useStore();
     const calendarContentRef = useRef<HTMLDivElement>(null);
     const weeksOfMonth = getCalendarWeeksWithDays(item.month, item.year);
+    // Es necesario abir aqui un evento para su edicion,
+    // debido a que de lo contrario el evento es ignorado por la libreria
+    // de drag and drop
     const handleDragEnd = useMoveEventOnDrag({
       openEditEventView: (selectedEvent: CalendarEventType) => {
-        store.selectedEvent = selectedEvent;
-        store.showEventView = true;
+        store.setSelectedEvent(selectedEvent);
+        store.setShowEventView(true);
       },
       updateEvent: (event: CalendarEventType) => {
         store.updateEvent(event);
