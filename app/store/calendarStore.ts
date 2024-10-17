@@ -153,7 +153,23 @@ export default class CalendarStore {
     this.fethMonthlyEvents();
   }
 
+  updateEventInEvents(event: CalendarEventType) {
+    for (const date in this.events) {
+      if (Array.isArray(this.events[date])) {
+        this.events[date] = this.events[date].filter(
+          (item) => item.id !== event.id,
+        );
+      }
+    }
+
+    const dateKey = generateDateAsKey(event.startDateTime);
+    if (!this.events[dateKey]) this.events[dateKey] = [];
+    this.events[dateKey] = [...this.events[dateKey], event];
+  }
+
   async updateEvent(event: CalendarEventType) {
+    //primero se actualiza en el listado de eventos, para que los cambios en el calendario sean instantaneos
+    this.updateEventInEvents(event);
     await this.loading(
       updateEvent(event).catch((err) => {
         console.error(err);

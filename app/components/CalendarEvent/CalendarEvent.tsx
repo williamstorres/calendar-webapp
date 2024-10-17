@@ -1,36 +1,44 @@
-import { WeekEventHeightInRem } from "@/app/constants";
 import { useStore } from "@/app/store/storeContext";
 import { CalendarEventType } from "@/app/types/CalendarEvent";
-import { getHours } from "date-fns";
-import { minutesInHour } from "date-fns/constants";
 import { observer } from "mobx-react-lite";
-import { useCallback } from "react";
 import { twJoin } from "tailwind-merge";
+import { useDraggable } from "@dnd-kit/core";
+import { generateDateAsKey } from "@/app/libs/date";
+import { useCalendarEvent } from "@/app/hooks/useEventDrag";
 
 type CalendarEventProps = {
   event: CalendarEventType;
   overlaping: number;
   index: number;
 };
-export const CalendarEvent = observer(
-  ({ event, overlaping, index }: CalendarEventProps) => {
+export const CalendarEvent: React.FC<CalendarEventProps> = observer(
+  ({ event, overlaping, index }) => {
     const store = useStore();
-
-    const startHour = getHours(event.startDateTime);
-    const height =
-      (WeekEventHeightInRem / minutesInHour) * event.durationInMinutes;
-    const width = 100 / overlaping;
-    const top = WeekEventHeightInRem * startHour;
-
-    const handleEventClick = useCallback(() => {
-      store.selectedEvent = event;
-      store.showEventView = true;
-    }, [event, store]);
+    const { attributes, listeners, setNodeRef, transform, node } = useDraggable(
+      {
+        id: event.id,
+        data: {
+          dayId: generateDateAsKey(event.startDateTime),
+        },
+      },
+    );
+    const { style, top, height, width } = useCalendarEvent({
+      transform,
+      eventDurationInMinutes: event.durationInMinutes,
+      overlaping,
+      startDateTime: event.startDateTime,
+      node,
+      selectedViewIsMonth: store.selectedViewIsMonth,
+      selectedViewIsDay: store.selectedViewIsDay,
+    });
 
     return (
-      <button
-        onClick={handleEventClick}
+      <div
+        ref={setNodeRef}
+        {...listeners}
+        {...attributes}
         style={{
+          ...style,
           top: `${top}rem`,
           left:
             overlaping > 1 ? `calc((100% / ${overlaping}) * ${index})` : "auto",
@@ -38,13 +46,13 @@ export const CalendarEvent = observer(
           width: `${width}%`,
         }}
         className={twJoin(
-          "bg-green-500 px-1 rounded-md overflow-hidden text-primary box-border shadow-sm border",
+          "bg-green-500 px-1 rounded-md overflow-hidden text-primary box-border shadow-sm border z-50",
           !store.selectedViewIsMonth && "absolute",
           store.selectedViewIsDay ? "text-xs" : "text-xxs",
         )}
       >
         {event.title}
-      </button>
+      </div>
     );
   },
 );

@@ -14,7 +14,6 @@ export const useWeatherConditionsApi = ({
 
   useEffect(() => {
     getWeatherConditions({ location, date }).then((result) => {
-      console.log(result);
       setCondition(WeatherConditionSchema.parse(result));
     });
   }, [location, date]);

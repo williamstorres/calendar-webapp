@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import CalendarEventsWeek from "../CalendarEventsWeek";
 import CalendarEventsDay from "../CalendarEventsDay";
 
-export const CalendarHours = observer(() => {
+export const CalendarHours: React.FC = observer(() => {
   const store = useStore();
 
   const generateHour = (hour: number) => {
@@ -36,6 +36,7 @@ export const CalendarHours = observer(() => {
         ) : (
           <div className="w-full relative mt-4 z-10">
             <CalendarEventsDay
+              date={store.date}
               events={store.events[generateDateAsKey(store.date)] ?? []}
             />
           </div>
