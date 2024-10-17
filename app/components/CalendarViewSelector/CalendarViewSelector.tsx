@@ -21,7 +21,10 @@ export const CalendarViewSelector: React.FC = observer(() => {
   const selectedStyle =
     "text-zinc-900 bg-zinc-400 w-10 h-full top-0 rounded-full ";
   return (
-    <div className="flex justify-center mt-3 mb-5 w-full">
+    <div
+      role="calendar-view-selector"
+      className="flex justify-center mt-3 mb-5 w-full"
+    >
       <div className="w-max bg-zinc-900 rounded-full relative gap-5">
         <label
           onClick={() => store.setSelectedView(Views.Month)}

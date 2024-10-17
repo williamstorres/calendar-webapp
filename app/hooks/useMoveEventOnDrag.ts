@@ -2,7 +2,8 @@ import { DragEndEvent } from "@dnd-kit/core";
 import { addMinutes, getHours, getMinutes, parse } from "date-fns";
 import { DateKeyFormat, PxInOneHour } from "../constants";
 import { CalendarEventType } from "../types/CalendarEvent";
-import { setHoursAndMinutes } from "../libs/date";
+import { getMinutesInSteps, setHoursAndMinutes } from "../libs/date";
+import { minutesInHour } from "date-fns/constants";
 
 type HandleDragEndProps = {
   openEditEventView: (selectedEvent: CalendarEventType) => void;
@@ -39,11 +40,9 @@ export const useMoveEventOnDrag =
     );
     const { startDateTime, endDateTime } = selectedEvent;
 
-    //Los movimientos de horario son en rangos de 15 minutos
-    const fifteenMinutesSteps = (minutes: number) =>
-      Math.round(minutes / 15) * 15;
-    const minutesToMove = fifteenMinutesSteps(
-      Math.round((event.delta.y * 60) / PxInOneHour),
+    //Los movimientos de horario son en rangos definidos en la constante CalendarMinutesSteps
+    const minutesToMove = getMinutesInSteps(
+      Math.round((event.delta.y * minutesInHour) / PxInOneHour),
     );
 
     const newStartDate = setHoursAndMinutes(newDate)(getHours(startDateTime))(

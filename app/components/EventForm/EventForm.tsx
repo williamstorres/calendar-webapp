@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSaveEventForm } from "@/app/hooks/useSaveEventForm";
-import { addHours, format, setMinutes } from "date-fns";
+import { format } from "date-fns";
 import { useStore } from "@/app/store/storeContext";
 import {
   Switch,
@@ -19,8 +19,6 @@ import { useEventForm } from "@/app/hooks/useEventForm";
 import { observer } from "mobx-react-lite";
 
 type LocationAutocomplete = Location & AutocompleteOption;
-
-const initialDate = setMinutes(addHours(new Date(), 1), 0);
 
 /**
  * Componente que renderiza un formulario para crear o editar un evento en el calendario.
@@ -51,7 +49,7 @@ export const EventForm: React.FC = observer(() => {
     formState: { errors, isValid },
   } = useEventForm({
     selectedEvent: store.selectedEvent,
-    initialDate,
+    initialDate: store.date,
   });
   const handleSave = useSaveEventForm(selectedLocation as Location, (event) =>
     store.saveEvent({ ...event, id: String(store.selectedEvent?.id) }),
@@ -101,12 +99,10 @@ export const EventForm: React.FC = observer(() => {
   );
 
   return (
-    <form onSubmit={handleSubmit(handleSave)}>
+    <form role="event-form" onSubmit={handleSubmit(handleSave)}>
       <div className="grid grid-cols-2 mt-0 w-full mb-8 items-center">
         <Button
-          onClick={() =>
-            (store.showEventForm = false && store.cleanSelectedEvent())
-          }
+          onClick={() => store.setShowEventForm(false)}
           className="text-red-500 justify-self-start"
         >
           Cancelar
@@ -136,7 +132,7 @@ export const EventForm: React.FC = observer(() => {
         {...register("date")}
         error={errors.date}
         defaultValue={format(
-          store.selectedEvent ? store.selectedEvent.startDateTime : initialDate,
+          store.selectedEvent ? store.selectedEvent.startDateTime : store.date,
           "yyyy-MM-dd",
         )}
       >

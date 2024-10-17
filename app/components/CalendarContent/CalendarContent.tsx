@@ -8,7 +8,7 @@ import { CalendarEventType } from "@/app/types/CalendarEvent";
 import { CalendarType } from "@/app/types/CalendarType";
 import { DndContext } from "@dnd-kit/core";
 import { observer } from "mobx-react-lite";
-import { useRef } from "react";
+import { useId, useRef } from "react";
 import CalendarWeek from "../CalendarWeek";
 import { CalendarContentHeaders } from "./CalendarContentHeaders";
 
@@ -32,12 +32,16 @@ export type CalendarContentProps = {
 export const CalendarContent: React.FC<CalendarContentProps> = observer(
   ({ item }) => {
     const store = useStore();
+    const id = useId();
     const calendarContentRef = useRef<HTMLDivElement>(null);
     const weeksOfMonth = getCalendarWeeksWithDays(item.month, item.year);
+    // Es necesario abir aqui un evento para su edicion,
+    // debido a que de lo contrario el evento es ignorado por la libreria
+    // de drag and drop
     const handleDragEnd = useMoveEventOnDrag({
       openEditEventView: (selectedEvent: CalendarEventType) => {
-        store.selectedEvent = selectedEvent;
-        store.showEventView = true;
+        store.setSelectedEvent(selectedEvent);
+        store.setShowEventView(true);
       },
       updateEvent: (event: CalendarEventType) => {
         store.updateEvent(event);
@@ -47,10 +51,10 @@ export const CalendarContent: React.FC<CalendarContentProps> = observer(
     });
 
     return (
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext id={id} onDragEnd={handleDragEnd}>
         <div
           ref={calendarContentRef}
-          data-testid="calendar-content"
+          role="calendar-content"
           className="w-screen bg-primary h-full"
         >
           <CalendarContentHeaders />

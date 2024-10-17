@@ -14,7 +14,7 @@ import {
 import { formatDate } from "./format";
 import { DayOfMonth } from "../types/DayOfMonth";
 import { CalendarEventType } from "../types/CalendarEvent";
-import { DateKeyFormat } from "../constants";
+import { calendarMinutesSteps, DateKeyFormat } from "../constants";
 
 export const TimeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
@@ -87,3 +87,6 @@ export const getTime = (date: Date) => {
 export const setHoursAndMinutes =
   (date: Date) => (hours: number) => (minutes: number) =>
     setMinutes(setHours(date, hours), minutes);
+
+export const getMinutesInSteps = (minutes: number) =>
+  Math.round(minutes / calendarMinutesSteps) * calendarMinutesSteps;

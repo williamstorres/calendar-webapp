@@ -42,7 +42,7 @@ export const Calendar: React.FC = observer(() => {
         <button
           className="bg-secondary px-2 my-2 mx-2 rounded-full fixed bottom-5 right-5 aspect-square z-[1000]"
           onClick={() => {
-            store.showEventForm = true;
+            store.setShowEventForm(true);
           }}
         >
           <PlusIcon className="size-10" />

@@ -41,22 +41,22 @@ export const CalendarNavigationButtons: React.FC = observer(() => {
   };
 
   return (
-    <div className="flex px-5">
+    <div role="calendar-navitaion-buttons" className="flex px-5">
       <button
         role="previous-month"
-        className="bg-zinc-800 px-2 my-2 mx-2 rounded-md"
+        className="bg-zinc-500 px-2 my-2 mx-2 rounded-md"
         onClick={() => handlePrevious()}
       >
         <ChevronLeftIcon className="size-4" />
       </button>
       <button
-        className="bg-zinc-800 px-2 my-2 rounded-md font-bold text-sm"
+        className="bg-zinc-500 px-2 my-2 rounded-md font-bold text-sm"
         onClick={() => store.today()}
       >
         Hoy
       </button>
       <button
-        className="bg-zinc-800 px-2 my-2 mx-2 rounded-md"
+        className="bg-zinc-500 px-2 my-2 mx-2 rounded-md"
         onClick={() => handleNext()}
       >
         <ChevronRightIcon className="size-4" />

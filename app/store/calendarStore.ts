@@ -5,6 +5,7 @@ import {
   addWeeks,
   subDays,
   addDays,
+  setMinutes,
 } from "date-fns";
 import { makeAutoObservable } from "mobx";
 import {
@@ -26,8 +27,10 @@ export default class CalendarStore {
   isLoading = false;
   showEventForm = false;
   selectedView = Views.Month;
-  date = new Date();
+  date = setMinutes(new Date(), 0);
   events: Record<string, CalendarEventType[]> = {};
+  //set utiliza un listado para en un futuro precargar por lo menos tres calendarios
+  //el actual, el posterior y el siguiente, asi poder animar el cambio de un mes a otro
   calendars: CalendarType[] = [];
   error: string = "";
   selectedEvent: CalendarEventType | undefined;
@@ -75,6 +78,27 @@ export default class CalendarStore {
     this.fethMonthlyEvents();
   }
 
+  setIsLoading(isLoading: boolean) {
+    this.isLoading = isLoading;
+  }
+
+  setEvents(events: Record<string, CalendarEventType[]>) {
+    this.events = events;
+  }
+  setShowEventForm(showEventFrom: boolean) {
+    this.showEventForm = showEventFrom;
+    if (!showEventFrom) this.cleanSelectedEvent();
+  }
+  setShowEventView(showEventView: boolean) {
+    this.showEventView = showEventView;
+  }
+  setSelectedEvent(event: CalendarEventType) {
+    this.setSelectedEvent(event);
+  }
+  setCalendars(calendars: CalendarType[]) {
+    this.calendars = calendars;
+  }
+
   previousMonth() {
     this.setDate(subMonths(this.date, 1));
   }
@@ -98,7 +122,7 @@ export default class CalendarStore {
   }
   today() {
     this.setDate(new Date());
-    this.calendars = [{ month: this.month, year: this.year }];
+    this.setCalendars([{ month: this.month, year: this.year }]);
   }
 
   getDayEvents(day: string) {
@@ -107,7 +131,7 @@ export default class CalendarStore {
 
   editEvent(event: CalendarEventType) {
     this.selectedEvent = event;
-    this.showEventForm = true;
+    this.setShowEventForm(true);
   }
 
   async saveEvent(event: CalendarEventType) {
@@ -125,7 +149,7 @@ export default class CalendarStore {
   }
 
   async fethMonthlyEvents() {
-    this.events = await this.loading(
+    const _events = await this.loading(
       getMonthlyEvents(this.date)
         .then((response) => {
           return {
@@ -140,6 +164,7 @@ export default class CalendarStore {
           return {} as Record<string, CalendarEventType[]>;
         }),
     );
+    this.setEvents(_events);
   }
 
   async addNewEvent(newEvent: CalendarEventType) {
@@ -154,17 +179,19 @@ export default class CalendarStore {
   }
 
   updateEventInEvents(event: CalendarEventType) {
+    const eventsToUpdate = this.events;
     for (const date in this.events) {
-      if (Array.isArray(this.events[date])) {
-        this.events[date] = this.events[date].filter(
+      if (Array.isArray(eventsToUpdate[date])) {
+        eventsToUpdate[date] = this.events[date].filter(
           (item) => item.id !== event.id,
         );
       }
     }
 
     const dateKey = generateDateAsKey(event.startDateTime);
-    if (!this.events[dateKey]) this.events[dateKey] = [];
-    this.events[dateKey] = [...this.events[dateKey], event];
+    if (!eventsToUpdate[dateKey]) eventsToUpdate[dateKey] = [];
+    eventsToUpdate[dateKey] = [...eventsToUpdate[dateKey], event];
+    this.setEvents(eventsToUpdate);
   }
 
   async updateEvent(event: CalendarEventType) {
@@ -192,9 +219,9 @@ export default class CalendarStore {
   }
 
   loading = async <T>(prom: Promise<T>) => {
-    this.isLoading = true;
+    this.setIsLoading(true);
     return prom.finally(() => {
-      this.isLoading = false;
+      this.setIsLoading(false);
     });
   };
 

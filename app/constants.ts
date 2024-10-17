@@ -6,3 +6,4 @@ export const PxInOneRem = parseFloat(
     : getComputedStyle(document.documentElement).fontSize,
 );
 export const PxInOneHour = WeekEventHeightInRem * PxInOneRem;
+export const calendarMinutesSteps = 15;
