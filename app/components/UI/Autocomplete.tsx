@@ -48,7 +48,7 @@ export const Autocomplete = forwardRef<
   const id = useId();
 
   return (
-    <div className="relative w-full max-w-sm mb-4">
+    <div className="relative w-full mb-4">
       <label htmlFor={id}>{children}</label>
       <input
         id={id}
