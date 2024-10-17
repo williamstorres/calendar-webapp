@@ -26,20 +26,31 @@ export const Modal: React.FC = observer(() => {
     }
   }, [showEventForm, showEventView, showModal]);
 
+  //Bloquea el scroll cuando el modal está abierto
+  useEffect(() => {
+    document.body.style.overflow = showModal ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showModal]);
+
   if (!showModal) return null;
 
   return (
-    <div
-      className={twJoin(
-        "w-screen h-[90%] p-8 bg-background z-[1000] fixed bottom-0 rounded-t-3xl shadow-[0px_-8px_10px_0px_#1a202c]",
-        "transform transition-transform duration-100",
-        showEventForm || showEventView
-          ? "animate-slide-up"
-          : "animate-slide-down",
-      )}
-    >
-      {showModal && showEventForm && <EventForm />}
-      {showModal && showEventView && <CalendarEventView />}
-    </div>
+    <>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+      <div
+        className={twJoin(
+          "w-screen h-full p-8 bg-background z-[1000] fixed bottom-0 rounded-t-3xl shadow-[0px_-8px_10px_0px_#1a202c] md:max-w-[40rem] inset-x-0 mx-auto",
+          "transform transition-transform duration-100",
+          showEventForm || showEventView
+            ? "animate-slide-up"
+            : "animate-slide-down",
+        )}
+      >
+        {showModal && showEventForm && <EventForm />}
+        {showModal && showEventView && <CalendarEventView />}
+      </div>
+    </>
   );
 });
