@@ -10,7 +10,7 @@ type CalendarHeaderProps = {
 const CalendarHeader: React.FC<CalendarHeaderProps> = memo(
   function CalendarHeader({ selectedYear, selectedMonth }) {
     return (
-      <>
+      <header>
         <CalendarViewSelector />
         <div className="flex justify-between">
           <div className="flex">
@@ -24,7 +24,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = memo(
           </div>
           <CalendarNavigationButtons />
         </div>
-      </>
+      </header>
     );
   },
 );
