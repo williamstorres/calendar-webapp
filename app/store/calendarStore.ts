@@ -31,6 +31,7 @@ export default class CalendarStore {
   calendars: CalendarType[] = [];
   error: string = "";
   selectedEvent: CalendarEventType | undefined;
+  showEventView = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -110,12 +111,12 @@ export default class CalendarStore {
   }
 
   async saveEvent(event: CalendarEventType) {
-    console.log(event);
-    if (event.id) {
-      await this.updateEvent(event);
+    if (this.selectedEvent?.id) {
+      await this.updateEvent({ ...event, id: this.selectedEvent.id });
     } else {
       await this.addNewEvent(event);
     }
+    this.selectedEvent = undefined;
     this.showEventForm = false;
   }
 

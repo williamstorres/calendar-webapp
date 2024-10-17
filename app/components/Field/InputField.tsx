@@ -12,7 +12,6 @@ export enum InputFieldType {
   Text = "text",
   Date = "date",
   Time = "time",
-  Checkbox = "checkbox",
 }
 export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   function InputField(
@@ -47,10 +46,12 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
           autoFocus={autoFocus}
           className={twJoin(
             "w-full h-10 rounded-md bg-primary px-4",
-            type === InputFieldType.Checkbox && "h-6",
+            error && "border-red-500 border",
           )}
         />
-        {error && <span>{error.message}</span>}
+        <span className="text-sm text-red-500 min-h-10 w-full">
+          {error && error.message}
+        </span>
       </div>
     );
   },

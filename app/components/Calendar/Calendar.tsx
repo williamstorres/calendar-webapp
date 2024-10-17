@@ -5,7 +5,6 @@ import { useStore } from "@/app/store/storeContext";
 import CalendarsContainer from "../CalendarsContainer";
 import { CalendarType } from "@/app/types/CalendarType";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import EventForm from "../EventForm";
 import CalendarHeader from "../CalendarHeader";
 
 export const Calendar = observer(() => {
@@ -36,7 +35,6 @@ export const Calendar = observer(() => {
           <PlusIcon className="size-10" />
         </button>
       )}
-      {store.showEventForm && <EventForm />}
     </>
   );
 });
