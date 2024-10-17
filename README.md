@@ -24,11 +24,11 @@ docker run --name my-postgres -e POSTGRES_USER=user -e POSTGRES_PASSWORD=passwor
 
 El proyecto utiliza las siguientes variables de entorno, las cuales deben definirse en un archivo .env en la raíz del proyecto o en el archivo docker-compose.yaml:
 
-DATABASE_URL=postgres://user:password@localhost:5432/calendarapp
-ENABLE_MOCK_SERVER=false
-NEXT_PUBLIC_API_URL=http://localhost:3000/api
-WEATHER_API_BASE_URL=https://api.weatherapi.com/v1/
-WEATHER_APIKEY=
+- DATABASE_URL=postgres://user:password@localhost:5432/calendarapp
+- ENABLE_MOCK_SERVER=false
+- NEXT_PUBLIC_API_URL=http://localhost:3000/api
+- WEATHER_API_BASE_URL=https://api.weatherapi.com/v1/
+- WEATHER_APIKEY=
 
 Es importante mencionar que se utiliza el servicio de https://www.weatherapi.com. Para obtener datos del clima de eventos futuros y las posibles ubicaciones, es necesario registrarse y generar una clave de API. Puedes utilizar el plan gratuito sin problemas.
 
@@ -63,3 +63,5 @@ docker-compose up --build
 - Test
 - Opción de cambiar Timezone, está soportado por la libreria date-fns, pero falta agregar el campo al formulario
 - Aniaciones al cambiar de vistas
+
+* Documentar ADR utilizando template de https://adr.github.io/madr/
