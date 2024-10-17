@@ -14,6 +14,16 @@ export enum InputFieldType {
   Date = "date",
   Time = "time",
 }
+/**
+ * Componente `InputField` que representa un campo de entrada de formulario.
+ *
+ * Este componente acepta un texto como etiqueta, un tipo de entrada, y opcionalmente
+ * puede recibir un error de validación para mostrar un mensaje de error.
+ *
+ * @param {InputFieldProps} props - Propiedades del componente.
+ * @param {React.Ref<HTMLInputElement>} ref - Referencia al elemento de entrada.
+ * @returns {JSX.Element} Un campo de entrada con etiqueta y posible mensaje de error.
+ */
 export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   function InputField(
     {

@@ -3,7 +3,15 @@ import { observer } from "mobx-react-lite";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { Views } from "@/app/store/calendarStore";
 
-export const CalendarNavigationButtons = observer(() => {
+/**
+ * Componente `CalendarNavigationButtons` que permite la navegación entre diferentes vistas del calendario.
+ *
+ * Este componente proporciona botones para navegar hacia el mes anterior, el mes siguiente y para volver a la fecha actual.
+ * Utiliza MobX para gestionar el estado del calendario y su vista seleccionada.
+ *
+ * @returns {JSX.Element} El componente `CalendarNavigationButtons`, que incluye botones de navegación.
+ */
+export const CalendarNavigationButtons: React.FC = observer(() => {
   const store = useStore();
 
   const handlePrevious = () => {

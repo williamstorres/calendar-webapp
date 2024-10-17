@@ -5,8 +5,25 @@ import { DayOfMonth } from "@/app/types/DayOfMonth";
 type CalendarContentDaysProps = {
   daysOfMonth: DayOfMonth[];
 };
-export const CalendarContentDays = observer(
-  ({ daysOfMonth }: CalendarContentDaysProps) => {
+/**
+ * Componente `CalendarContentDays` que muestra los días del mes en un calendario.
+ *
+ * Este componente itera sobre los días del mes proporcionados y renderiza
+ * cada día, resaltando el día actual si corresponde.
+ *
+ * @param {CalendarContentDaysProps} props - Props del componente.
+ * @returns {JSX.Element} El componente `CalendarContentDays`.
+ *
+ * @example
+ * const days = [
+ *   { dayOfYear: 1, dayOfMonth: 1, date: new Date("2024-10-01") },
+ *   { dayOfYear: 2, dayOfMonth: 2, date: new Date("2024-10-02") },
+ *   // ... otros días
+ * ];
+ * <CalendarContentDays daysOfMonth={days} />
+ */
+export const CalendarContentDays: React.FC<CalendarContentDaysProps> = observer(
+  ({ daysOfMonth }) => {
     return (
       <>
         {daysOfMonth.map((day) => (

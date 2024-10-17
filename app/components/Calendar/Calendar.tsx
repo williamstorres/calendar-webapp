@@ -8,7 +8,18 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import CalendarHeader from "./CalendarHeader";
 import { Loading } from "../UI";
 
-export const Calendar = observer(() => {
+/**
+ * Componente `Calendar` que muestra un calendario y permite la interacción
+ * con eventos. Utiliza MobX para el estado global y proporciona un botón
+ * para agregar nuevos eventos.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Calendar />
+ * );
+ */
+export const Calendar: React.FC = observer(() => {
   const store = useStore();
 
   const generateCalendars = (calendar: CalendarType) => (

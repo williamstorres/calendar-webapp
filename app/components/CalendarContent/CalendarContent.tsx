@@ -15,6 +15,20 @@ import { CalendarContentHeaders } from "./CalendarContentHeaders";
 export type CalendarContentProps = {
   item: CalendarType;
 };
+/**
+ * Componente `CalendarContent` que muestra el contenido del calendario,
+ * incluyendo los encabezados y las semanas del mes.
+ *
+ * Este componente utiliza MobX para gestionar el estado y renderiza
+ * los días del mes en forma de semanas.
+ *
+ * @param {CalendarContentProps} props - Props del componente.
+ * @returns {JSX.Element} El componente `CalendarContent`.
+ *
+ * @example
+ * const calendar = { year: 2024, month: 10 }; // Ejemplo de objeto CalendarType
+ * <CalendarContent item={calendar} />
+ */
 export const CalendarContent: React.FC<CalendarContentProps> = observer(
   ({ item }) => {
     const store = useStore();

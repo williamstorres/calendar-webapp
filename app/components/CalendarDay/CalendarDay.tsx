@@ -9,6 +9,21 @@ type CalendarDayProps = {
   day: DayOfMonth;
   events: CalendarEventType[];
 };
+/**
+ * Componente `CalendarDay` que representa un día en el calendario.
+ *
+ * Este componente muestra el número del día y renderiza los eventos
+ * asociados a ese día. También utiliza DnD Kit para permitir la
+ * funcionalidad de arrastrar y soltar.
+ *
+ * @param {CalendarDayProps} props - Props del componente.
+ * @returns {JSX.Element} El componente `CalendarDay`.
+ *
+ * @example
+ * const day = { dayOfMonth: 1, date: new Date("2024-10-01") };
+ * const events = [{ id: "event1", ... }, { id: "event2", ... }];
+ * <CalendarDay day={day} events={events} />
+ */
 export const CalendarDay: React.FC<CalendarDayProps> = ({ day, events }) => {
   const { setNodeRef } = useDroppable({
     id: generateDateAsKey(day.date),

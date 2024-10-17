@@ -10,6 +10,16 @@ import { CalendarMonthDay } from "./CalendarMonthDay";
 type CaledarWeekProps = {
   daysOfWeek: DayOfMonth[];
 };
+/**
+ * Componente `CalendarWeek` que renderiza la vista semanal del calendario.
+ *
+ * Este componente muestra los días de la semana y, dependiendo de la vista seleccionada,
+ * puede mostrar los días del mes o las horas del calendario.
+ *
+ * @param {Object} props - Las propiedades del componente.
+ * @param {DayOfMonth[]} props.daysOfWeek - Un arreglo de objetos que representan los días del mes.
+ * @returns {JSX.Element} Un elemento que representa la vista semanal del calendario.
+ */
 export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
   ({ daysOfWeek }) => {
     const store = useStore();

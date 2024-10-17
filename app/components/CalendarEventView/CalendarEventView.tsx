@@ -5,7 +5,16 @@ import { observer } from "mobx-react-lite";
 import { format } from "date-fns";
 import Weather from "../Weather";
 
-export const CalendarEventView = observer(() => {
+/**
+ * Componente `CalendarEventView` que muestra la vista detallada de un evento de calendario.
+ *
+ * Este componente permite ver los detalles de un evento seleccionado,
+ * así como editar o eliminar el evento. Utiliza MobX para gestionar el estado
+ * del evento seleccionado.
+ *
+ * @returns {JSX.Element|null} El componente `CalendarEventView` o `null` si no hay un evento seleccionado.
+ */
+export const CalendarEventView: React.FC = observer(() => {
   const store = useStore();
 
   if (!store.selectedEvent) return null;

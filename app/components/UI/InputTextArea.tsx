@@ -7,6 +7,15 @@ type InputTextAreaProps = React.ComponentPropsWithoutRef<"textarea"> & {
   children: string;
   error?: FieldError;
 };
+/**
+ * Componente `InputTextArea` que representa un área de texto con una etiqueta y gestión de errores.
+ *
+ * Este componente permite al usuario introducir texto y muestra un mensaje de error
+ * si hay un problema de validación asociado al campo.
+ *
+ * @param {InputTextAreaProps} props - Propiedades del componente.
+ * @returns {JSX.Element} Un elemento que representa el área de texto junto con su etiqueta y mensaje de error.
+ */
 export const InputTextArea: React.FC<InputTextAreaProps> = forwardRef<
   HTMLTextAreaElement,
   InputTextAreaProps
