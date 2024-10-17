@@ -19,12 +19,12 @@ export const CalendarEventsWeek = observer(() => {
   );
 
   return (
-    <div className="w-full h-full absolute grid grid-cols-7 mt-4 z-10">
+    <div
+      role="calendar-events-week"
+      className="w-full h-full absolute grid grid-cols-7 mt-4 z-10"
+    >
       {daysOfWeek.map((date) => (
-        <CalendarEventsWeekDay
-          key={date.getDate()}
-          dayOfYear={generateDateAsKey(date)}
-        >
+        <CalendarEventsWeekDay key={date.getDate()} date={date}>
           <CalendarEventsDay
             date={date}
             events={weekEvents[generateDateAsKey(date)] ?? []}

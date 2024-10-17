@@ -31,7 +31,7 @@ export const CalendarHours: React.FC = observer(() => {
     store.setShowEventForm(true);
   };
   return (
-    <div className="w-screen flex">
+    <div role="calendar-hours" className="w-screen flex">
       <div className="w-min">
         {hoursOfDay.map(generateHour)}
         {generateHour(0)}
@@ -45,7 +45,7 @@ export const CalendarHours: React.FC = observer(() => {
               onClick={() => handleOnClickToAddNewEvent(hour)}
             ></div>
           ))}
-          <div className="h-20 border-t-2 border-secondary"></div>
+          <div className="h-20 border-t-2 border-zinc-600"></div>
         </div>
         {store.selectedViewIsWeek ? (
           <CalendarEventsWeek />
