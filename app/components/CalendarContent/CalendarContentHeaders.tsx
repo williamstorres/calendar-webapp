@@ -31,6 +31,7 @@ export const CalendarContentHeaders: React.FC = observer(() => {
   const today = new Date();
   return (
     <div
+      role="calendar-content-headers"
       className={twJoin(
         "w-screen min-h-14 grid grid-cols-7 gap-y-0.5 bg-primary",
         !store.selectedViewIsMonth && "pl-10",

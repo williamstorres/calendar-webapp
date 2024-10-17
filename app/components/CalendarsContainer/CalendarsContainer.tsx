@@ -16,8 +16,8 @@ type CalendarsContainerProps<T> = {
 export const CalendarsContainer = <T,>({
   children,
   items,
-}: CalendarsContainerProps<T>) => {
+}: CalendarsContainerProps<T>): JSX.Element => {
   const childrens = items.map((item) => children(item));
 
-  return <div>{childrens}</div>;
+  return <div role="calendars-container">{childrens}</div>;
 };

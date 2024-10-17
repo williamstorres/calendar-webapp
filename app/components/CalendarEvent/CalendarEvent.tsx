@@ -39,6 +39,9 @@ export const CalendarEvent: React.FC<CalendarEventProps> = observer(
         data: {
           dayId: generateDateAsKey(event.startDateTime),
         },
+        attributes: {
+          role: "calendar-event",
+        },
       },
     );
     const { style, top, height, width } = useCalendarEvent({

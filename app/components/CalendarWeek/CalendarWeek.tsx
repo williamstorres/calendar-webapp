@@ -33,6 +33,7 @@ export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
 
     return (
       <div
+        role="calendar-week"
         className={twJoin(
           "w-screen bg-primary h-full",
           !store.selectedViewIsMonth && !showWeek && "hidden",

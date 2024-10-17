@@ -29,7 +29,7 @@ export const CalendarContentDays: React.FC<CalendarContentDaysProps> = observer(
         {daysOfMonth.map((day) => (
           <div
             key={day.dayOfYear}
-            role="calendar-day"
+            role="calendar-content-day"
             className="bg-zinc-900 p-2 min-h-24 text-sm"
           >
             <span

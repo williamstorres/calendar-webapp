@@ -31,6 +31,7 @@ export const CalendarEventsWeekDay: React.FC<CalendarEventsWeekDayProps> = ({
 
   return (
     <div
+      role="calendar-events-week-day"
       ref={setNodeRef}
       onClick={handleOnClickToAddNewEvent}
       className="border-r-2 border-zinc-600 last:border-0 w-full relative"

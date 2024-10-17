@@ -99,7 +99,7 @@ export const EventForm: React.FC = observer(() => {
   );
 
   return (
-    <form onSubmit={handleSubmit(handleSave)}>
+    <form role="event-form" onSubmit={handleSubmit(handleSave)}>
       <div className="grid grid-cols-2 mt-0 w-full mb-8 items-center">
         <Button
           onClick={() => store.setShowEventForm(false)}

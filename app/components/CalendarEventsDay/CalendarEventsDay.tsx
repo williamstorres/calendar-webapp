@@ -32,7 +32,7 @@ export const CalendarEventsDay: React.FC<CalendarEventsDayProps> = ({
   });
 
   return (
-    <div ref={setNodeRef}>
+    <div ref={setNodeRef} role="calendar-events-day">
       {events.map((event, index) => (
         <CalendarEvent
           key={event.id}
