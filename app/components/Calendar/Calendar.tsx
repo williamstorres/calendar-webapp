@@ -5,7 +5,7 @@ import { useStore } from "@/app/store/storeContext";
 import CalendarsContainer from "../CalendarsContainer";
 import { CalendarType } from "@/app/types/CalendarType";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import CalendarHeader from "../CalendarHeader";
+import CalendarHeader from "./CalendarHeader";
 import { Loading } from "../UI";
 
 export const Calendar = observer(() => {

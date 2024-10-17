@@ -3,9 +3,30 @@ import { useStore } from "@/app/store/storeContext";
 import { CalendarEventType } from "@/app/types/CalendarEvent";
 import { observer } from "mobx-react-lite";
 import CalendarEventsDay from "../CalendarEventsDay";
+import { useDroppable } from "@dnd-kit/core";
 
+type CalendarEventsWeekDayProps = {
+  children: React.ReactNode;
+  dayOfYear: string;
+};
+const CalendarEventsWeekDay: React.FC<CalendarEventsWeekDayProps> = ({
+  children,
+  dayOfYear,
+}) => {
+  const { setNodeRef } = useDroppable({
+    id: dayOfYear,
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className="border-r-2 border-zinc-600 last:border-0 w-full relative"
+    >
+      {children}
+    </div>
+  );
+};
 export const CalendarEventsWeek = observer(() => {
-  console.log("render CalendarEventsWeek");
   const { date, events } = useStore();
 
   const daysOfWeek = getDaysOfWeek(date);
@@ -21,14 +42,15 @@ export const CalendarEventsWeek = observer(() => {
   return (
     <div className="w-full h-full absolute grid grid-cols-7 mt-4 z-10">
       {daysOfWeek.map((date) => (
-        <div
+        <CalendarEventsWeekDay
           key={date.getDate()}
-          className="border-r-2 border-zinc-600 last:border-0 w-full relative"
+          dayOfYear={generateDateAsKey(date)}
         >
           <CalendarEventsDay
+            date={date}
             events={weekEvents[generateDateAsKey(date)] ?? []}
           />
-        </div>
+        </CalendarEventsWeekDay>
       ))}
     </div>
   );

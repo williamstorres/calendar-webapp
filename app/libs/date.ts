@@ -14,6 +14,7 @@ import {
 import { formatDate } from "./format";
 import { DayOfMonth } from "../types/DayOfMonth";
 import { CalendarEventType } from "../types/CalendarEvent";
+import { DateKeyFormat } from "../constants";
 
 export const TimeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
@@ -28,7 +29,8 @@ export const hoursOfDay = [
   22, 23,
 ];
 
-export const generateDateAsKey = (date: Date) => formatDate(date, "yyyyMMdd");
+export const generateDateAsKey = (date: Date) =>
+  formatDate(date, DateKeyFormat);
 
 export const getCalendarWeeksWithDays = (
   month: number,
@@ -81,3 +83,7 @@ export const setTime = (date: Date, time: string) => {
 export const getTime = (date: Date) => {
   return format(date, "HH:mm");
 };
+
+export const setHoursAndMinutes =
+  (date: Date) => (hours: number) => (minutes: number) =>
+    setMinutes(setHours(date, hours), minutes);
