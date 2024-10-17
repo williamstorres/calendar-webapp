@@ -1,5 +1,6 @@
 import { useWeatherConditionsApi } from "@/app/hooks/useWeatherConditionsApi";
-import { getCondition } from "@/app/libs/weatherConditions";
+import { WeatherContent } from "./WeatherContent";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 
 type WeatherProps = {
   locationId: number;
@@ -10,33 +11,18 @@ export const Weather = ({ locationId, date }: WeatherProps) => {
     location: locationId,
     date,
   });
-  if (!weatherCondition)
-    return (
-      <div className="border-t border-gray-600 pt-4">
-        <p className="text-lg">Cargando información del clima</p>
-      </div>
-    );
 
-  const dayOrNight = weatherCondition.condition.is_day ? "day" : "night";
-  const weatherDescription = getCondition(weatherCondition.condition.code)[
-    dayOrNight
-  ];
   return (
     <div className="border-t border-gray-600 pt-4">
       <p className="text-lg">Condiciones climaticas: </p>
       <div className="flex flex-col justify-end">
-        <div className="flex flex-row justify-end items-center ">
-          <p className="text-lg font-semibold">{weatherDescription}</p>
-          <img
-            src={`https:${weatherCondition.condition.icon}`}
-            width={64}
-            height={64}
-            alt={weatherDescription}
-          />
-        </div>
-        <p className="text-lg font-semibold text-right">
-          Temperatura: {weatherCondition.temp_c}ºC
-        </p>
+        {weatherCondition ? (
+          <WeatherContent weatherCondition={weatherCondition} />
+        ) : (
+          <div className="flex flex-row justify-end p-10">
+            <ArrowPathIcon className="animate-spin" width={30} height={30} />
+          </div>
+        )}
       </div>
     </div>
   );

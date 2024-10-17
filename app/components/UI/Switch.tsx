@@ -4,7 +4,7 @@ type SwitchProps = {
   children: string;
 } & React.ComponentPropsWithoutRef<"input">;
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
-  { children, defaultValue, onChange }: SwitchProps,
+  { children, defaultValue, onChange, name }: SwitchProps,
   ref,
 ) {
   const id = useId();
@@ -16,6 +16,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
       {children}
       <input
         id={id}
+        name={name}
         type="checkbox"
         defaultValue={defaultValue}
         onChange={onChange}

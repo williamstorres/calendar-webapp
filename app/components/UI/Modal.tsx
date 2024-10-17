@@ -15,7 +15,7 @@ export const Modal = observer(() => {
     if (showModal !== willShow) {
       setTimeout(() => setShowModal(willShow), 300);
     }
-  }, [showEventForm, showEventView]);
+  }, [showEventForm, showEventView, showModal]);
 
   if (!showModal) return null;
 

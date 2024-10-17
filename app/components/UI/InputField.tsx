@@ -1,6 +1,7 @@
 import { forwardRef, useId } from "react";
 import { FieldError } from "react-hook-form";
 import { twJoin } from "tailwind-merge";
+import { InputFieldError } from "../UI/InputFieldError";
 
 type InputFieldProps = {
   children: string;
@@ -49,9 +50,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
             error && "border-red-500 border",
           )}
         />
-        <span className="text-sm text-red-500 min-h-10 w-full">
-          {error && error.message}
-        </span>
+        <InputFieldError error={error} />
       </div>
     );
   },

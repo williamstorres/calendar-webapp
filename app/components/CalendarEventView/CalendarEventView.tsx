@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Button, ButtonType } from "../Button/Button";
+import { Button, ButtonType } from "../UI";
 import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
 import { format } from "date-fns";
