@@ -4,7 +4,7 @@ import { GetWeatherFilters } from "../api/domain/entities/WeatherInfo";
 import { formatISO } from "date-fns";
 
 const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: `${process.env.NEXT_PUBLIC_HOST}api`,
 });
 export const getLocations = async (query: string): Promise<Location[]> => {
   return API.get(`/locations?query=${query}`).then((response) => response.data);

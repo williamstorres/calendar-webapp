@@ -1,18 +1,14 @@
 import { DragEndEvent } from "@dnd-kit/core";
 import { addMinutes, getHours, getMinutes, parse } from "date-fns";
 import { DateKeyFormat, PxInOneHour } from "../constants";
-import { CalendarEventType } from "../types/CalendarEvent";
 import { getMinutesInSteps, setHoursAndMinutes } from "../libs/date";
 import { minutesInHour } from "date-fns/constants";
+import { useStore } from "../store/storeContext";
 
-type HandleDragEndProps = {
-  openEditEventView: (selectedEvent: CalendarEventType) => void;
-  updateEvent: (selectedEvent: CalendarEventType) => void;
-  getEvent: (dayId: string, eventId: string) => CalendarEventType;
-};
-export const useMoveEventOnDrag =
-  ({ openEditEventView, updateEvent, getEvent }: HandleDragEndProps) =>
-  (event: DragEndEvent) => {
+export const useMoveEventOnDrag = () => {
+  const store = useStore();
+
+  const handleDragEnd = (event: DragEndEvent) => {
     if (!event.active.data.current) return;
 
     const {
@@ -24,11 +20,14 @@ export const useMoveEventOnDrag =
       },
     } = event;
 
-    const selectedEvent = getEvent(currentDayId, String(eventId));
+    const selectedEvent = store.events[currentDayId].find(
+      (event) => event.id === eventId,
+    )!;
 
     //si no se ha movido, es porque se ha seleccionado el evento
     if (event.delta.x === 0 && event.delta.y === 0) {
-      openEditEventView(selectedEvent!);
+      store.setSelectedEvent(selectedEvent);
+      store.setShowEventView(true);
       return;
     }
 
@@ -52,9 +51,11 @@ export const useMoveEventOnDrag =
       getMinutes(endDateTime),
     );
 
-    updateEvent({
+    store.updateEvent({
       ...selectedEvent,
       startDateTime: addMinutes(newStartDate, minutesToMove),
       endDateTime: addMinutes(newEndDate, minutesToMove),
     });
   };
+  return handleDragEnd;
+};

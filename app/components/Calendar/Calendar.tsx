@@ -40,6 +40,7 @@ export const Calendar: React.FC = observer(() => {
       </div>
       {!store.showEventForm && (
         <button
+          aria-label="add Event"
           className="bg-secondary px-2 my-2 mx-2 rounded-full fixed bottom-5 right-5 aspect-square z-[1000]"
           onClick={() => {
             store.setShowEventForm(true);

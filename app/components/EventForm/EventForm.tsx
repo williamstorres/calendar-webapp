@@ -56,6 +56,8 @@ export const EventForm: React.FC = observer(() => {
   );
   const location = watch("location");
 
+  console.log(errors);
+
   useEffect(() => {
     setDebouncedQuery(location);
   }, [location, setDebouncedQuery]);

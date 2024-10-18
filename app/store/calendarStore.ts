@@ -93,7 +93,7 @@ export default class CalendarStore {
     this.showEventView = showEventView;
   }
   setSelectedEvent(event: CalendarEventType) {
-    this.setSelectedEvent(event);
+    this.selectedEvent = event;
   }
   setCalendars(calendars: CalendarType[]) {
     this.calendars = calendars;
