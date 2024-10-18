@@ -51,7 +51,9 @@ export const CalendarEventView: React.FC = observer(() => {
           Editar
         </Button>
       </div>
-      <h2 className="font-bold text-lg">{store.selectedEvent.title}</h2>
+      <h2 data-testid="event-title" className="font-bold text-lg">
+        {store.selectedEvent.title}
+      </h2>
       <p className="text-sm text-red-500">
         En {store.selectedEvent.location.name}
       </p>

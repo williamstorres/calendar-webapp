@@ -2,7 +2,7 @@ import axios from "axios";
 import { CalendarEventType } from "../types/CalendarEvent";
 
 const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: `${process.env.NEXT_PUBLIC_HOST}api`,
 });
 export const getMonthlyEvents = async (date: Date) => {
   return API.get(

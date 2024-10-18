@@ -40,7 +40,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = observer(
           dayId: generateDateAsKey(event.startDateTime),
         },
         attributes: {
-          role: "calendar-event",
+          role: "button",
         },
       },
     );
@@ -56,6 +56,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = observer(
 
     return (
       <div
+        data-testid="event"
         ref={setNodeRef}
         {...listeners}
         {...attributes}
