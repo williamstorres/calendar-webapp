@@ -3,8 +3,6 @@ import { DateKeyFormat } from "@/app/constants";
 import { useMoveEventOnDrag } from "@/app/hooks/useMoveEventOnDrag";
 import { getCalendarWeeksWithDays } from "@/app/libs/date";
 import { formatDate } from "@/app/libs/format";
-import { useStore } from "@/app/store/storeContext";
-import { CalendarEventType } from "@/app/types/CalendarEvent";
 import { CalendarType } from "@/app/types/CalendarType";
 import { DndContext } from "@dnd-kit/core";
 import { observer } from "mobx-react-lite";
@@ -31,24 +29,13 @@ export type CalendarContentProps = {
  */
 export const CalendarContent: React.FC<CalendarContentProps> = observer(
   ({ item }) => {
-    const store = useStore();
     const id = useId();
     const calendarContentRef = useRef<HTMLDivElement>(null);
     const weeksOfMonth = getCalendarWeeksWithDays(item.month, item.year);
     // Es necesario abir aqui un evento para su edicion,
     // debido a que de lo contrario el evento es ignorado por la libreria
     // de drag and drop
-    const handleDragEnd = useMoveEventOnDrag({
-      openEditEventView: (selectedEvent: CalendarEventType) => {
-        store.setSelectedEvent(selectedEvent);
-        store.setShowEventView(true);
-      },
-      updateEvent: (event: CalendarEventType) => {
-        store.updateEvent(event);
-      },
-      getEvent: (dayId: string, eventId: string) =>
-        store.events[dayId].find((event) => event.id === eventId)!,
-    });
+    const handleDragEnd = useMoveEventOnDrag();
 
     return (
       <DndContext id={id} onDragEnd={handleDragEnd}>
