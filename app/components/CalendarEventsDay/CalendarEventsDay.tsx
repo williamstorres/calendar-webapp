@@ -10,7 +10,7 @@ type CalendarEventsDayProps = {
 /**
  * Componente `CalendarEventsDay` que renderiza los eventos de un día específico en el calendario.
  *
- * Este componente utiliza la funcionalidad de arrastrar y soltar para permitir que los eventos
+ * Este componente utiliza la funcionalidad de drag and drop para permitir que los eventos
  * sean colocados en una fecha específica. También calcula y gestiona la superposición de eventos.
  *
  * @param {CalendarEventsDayProps} props - Props del componente.
@@ -32,7 +32,7 @@ export const CalendarEventsDay: React.FC<CalendarEventsDayProps> = ({
   });
 
   return (
-    <div ref={setNodeRef} role="calendar-events-day">
+    <div ref={setNodeRef}>
       {events.map((event, index) => (
         <CalendarEvent
           key={event.id}

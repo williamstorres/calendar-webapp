@@ -14,41 +14,38 @@ import { twJoin } from "tailwind-merge";
  * @returns {JSX.Element} El selector de vista del calendario.
  */
 export const CalendarViewSelector: React.FC = observer(() => {
-  const store = useStore();
+  const { calendarStore } = useStore();
 
   const baseLabelStyle =
     "text-sm font-bold text-zinc-400 cursor-pointer py-1 px-4 rounded-full ease-linear duration-100";
   const selectedStyle =
     "text-zinc-900 bg-zinc-400 w-10 h-full top-0 rounded-full ";
   return (
-    <div
-      role="calendar-view-selector"
-      className="flex justify-center mt-3 mb-5 w-full"
-    >
+    <div className="flex justify-center mt-3 mb-5 w-full">
       <div className="w-max bg-zinc-900 rounded-full relative gap-5">
         <label
-          onClick={() => store.setSelectedView(Views.Month)}
+          onClick={() => calendarStore.setSelectedView(Views.Month)}
           className={twJoin(
             baseLabelStyle,
-            store.selectedView === Views.Month && selectedStyle,
+            calendarStore.selectedViewIsMonth && selectedStyle,
           )}
         >
           Mes
         </label>
         <label
-          onClick={() => store.setSelectedView(Views.Week)}
+          onClick={() => calendarStore.setSelectedView(Views.Week)}
           className={twJoin(
             baseLabelStyle,
-            store.selectedView === Views.Week && selectedStyle,
+            calendarStore.selectedViewIsWeek && selectedStyle,
           )}
         >
           Semana
         </label>
         <label
-          onClick={() => store.setSelectedView(Views.Day)}
+          onClick={() => calendarStore.setSelectedView(Views.Day)}
           className={twJoin(
             baseLabelStyle,
-            store.selectedView === Views.Day && selectedStyle,
+            calendarStore.selectedViewIsDay && selectedStyle,
           )}
         >
           Día

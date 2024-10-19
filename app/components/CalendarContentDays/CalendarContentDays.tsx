@@ -27,11 +27,7 @@ export const CalendarContentDays: React.FC<CalendarContentDaysProps> = observer(
     return (
       <>
         {daysOfMonth.map((day) => (
-          <div
-            key={day.dayOfYear}
-            role="calendar-content-day"
-            className="bg-zinc-900 p-2 min-h-24 text-sm"
-          >
+          <div key={day.dayOfYear} className="bg-zinc-900 p-2 min-h-24 text-sm">
             <span
               className={`${isToday(day.date) && "rounded-full bg-blue-600 p-1"}`}
             >

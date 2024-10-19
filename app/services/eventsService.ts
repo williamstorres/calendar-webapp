@@ -1,13 +1,19 @@
 import axios from "axios";
 import { CalendarEventType } from "../types/CalendarEvent";
+import { CancelableRequest, handleCancelable } from "../libs/utils";
 
 const API = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_HOST}api`,
 });
-export const getMonthlyEvents = async (date: Date) => {
-  return API.get(
-    `/events?month=${date.getMonth()}&year=${date.getFullYear()}`,
-  ).then((response) => response.data);
+
+export const getMonthlyEvents = (
+  date: Date,
+): CancelableRequest<Record<string, CalendarEventType[]>> => {
+  return handleCancelable((signal) =>
+    API.get(`/events?month=${date.getMonth()}&year=${date.getFullYear()}`, {
+      signal,
+    }).then((response) => response.data),
+  );
 };
 
 export const addNewEvent = async (newEvent: CalendarEventType) => {

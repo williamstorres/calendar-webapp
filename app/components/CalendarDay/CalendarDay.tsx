@@ -28,25 +28,25 @@ type CalendarDayProps = {
  */
 export const CalendarDay: React.FC<CalendarDayProps> = observer(
   ({ day, events }: CalendarDayProps): JSX.Element => {
-    const store = useStore();
+    const { calendarStore } = useStore();
 
     const { setNodeRef } = useDroppable({
       id: generateDateAsKey(day.date),
     });
 
     const handleOnClickToAddNewEvent = () => {
-      store.setDate(day.date);
-      store.setShowEventForm(true);
+      calendarStore.setDate(day.date);
+      calendarStore.setShowEventForm(true);
     };
 
     return (
       <div
         ref={setNodeRef}
-        role="calendar-day"
         onClick={handleOnClickToAddNewEvent}
         className="bg-zinc-900 p-2 min-h-24 text-sm"
       >
         <span
+          data-testid={isToday(day.date) && "active-day"}
           className={`${isToday(day.date) && "rounded-full bg-blue-600 p-1"}`}
         >
           {day.dayOfMonth}

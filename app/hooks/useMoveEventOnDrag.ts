@@ -6,7 +6,7 @@ import { minutesInHour } from "date-fns/constants";
 import { useStore } from "../store/storeContext";
 
 export const useMoveEventOnDrag = () => {
-  const store = useStore();
+  const { eventsStore, calendarStore } = useStore();
 
   const handleDragEnd = (event: DragEndEvent) => {
     if (!event.active.data.current) return;
@@ -20,14 +20,14 @@ export const useMoveEventOnDrag = () => {
       },
     } = event;
 
-    const selectedEvent = store.events[currentDayId].find(
+    const selectedEvent = eventsStore.events[currentDayId].find(
       (event) => event.id === eventId,
     )!;
 
     //si no se ha movido, es porque se ha seleccionado el evento
     if (event.delta.x === 0 && event.delta.y === 0) {
-      store.setSelectedEvent(selectedEvent);
-      store.setShowEventView(true);
+      eventsStore.setSelectedEvent(selectedEvent);
+      calendarStore.setShowEventView(true);
       return;
     }
 
@@ -51,7 +51,7 @@ export const useMoveEventOnDrag = () => {
       getMinutes(endDateTime),
     );
 
-    store.updateEvent({
+    eventsStore.updateEvent({
       ...selectedEvent,
       startDateTime: addMinutes(newStartDate, minutesToMove),
       endDateTime: addMinutes(newEndDate, minutesToMove),

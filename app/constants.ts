@@ -7,3 +7,12 @@ export const PxInOneRem = parseFloat(
 );
 export const PxInOneHour = WeekEventHeightInRem * PxInOneRem;
 export const calendarMinutesSteps = 15;
+export const daysOfTheWeekNames = [
+  "Lunes",
+  "Martes",
+  "Míercoles",
+  "Jueves",
+  "Viernes",
+  "Sábado",
+  "Domingo",
+];

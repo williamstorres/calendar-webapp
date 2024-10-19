@@ -6,23 +6,20 @@ import CalendarEventsDay from "../CalendarEventsDay";
 import CalendarEventsWeekDay from "../CalendarEventsWeekDay";
 
 export const CalendarEventsWeek = observer(() => {
-  const { date, events } = useStore();
+  const { calendarStore, eventsStore } = useStore();
 
-  const daysOfWeek = getDaysOfWeek(date);
+  const daysOfWeek = getDaysOfWeek(calendarStore.date);
   const weekEvents = daysOfWeek.reduce(
     (acc, date) => {
       const dateKey = generateDateAsKey(date);
-      acc[dateKey] = events[dateKey];
+      acc[dateKey] = eventsStore.events[dateKey];
       return acc;
     },
     {} as Record<string, CalendarEventType[]>,
   );
 
   return (
-    <div
-      role="calendar-events-week"
-      className="w-full h-full absolute grid grid-cols-7 mt-4 z-10"
-    >
+    <div className="w-full h-full absolute grid grid-cols-7 mt-4 z-10">
       {daysOfWeek.map((date) => (
         <CalendarEventsWeekDay key={date.getDate()} date={date}>
           <CalendarEventsDay

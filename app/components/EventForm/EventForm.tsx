@@ -32,14 +32,14 @@ type LocationAutocomplete = Location & AutocompleteOption;
  * );
  */
 export const EventForm: React.FC = observer(() => {
-  const store = useStore();
+  const { eventsStore, calendarStore } = useStore();
   const [selectedLocation, setSelectedLocation] =
     useState<LocationAutocomplete>(
-      store.selectedEvent?.location as LocationAutocomplete,
+      eventsStore.selectedEvent?.location as LocationAutocomplete,
     );
   const [locations, setLocations] = useState<LocationAutocomplete[]>([]);
   const [debouncedQuery, setDebouncedQuery] = useDebounce(
-    String(store.selectedEvent?.location.name),
+    String(eventsStore.selectedEvent?.location.name),
   );
   const {
     register,
@@ -48,19 +48,13 @@ export const EventForm: React.FC = observer(() => {
     setValue,
     formState: { errors, isValid },
   } = useEventForm({
-    selectedEvent: store.selectedEvent,
-    initialDate: store.date,
+    selectedEvent: eventsStore.selectedEvent,
+    initialDate: calendarStore.date,
   });
-  const handleSave = useSaveEventForm(selectedLocation as Location, (event) =>
-    store.saveEvent({ ...event, id: String(store.selectedEvent?.id) }),
-  );
+  const handleSave = useSaveEventForm(selectedLocation as Location);
   const location = watch("location");
 
-  console.log(errors);
-
-  useEffect(() => {
-    setDebouncedQuery(location);
-  }, [location, setDebouncedQuery]);
+  useEffect(() => setDebouncedQuery(location), [location, setDebouncedQuery]);
 
   const isAllDay = watch("isAllDay");
 
@@ -75,7 +69,7 @@ export const EventForm: React.FC = observer(() => {
     const fetchLocations = async () => {
       if (
         debouncedQuery.length === 0 ||
-        debouncedQuery === store.selectedEvent?.location.name
+        debouncedQuery === eventsStore.selectedEvent?.location.name
       )
         return setLocations([]);
 
@@ -89,7 +83,7 @@ export const EventForm: React.FC = observer(() => {
       setLocations(newLocations);
     };
     fetchLocations();
-  }, [debouncedQuery, store.selectedEvent?.location.name]);
+  }, [debouncedQuery, eventsStore, eventsStore.selectedEvent?.location.name]);
 
   const setLocation = useCallback(
     (value: AutocompleteOption) => {
@@ -104,7 +98,7 @@ export const EventForm: React.FC = observer(() => {
     <form role="event-form" onSubmit={handleSubmit(handleSave)}>
       <div className="grid grid-cols-2 mt-0 w-full mb-8 items-center">
         <Button
-          onClick={() => store.setShowEventForm(false)}
+          onClick={() => calendarStore.setShowEventForm(false)}
           className="text-red-500 justify-self-start"
         >
           Cancelar
@@ -134,7 +128,9 @@ export const EventForm: React.FC = observer(() => {
         {...register("date")}
         error={errors.date}
         defaultValue={format(
-          store.selectedEvent ? store.selectedEvent.startDateTime : store.date,
+          eventsStore.selectedEvent
+            ? eventsStore.selectedEvent.startDateTime
+            : calendarStore.date,
           "yyyy-MM-dd",
         )}
       >
@@ -160,9 +156,9 @@ export const EventForm: React.FC = observer(() => {
           Hora de termino
         </InputField>
       </div>
-      {store.selectedEvent?.id && (
+      {eventsStore.selectedEvent?.id && (
         <Button
-          onClick={() => store.deleteEvent()}
+          onClick={() => eventsStore.deleteEvent()}
           className="text-red-500 justify-self-end"
         >
           Eliminar

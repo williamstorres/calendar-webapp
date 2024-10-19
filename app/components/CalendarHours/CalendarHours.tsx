@@ -15,7 +15,7 @@ import { setHours } from "date-fns";
  * @returns {JSX.Element} El componente `CalendarHours`, que incluye horas del día y eventos asociados.
  */
 export const CalendarHours: React.FC = observer(() => {
-  const store = useStore();
+  const { calendarStore, eventsStore } = useStore();
 
   const generateHour = (hour: number) => {
     return (
@@ -27,11 +27,11 @@ export const CalendarHours: React.FC = observer(() => {
     );
   };
   const handleOnClickToAddNewEvent = (hour: number) => {
-    store.setDate(setHours(store.date, hour));
-    store.setShowEventForm(true);
+    calendarStore.setDate(setHours(calendarStore.date, hour));
+    calendarStore.setShowEventForm(true);
   };
   return (
-    <div role="calendar-hours" className="w-screen flex">
+    <div className="w-screen flex">
       <div className="w-min">
         {hoursOfDay.map(generateHour)}
         {generateHour(0)}
@@ -47,13 +47,15 @@ export const CalendarHours: React.FC = observer(() => {
           ))}
           <div className="h-20 border-t-2 border-zinc-600"></div>
         </div>
-        {store.selectedViewIsWeek ? (
+        {calendarStore.selectedViewIsWeek ? (
           <CalendarEventsWeek />
         ) : (
           <div className="w-full relative mt-4 z-10">
             <CalendarEventsDay
-              date={store.date}
-              events={store.events[generateDateAsKey(store.date)] ?? []}
+              date={calendarStore.date}
+              events={
+                eventsStore.events[generateDateAsKey(calendarStore.date)] ?? []
+              }
             />
           </div>
         )}

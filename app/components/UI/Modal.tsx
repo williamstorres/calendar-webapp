@@ -16,15 +16,15 @@ import { useEffect, useState } from "react";
  * @returns {JSX.Element|null} Un elemento que representa el modal, o null si no debe mostrarse.
  */
 export const Modal: React.FC = observer(() => {
-  const { showEventForm, showEventView } = useStore();
+  const { calendarStore } = useStore();
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    const willShow = showEventForm || showEventView;
+    const willShow = calendarStore.showEventForm || calendarStore.showEventView;
     if (showModal !== willShow) {
       setTimeout(() => setShowModal(willShow), 300);
     }
-  }, [showEventForm, showEventView, showModal]);
+  }, [calendarStore, showModal]);
 
   //Bloquea el scroll cuando el modal está abierto
   useEffect(() => {
@@ -43,13 +43,13 @@ export const Modal: React.FC = observer(() => {
         className={twJoin(
           "w-screen h-full p-8 bg-background z-[1000] fixed bottom-0 rounded-t-3xl shadow-[0px_-8px_10px_0px_#1a202c] md:max-w-[40rem] inset-x-0 mx-auto",
           "transform transition-transform duration-100",
-          showEventForm || showEventView
+          calendarStore.showEventForm || calendarStore.showEventView
             ? "animate-slide-up"
             : "animate-slide-down",
         )}
       >
-        {showModal && showEventForm && <EventForm />}
-        {showModal && showEventView && <CalendarEventView />}
+        {showModal && calendarStore.showEventForm && <EventForm />}
+        {showModal && calendarStore.showEventView && <CalendarEventView />}
       </div>
     </>
   );

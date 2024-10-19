@@ -1,22 +1,23 @@
 "use client";
 import React, { createContext, ReactNode, useContext } from "react";
-import CalendarStore from "./calendarStore";
-import { ServerData } from "../types/CalendarEvent";
+import { CalendarEventType } from "../types/CalendarEvent";
+import RootStore from "./rootStore";
 
-const StoreContext = createContext<CalendarStore | null>(null);
-
-let clientStore: CalendarStore;
+export type ServerData = {
+  eventsStore: { events: Record<string, CalendarEventType[]> };
+};
+const StoreContext = createContext<RootStore | null>(null);
 
 const initializeStore = (initData: ServerData | null = null) => {
   // check if we already declare store (client Store), otherwise create one
-  const store = clientStore ?? new CalendarStore();
+  const store = new RootStore();
   // hydrate to store if receive initial data
-  if (!clientStore && initData) store.hydrate(initData);
+  if (initData) Object.assign(store, initData);
 
   // Create a store on every server request
   if (typeof window === "undefined") return store;
   // Otherwise it's client, remember this store and return
-  if (!clientStore) clientStore = store;
+  //if (!clientStore) clientStore = store;
   return store;
 };
 
@@ -29,6 +30,7 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({
   initialData,
 }) => {
   const store = initializeStore(initialData);
+
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
   );

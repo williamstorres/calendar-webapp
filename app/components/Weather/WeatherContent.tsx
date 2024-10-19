@@ -19,7 +19,9 @@ type WeatherContentProps = {
  */
 export const WeatherContent: React.FC<WeatherContentProps> = ({
   weatherCondition,
-}) => {
+}: {
+  weatherCondition: WeatherCondition;
+}): JSX.Element => {
   const dayOrNight = weatherCondition.condition.is_day ? "day" : "night";
   const weatherDescription = getCondition(weatherCondition.condition.code)[
     dayOrNight

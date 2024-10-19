@@ -32,7 +32,8 @@ type CalendarEventProps = {
  */
 export const CalendarEvent: React.FC<CalendarEventProps> = observer(
   ({ event, overlaping, index }) => {
-    const store = useStore();
+    const { calendarStore } = useStore();
+
     const { attributes, listeners, setNodeRef, transform, node } = useDraggable(
       {
         id: event.id,
@@ -50,8 +51,8 @@ export const CalendarEvent: React.FC<CalendarEventProps> = observer(
       overlaping,
       startDateTime: event.startDateTime,
       node,
-      selectedViewIsMonth: store.selectedViewIsMonth,
-      selectedViewIsDay: store.selectedViewIsDay,
+      selectedViewIsMonth: calendarStore.selectedViewIsMonth,
+      selectedViewIsDay: calendarStore.selectedViewIsDay,
     });
 
     return (
@@ -65,13 +66,13 @@ export const CalendarEvent: React.FC<CalendarEventProps> = observer(
           top: `${top}rem`,
           left:
             overlaping > 1 ? `calc((100% / ${overlaping}) * ${index})` : "auto",
-          height: !store.selectedViewIsMonth ? `${height}rem` : "auto",
+          height: !calendarStore.selectedViewIsMonth ? `${height}rem` : "auto",
           width: `${width}%`,
         }}
         className={twJoin(
           "bg-green-500 px-1 rounded-md overflow-hidden text-primary box-border shadow-sm border z-50",
-          !store.selectedViewIsMonth && "absolute",
-          store.selectedViewIsDay ? "text-xs" : "text-xxs",
+          !calendarStore.selectedViewIsMonth && "absolute",
+          calendarStore.selectedViewIsDay ? "text-xs" : "text-xxs",
         )}
       >
         {event.title}

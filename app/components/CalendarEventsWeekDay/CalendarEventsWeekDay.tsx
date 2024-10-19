@@ -21,7 +21,7 @@ export type CalendarEventsWeekDayProps = {
  */
 export const CalendarEventsWeekDay: React.FC<CalendarEventsWeekDayProps> =
   observer(({ children, date }: CalendarEventsWeekDayProps): JSX.Element => {
-    const store = useStore();
+    const { calendarStore } = useStore();
     const { setNodeRef } = useDroppable({
       id: generateDateAsKey(date),
     });
@@ -33,13 +33,12 @@ export const CalendarEventsWeekDay: React.FC<CalendarEventsWeekDayProps> =
       const yPxFromTop = event.clientY - rect.top;
       const minutes = (yPxFromTop / PxInOneHour) * minutesInHour;
       const minutesToSet = getMinutesInSteps(minutes);
-      store.setDate(setMinutes(date, minutesToSet));
-      store.setShowEventForm(true);
+      calendarStore.setDate(setMinutes(date, minutesToSet));
+      calendarStore.setShowEventForm(true);
     };
 
     return (
       <div
-        role="calendar-events-week-day"
         ref={setNodeRef}
         onClick={handleOnClickToAddNewEvent}
         className="border-r-2 border-zinc-600 last:border-0 w-full relative"
