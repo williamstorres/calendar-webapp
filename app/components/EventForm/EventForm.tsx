@@ -14,33 +14,21 @@ import {
 } from "../UI";
 import { Location } from "@/app/api/domain/entities/CalendarEvent";
 import { getLocations } from "@/app/services/locationsService";
-import { useDebounce } from "@/app/hooks/useDebounce";
 import { useEventForm } from "@/app/hooks/useEventForm";
 import { observer } from "mobx-react-lite";
+import { toast } from "react-toastify";
+import { FormFields } from "./eventFormSchema";
 
 type LocationAutocomplete = Location & AutocompleteOption;
 
-/**
- * Componente que renderiza un formulario para crear o editar un evento en el calendario.
- * Utiliza el estado global del almacén y proporciona funcionalidades para manejar la entrada del usuario
- * y el envío del formulario.
- *
- * @component
- * @example
- * return (
- *   <EventForm />
- * );
- */
 export const EventForm: React.FC = observer(() => {
-  const { eventsStore, calendarStore } = useStore();
+  const { eventsStore, calendarStore, loading } = useStore();
+
   const [selectedLocation, setSelectedLocation] =
-    useState<LocationAutocomplete>(
+    useState<LocationAutocomplete | null>(
       eventsStore.selectedEvent?.location as LocationAutocomplete,
     );
-  const [locations, setLocations] = useState<LocationAutocomplete[]>([]);
-  const [debouncedQuery, setDebouncedQuery] = useDebounce(
-    String(eventsStore.selectedEvent?.location.name),
-  );
+
   const {
     register,
     handleSubmit,
@@ -51,10 +39,7 @@ export const EventForm: React.FC = observer(() => {
     selectedEvent: eventsStore.selectedEvent,
     initialDate: calendarStore.date,
   });
-  const handleSave = useSaveEventForm(selectedLocation as Location);
-  const location = watch("location");
-
-  useEffect(() => setDebouncedQuery(location), [location, setDebouncedQuery]);
+  const save = useSaveEventForm(selectedLocation as Location);
 
   const isAllDay = watch("isAllDay");
 
@@ -65,40 +50,43 @@ export const EventForm: React.FC = observer(() => {
     }
   }, [isAllDay, setValue]);
 
-  useEffect(() => {
-    const fetchLocations = async () => {
-      if (
-        debouncedQuery.length === 0 ||
-        debouncedQuery === eventsStore.selectedEvent?.location.name
-      )
-        return setLocations([]);
-
-      const newLocations = await getLocations(debouncedQuery).then(
-        (locations) =>
+  const fetchLocations = useCallback(
+    async (query: string) => {
+      setSelectedLocation(null);
+      return loading(
+        getLocations(query).then((locations) =>
           locations.map((location) => ({
             ...location,
             text: location?.name,
           })),
+        ),
       );
-      setLocations(newLocations);
-    };
-    fetchLocations();
-  }, [debouncedQuery, eventsStore, eventsStore.selectedEvent?.location.name]);
+    },
+    [setSelectedLocation, loading],
+  );
 
   const setLocation = useCallback(
     (value: AutocompleteOption) => {
       setSelectedLocation(value as LocationAutocomplete);
       setValue("location", value.text);
-      setLocations([]);
     },
     [setValue],
   );
+
+  const handleSave = (formFields: FormFields) => {
+    if (isValid) return save(formFields);
+    toast.warning("Hay algunos errores en el formulario");
+    console.log(errors);
+  };
 
   return (
     <form role="event-form" onSubmit={handleSubmit(handleSave)}>
       <div className="grid grid-cols-2 mt-0 w-full mb-8 items-center">
         <Button
-          onClick={() => calendarStore.setShowEventForm(false)}
+          onClick={() => {
+            calendarStore.setShowEventForm(false);
+            eventsStore.cleanSelectedEvent();
+          }}
           className="text-red-500 justify-self-start"
         >
           Cancelar
@@ -106,7 +94,6 @@ export const EventForm: React.FC = observer(() => {
         <Button
           type={ButtonType.Submit}
           className="text-red-500 justify-self-end"
-          disabled={!isValid}
         >
           Guardar
         </Button>
@@ -116,7 +103,7 @@ export const EventForm: React.FC = observer(() => {
       </InputField>
       <Autocomplete
         {...register("location")}
-        options={locations}
+        fetchOptions={fetchLocations}
         setValue={setLocation}
         error={errors.location}
       >
@@ -158,7 +145,10 @@ export const EventForm: React.FC = observer(() => {
       </div>
       {eventsStore.selectedEvent?.id && (
         <Button
-          onClick={() => eventsStore.deleteEvent()}
+          onClick={() => {
+            eventsStore.deleteEvent();
+            toast.success("Evento eliminado");
+          }}
           className="text-red-500 justify-self-end"
         >
           Eliminar

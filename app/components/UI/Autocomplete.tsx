@@ -1,51 +1,46 @@
-import { useId, forwardRef } from "react";
+import { useId, forwardRef, useState, useEffect } from "react";
 import { FieldError } from "react-hook-form";
 import { InputFieldError } from "./InputFieldError";
 import { twJoin } from "tailwind-merge";
+import { useDebounce } from "@/app/hooks/useDebounce";
 
 export type AutocompleteOption = {
   text: string;
 };
-/**
- * Componente `Autocomplete` que permite la selección de opciones a través de un campo de texto.
- *
- * Este componente utiliza `react-hook-form` para manejar el estado del formulario
- * y proporciona un menú desplegable con opciones seleccionables.
- *
- * @template T
- * @param {AutocompleteProps<T extends AutocompleteOption>} props - Props del componente.
- * @param {React.Ref} ref - Referencia al elemento de entrada.
- * @returns {JSX.Element} El componente `Autocomplete`.
- *
- * @example
- * const options = [{ text: 'Option 1' }, { text: 'Option 2' }];
- *
- * <Autocomplete
- *   name="autocomplete"
- *   setValue={(value) => console.log(value)}
- *   options={options}
- *   error={null}
- * >
- *   Select an option
- * </Autocomplete>
- */
 type AutocompleteProps<T extends AutocompleteOption> =
   React.ComponentPropsWithoutRef<"input"> & {
     name: string;
     children: string;
     setValue: (value: T) => void;
     error?: FieldError;
-    options: T[];
+    fetchOptions: (query: string) => Promise<AutocompleteOption[]>;
   };
 
 export const Autocomplete = forwardRef<
   HTMLInputElement,
   AutocompleteProps<AutocompleteOption>
 >(function Autocomplete(
-  { children, name, setValue, error, options, onChange, onBlur },
+  { children, name, setValue, error, fetchOptions, onBlur },
   ref,
 ) {
   const id = useId();
+
+  const [debouncedQuery, setDebouncedQuery] = useDebounce("");
+  const [options, setOptions] = useState<AutocompleteOption[]>();
+
+  useEffect(() => {
+    if (debouncedQuery && debouncedQuery.length > 0)
+      fetchOptions(debouncedQuery).then((options) => setOptions(options));
+  }, [debouncedQuery, fetchOptions]);
+
+  const handleClick = (option: AutocompleteOption) => {
+    setOptions([]);
+    setValue(option);
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDebouncedQuery(event.target.value);
+  };
 
   return (
     <div className="relative w-full mb-4">
@@ -53,7 +48,7 @@ export const Autocomplete = forwardRef<
       <input
         id={id}
         name={name}
-        onChange={onChange}
+        onChange={handleChange}
         onBlur={onBlur}
         ref={ref}
         autoComplete="off"
@@ -69,7 +64,7 @@ export const Autocomplete = forwardRef<
             <li
               key={index}
               className="px-4 py-2 cursor-pointer"
-              onClick={() => setValue(option)}
+              onClick={() => handleClick(option)}
             >
               {option.text}
             </li>

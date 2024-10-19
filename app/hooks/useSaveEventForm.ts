@@ -4,6 +4,7 @@ import { FormFields } from "../components/EventForm/eventFormSchema";
 import { setTime } from "../libs/date";
 import { Location } from "@/app/api/domain/entities/CalendarEvent";
 import { useStore } from "../store/storeContext";
+import { toast } from "react-toastify";
 
 export const useSaveEventForm = (location: Location) => {
   const { eventsStore } = useStore();
@@ -17,17 +18,19 @@ export const useSaveEventForm = (location: Location) => {
     const startDateTime = setTime(dateWithTimezoneFixed, startTime);
     const endDateTime = setTime(dateWithTimezoneFixed, endTime);
 
-    return () =>
-      eventsStore.saveEvent({
-        ...data,
-        id: "",
-        location,
-        startDateTime,
-        endDateTime:
-          endTime === "00:00" ? addDays(endDateTime, 1) : endDateTime,
-        durationInMinutes: differenceInMinutes(endDateTime, startDateTime),
-        color: "",
-      });
+    const eventToSave = {
+      ...data,
+      id: "",
+      location,
+      startDateTime,
+      endDateTime: endTime === "00:00" ? addDays(endDateTime, 1) : endDateTime,
+      durationInMinutes: differenceInMinutes(endDateTime, startDateTime),
+      color: "",
+    };
+    console.log(eventToSave);
+    eventsStore
+      .saveEvent(eventToSave)
+      .then(() => toast.success("Evento guardado con éxito"));
   };
 
   return saveEvent;

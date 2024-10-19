@@ -29,7 +29,7 @@ export const Calendar: React.FC = observer(() => {
   useEffect(() => {
     if (calendarStore.error)
       toast.error(calendarStore.error, {
-        position: "top-left",
+        position: "top-right",
       });
   }, [calendarStore, calendarStore.error]);
 

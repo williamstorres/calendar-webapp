@@ -12,7 +12,9 @@ const initializeStore = (initData: ServerData | null = null) => {
   // check if we already declare store (client Store), otherwise create one
   const store = new RootStore();
   // hydrate to store if receive initial data
-  if (initData) Object.assign(store, initData);
+  if (initData) {
+    Object.assign(store.eventsStore, initData.eventsStore);
+  }
 
   // Create a store on every server request
   if (typeof window === "undefined") return store;

@@ -11,25 +11,6 @@ type CalendarEventProps = {
   overlaping: number;
   index: number;
 };
-/**
- * Componente `CalendarEvent` que representa un evento en el calendario.
- *
- * Este componente utiliza la funcionalidad de arrastrar y soltar para
- * permitir que los eventos se reubiquen en el calendario. También ajusta
- * su estilo según la duración del evento y la vista seleccionada (mensual o diaria).
- *
- * @param {CalendarEventProps} props - Props del componente.
- * @returns {JSX.Element} El componente `CalendarEvent`.
- *
- * @example
- * const event = {
- *   id: "event1",
- *   title: "Reunión",
- *   startDateTime: new Date("2024-10-01T10:00:00"),
- *   durationInMinutes: 60,
- * };
- * <CalendarEvent event={event} overlaping={1} index={0} />
- */
 export const CalendarEvent: React.FC<CalendarEventProps> = observer(
   ({ event, overlaping, index }) => {
     const { calendarStore } = useStore();

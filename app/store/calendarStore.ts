@@ -77,10 +77,11 @@ export default class CalendarStore {
 
   setShowEventForm(showEventFrom: boolean) {
     this.showEventForm = showEventFrom;
-    if (!showEventFrom) this.root.eventsStore.cleanSelectedEvent();
+    if (showEventFrom) this.setShowEventView(false);
   }
   setShowEventView(showEventView: boolean) {
     this.showEventView = showEventView;
+    if (showEventView) this.setShowEventForm(false);
   }
   setCalendars(calendars: Month[]) {
     this.calendars = calendars;
