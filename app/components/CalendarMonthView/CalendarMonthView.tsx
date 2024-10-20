@@ -33,7 +33,7 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
         <CalendarDaysOfWeekHeader />
         {weeksOfMonth.map((week) => (
           <CalendarWeek
-            key={formatDate(week[0].date, DateKeyFormat)}
+            key={formatDate(week[0], DateKeyFormat)}
             daysOfWeek={week}
           />
         ))}

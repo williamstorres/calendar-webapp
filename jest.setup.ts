@@ -1,18 +1,8 @@
 import "@testing-library/jest-dom";
-//import { getMonthlyEvents } from './app/services/eventsService'; // Ajusta la ruta según tu estructura
+import { parse } from "date-fns/parse";
 
-// jest.mock("./app/services/eventsService", () => ({
-//   getMonthlyEvents: jest.fn(() => {
-//     let cancel: () => void;
-//     const request = new Promise((resolve, reject) => {
-//       cancel = () => {
-//         reject();
-//         console.log("cancel");
-//       };
-//     });
-//     return {
-//       cancel,
-//       request,
-//     };
-//   }),
-// }));
+beforeAll(function () {
+  jest.clearAllMocks();
+  const date = parse("2024-10-18", "yyyy-MM-dd", new Date());
+  jest.useFakeTimers().setSystemTime(date);
+});

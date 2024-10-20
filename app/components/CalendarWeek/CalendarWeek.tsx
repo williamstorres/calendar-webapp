@@ -1,14 +1,14 @@
-import { DayOfMonth } from "@/app/types/DayOfMonth";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/app/store/storeContext";
 import { twJoin } from "tailwind-merge";
 import { endOfDay, isWithinInterval } from "date-fns";
-import { generateDateAsKey, hoursOfDay } from "@/app/libs/date";
+import { generateDateAsKey } from "@/app/libs/date";
 import { formatTime } from "@/app/libs/format";
 import CalendarDay from "../CalendarDay";
+import { hoursOfDay } from "@/app/constants";
 
 type CaledarWeekProps = {
-  daysOfWeek: DayOfMonth[];
+  daysOfWeek: Date[];
 };
 /**
  * Componente `CalendarWeek` que renderiza la vista semanal del calendario.
@@ -28,8 +28,8 @@ export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
     const showWeek =
       !calendarStore.selectedViewIsMonth &&
       isWithinInterval(calendarStore.date, {
-        start: daysOfWeek[0].date,
-        end: endOfDay(daysOfWeek[6].date),
+        start: daysOfWeek[0],
+        end: endOfDay(daysOfWeek[6]),
       });
 
     const generateHour = (hour: number) => {
@@ -64,7 +64,7 @@ export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
           )}
         >
           {daysOfWeek.map((day) => {
-            const key = generateDateAsKey(day.date);
+            const key = generateDateAsKey(day);
             const events = eventsStore.getDayEvents(key);
             return <CalendarDay key={key} day={day} events={events} />;
           })}

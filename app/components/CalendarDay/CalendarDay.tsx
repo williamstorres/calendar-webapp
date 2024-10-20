@@ -1,5 +1,4 @@
 import { CalendarEventType } from "@/app/types/CalendarEvent";
-import { DayOfMonth } from "@/app/types/DayOfMonth";
 import CalendarEvent from "../CalendarEvent";
 import { observer } from "mobx-react-lite";
 import CalendarHours from "../CalendarHours";
@@ -10,7 +9,7 @@ import { isSameDay } from "date-fns";
 import { twJoin } from "tailwind-merge";
 
 type CalendarDayProps = {
-  day: DayOfMonth;
+  day: Date;
   events: CalendarEventType[];
 };
 export const CalendarDay: React.FC<CalendarDayProps> = observer(
@@ -18,17 +17,18 @@ export const CalendarDay: React.FC<CalendarDayProps> = observer(
     const { calendarStore } = useStore();
 
     const { setNodeRef } = useDroppable({
-      id: generateDateAsKey(day.date),
+      id: generateDateAsKey(day),
     });
+    //Si la vista es dia, se ocultan los dias que no son el seleccionado
     if (
       calendarStore.selectedViewIsDay &&
-      !isSameDay(calendarStore.date, day.date)
+      !isSameDay(calendarStore.date, day)
     ) {
       return null;
     }
 
     const handleOnClickToAddNewEvent = () => {
-      calendarStore.setDate(day.date);
+      calendarStore.setDate(day);
       calendarStore.setShowEventForm(true);
     };
 
@@ -45,6 +45,7 @@ export const CalendarDay: React.FC<CalendarDayProps> = observer(
         )}
       >
         <div
+          data-testid="calendar-day"
           ref={setNodeRef}
           className={twJoin(
             "w-full",

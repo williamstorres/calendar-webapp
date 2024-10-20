@@ -12,7 +12,11 @@ const config: Config = {
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   testEnvironment: "jsdom",
-  modulePathIgnorePatterns: ["<rootDir>/__tests__/e2e/"],
+  modulePathIgnorePatterns: ["/node_modules/", "<rootDir>/__tests__/e2e/"],
+  testMatch: [
+    "**/__tests__/**/?(*.)+(spec|test).[jt]s?(x)",
+    "**/?(*.)+(spec|test).[jt]s?(x)",
+  ],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
   },

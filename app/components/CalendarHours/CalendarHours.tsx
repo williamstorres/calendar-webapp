@@ -1,12 +1,11 @@
-import { hoursOfDay } from "@/app/libs/date";
+import { hoursOfDay } from "@/app/constants";
 import { useStore } from "@/app/store/storeContext";
-import { DayOfMonth } from "@/app/types/DayOfMonth";
 import { isToday, setHours } from "date-fns";
 import { observer } from "mobx-react-lite";
 
 type CalendarHours = {
   children: React.ReactNode;
-  day: DayOfMonth;
+  day: Date;
 };
 export const CalendarHours: React.FC<CalendarHours> = observer(
   ({ children, day }) => {
@@ -31,6 +30,7 @@ export const CalendarHours: React.FC<CalendarHours> = observer(
                 key={hour}
                 onClick={(e) => handleOnClickToAddNewEvent(e, hour)}
                 className="h-20 border-t-2 border-zinc-600"
+                data-testid={hour}
               ></div>
             ))}
             <div className="h-20 border-t-2 border-zinc-600"></div>
@@ -38,10 +38,10 @@ export const CalendarHours: React.FC<CalendarHours> = observer(
         )}
         {calendarStore.selectedViewIsMonth && (
           <span
-            data-testid={isToday(day.date) && "active-day"}
-            className={`${isToday(day.date) && "rounded-full bg-blue-600 p-1"}`}
+            data-testid={isToday(day) && "active-day"}
+            className={`${isToday(day) && "rounded-full bg-blue-600 p-1"}`}
           >
-            {day.dayOfMonth}
+            {day.getDate()}
           </span>
         )}
         {children}

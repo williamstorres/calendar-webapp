@@ -1,10 +1,9 @@
 import EventForm from "@/app/components/EventForm";
 import RootStore from "@/app/store/rootStore";
-import { StoreProvider } from "@/app/store/storeContext";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { parse } from "date-fns";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { fakerES as faker } from "@faker-js/faker";
 import { getLocations } from "@/app/services/locationsService";
+import { renderStoreProvider } from "@/__tests__/testUtils";
 
 jest.mock("@/app/services/locationsService", () => {
   return {
@@ -14,18 +13,6 @@ jest.mock("@/app/services/locationsService", () => {
 });
 
 describe("EventForm", function () {
-  beforeAll(function () {
-    jest.clearAllMocks();
-    const date = parse("2024-10-18", "yyyy-MM-dd", new Date());
-    jest.useFakeTimers().setSystemTime(date);
-  });
-
-  function renderStoreProvider(children: React.ReactNode, store: RootStore) {
-    return render(
-      <StoreProvider initialData={store}>{children}</StoreProvider>,
-    );
-  }
-
   it("required inputs", async function () {
     const store = new RootStore();
     const saveEventMock = jest
