@@ -1,15 +1,15 @@
-import { isSameDay } from "date-fns";
-import { memo } from "react";
+import { useStore } from "@/app/store/storeContext";
+import { isSameDay, isToday } from "date-fns";
+import { observer } from "mobx-react-lite";
 
 type DayOfWeekHeaderProps = {
   day: Date;
-  selectedDate: Date;
 };
-export const DayOfWeekHeader = memo(function DayOfWeekHeader({
-  day,
-  selectedDate,
-}: DayOfWeekHeaderProps) {
-  const isSelected = isSameDay(selectedDate, day);
+export const DayOfWeekHeader = observer(({ day }: DayOfWeekHeaderProps) => {
+  const { calendarStore } = useStore();
+  const isSelected = calendarStore.selectedViewIsWeek
+    ? isToday(day)
+    : isSameDay(calendarStore.date, day);
 
   return (
     <span

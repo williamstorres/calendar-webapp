@@ -1,10 +1,9 @@
-"use client";
 import { DateKeyFormat } from "@/app/constants";
 import { useMoveEventOnDrag } from "@/app/hooks/useMoveEventOnDrag";
 import { getCalendarWeeksWithDays } from "@/app/libs/date";
 import { formatDate } from "@/app/libs/format";
 import { Month } from "@/app/types/CalendarType";
-import { DndContext } from "@dnd-kit/core";
+import { closestCenter, DndContext } from "@dnd-kit/core";
 import { useId, useRef } from "react";
 import CalendarWeek from "../CalendarWeek";
 import { CalendarDaysOfWeekHeader } from "./CalendarDaysOfWeekHeader";
@@ -25,7 +24,11 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
   const handleDragEnd = useMoveEventOnDrag();
 
   return (
-    <DndContext id={id} onDragEnd={handleDragEnd}>
+    <DndContext
+      id={id}
+      onDragEnd={handleDragEnd}
+      collisionDetection={closestCenter}
+    >
       <div ref={calendarContentRef} className="w-screen bg-primary h-full">
         <CalendarDaysOfWeekHeader />
         {weeksOfMonth.map((week) => (

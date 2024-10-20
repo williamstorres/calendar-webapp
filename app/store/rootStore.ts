@@ -16,4 +16,13 @@ export default class RootStore {
       this.calendarStore.setIsLoading(false);
     });
   };
+
+  hydrate(initData: ServerData) {
+    Object.assign(this.calendarStore, initData.calendarStore);
+    Object.assign(this.eventsStore, initData.eventsStore);
+  }
 }
+export type ServerData = {
+  calendarStore?: Partial<CalendarStore>;
+  eventsStore?: Partial<EventsStore>;
+};

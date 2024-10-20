@@ -46,7 +46,7 @@ export const Modal: React.FC = observer(() => {
       <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
       <div
         className={twJoin(
-          "w-screen h-[98%] p-8 bg-background z-[1000] fixed bottom-0 rounded-t-3xl shadow-[0px_-8px_10px_0px_#1a202c] md:max-w-[40rem] inset-x-0 mx-auto",
+          "w-screen h-[98%] p-8 bg-background z-[1000] fixed bottom-0 rounded-t-3xl shadow-[0px_-8px_10px_0px_#1a202c] max-w-[40rem] inset-x-0 mx-auto",
           "transform transition-transform duration-100",
           calendarStore.showEventForm || calendarStore.showEventView
             ? "animate-slide-up"

@@ -1,11 +1,9 @@
 "use client";
 import React, { createContext, ReactNode, useContext } from "react";
-import { CalendarEventType } from "../types/CalendarEvent";
-import RootStore from "./rootStore";
+import RootStore, { ServerData } from "./rootStore";
 
-export type ServerData = {
-  eventsStore: { events: Record<string, CalendarEventType[]> };
-};
+// Este es el tipo con solo las propiedades de la clase
+
 const StoreContext = createContext<RootStore | null>(null);
 
 const initializeStore = (initData: ServerData | null = null) => {
@@ -13,7 +11,7 @@ const initializeStore = (initData: ServerData | null = null) => {
   const store = new RootStore();
   // hydrate to store if receive initial data
   if (initData) {
-    Object.assign(store.eventsStore, initData.eventsStore);
+    store.hydrate(initData);
   }
 
   // Create a store on every server request

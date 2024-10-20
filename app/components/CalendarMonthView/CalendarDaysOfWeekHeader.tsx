@@ -39,10 +39,7 @@ export const CalendarDaysOfWeekHeader: React.FC = observer(() => {
         >
           <span>{dayName.substring(0, 3)}</span>
           {!calendarStore.selectedViewIsMonth && (
-            <DayOfWeekHeader
-              day={daysOfWeek[index]}
-              selectedDate={calendarStore.date}
-            />
+            <DayOfWeekHeader day={daysOfWeek[index]} />
           )}
         </button>
       ))}

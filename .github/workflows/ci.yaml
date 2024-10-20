@@ -1,31 +1,40 @@
-name: Run Tests
-
 on:
   push:
     branches:
-      - "feature/*" # Ramas que comienzan con 'feature/'
+      - "feature/*"
+      - "main"
   pull_request:
     branches:
       - "feature/*" # Ramas que comienzan con 'feature/'
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "22" # Cambia esto a la versión de Node.js que estés usando
-
+          node-version: "22"
       - name: Install pnpm
         run: npm install -g pnpm
-
       - name: Install dependencies
         run: pnpm install
-
+      - name: Build
+        run: pnpm build
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "22"
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install dependencies
+        run: pnpm install
       - name: Run tests
         run: pnpm test

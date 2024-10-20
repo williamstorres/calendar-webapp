@@ -1,5 +1,5 @@
 "use client";
-import CalendarContent from "../CalendarMonthView";
+import CalendarMonthView from "../CalendarMonthView";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/app/store/storeContext";
 import CalendarsContainer from "../CalendarsContainer";
@@ -34,7 +34,7 @@ export const Calendar: React.FC = observer(() => {
   }, [calendarStore, calendarStore.error]);
 
   const generateCalendars = (month: Month) => (
-    <CalendarContent key={`${month.year}${month.month}`} month={month} />
+    <CalendarMonthView key={`${month.year}${month.month}`} month={month} />
   );
 
   return (

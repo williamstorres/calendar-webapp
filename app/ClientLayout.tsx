@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
-import { ServerData, StoreProvider } from "./store/storeContext";
+import { StoreProvider } from "./store/storeContext";
 import { getMonthlyEvents } from "./services/eventsService";
 import { CalendarEventType } from "./types/CalendarEvent";
+import { ServerData } from "./store/rootStore";
 
 export default async function ClientLayout({
   children,

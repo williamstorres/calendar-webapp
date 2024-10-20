@@ -51,8 +51,8 @@ export default class EventsStore {
       cancel,
       events: this.root.loading(
         request
-          .then((_events) => {
-            this.setEvents(_events);
+          .then((events) => {
+            this.setEvents(events);
             return this.events;
           })
           .catch((err) => {
@@ -79,7 +79,7 @@ export default class EventsStore {
     this.fethMonthlyEvents(this.root.calendarStore.date);
   }
 
-  updateEventInEvents(event: CalendarEventType) {
+  optimisticUpdateEvent(event: CalendarEventType) {
     const eventsToUpdate = this.events;
     for (const date in this.events) {
       if (Array.isArray(eventsToUpdate[date])) {
@@ -97,7 +97,7 @@ export default class EventsStore {
 
   async updateEvent(event: CalendarEventType) {
     //primero se actualiza en el listado de eventos, para que los cambios en el calendario sean instantaneos
-    this.updateEventInEvents(event);
+    this.optimisticUpdateEvent(event);
     await this.root.loading(
       updateEvent(event).catch((err) => {
         console.error(err);
@@ -109,8 +109,22 @@ export default class EventsStore {
     this.fethMonthlyEvents(this.root.calendarStore.date);
   }
 
+  optimisticDeleteEvent(event: CalendarEventType) {
+    // for (const key in this.events) {
+    //   if (key === generateDateAsKey(event.startDateTime))
+    // }
+    const index = this.events[generateDateAsKey(event.startDateTime)].findIndex(
+      (_event) => event.id === _event.id,
+    );
+    console.log(index);
+
+    this.events[generateDateAsKey(event.startDateTime)].splice(index, 1);
+    console.log(JSON.stringify(this.events));
+  }
+
   async deleteEvent() {
     if (!this.selectedEvent?.id) return;
+    this.optimisticDeleteEvent(this.selectedEvent);
     await this.root.loading(
       deleteEvent(this.selectedEvent.id).catch((err) => {
         console.error(err);

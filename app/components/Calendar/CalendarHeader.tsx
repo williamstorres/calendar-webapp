@@ -20,7 +20,6 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = memo(
             >
               {formatDate(new Date(selectedYear, selectedMonth, 1), "MMMM")}
             </h2>
-            <h3 className="text-lg py-3">{}</h3>
           </div>
           <CalendarNavigationButtons />
         </div>

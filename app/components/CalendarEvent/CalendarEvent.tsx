@@ -51,7 +51,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = observer(
           width: `${width}%`,
         }}
         className={twJoin(
-          "bg-green-500 px-1 rounded-md overflow-hidden text-primary box-border shadow-sm border z-50",
+          "bg-green-500 px-1 rounded-md overflow-hidden text-primary box-border shadow-sm border z-[100]",
           !calendarStore.selectedViewIsMonth && "absolute",
           calendarStore.selectedViewIsDay ? "text-xs" : "text-xxs",
         )}
