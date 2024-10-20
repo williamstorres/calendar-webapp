@@ -6,7 +6,7 @@ import { minutesInHour } from "date-fns/constants";
 import { useStore } from "../store/storeContext";
 
 export const useMoveEventOnDrag = () => {
-  const store = useStore();
+  const { eventsStore, calendarStore } = useStore();
 
   const handleDragEnd = (event: DragEndEvent) => {
     if (!event.active.data.current) return;
@@ -20,14 +20,36 @@ export const useMoveEventOnDrag = () => {
       },
     } = event;
 
-    const selectedEvent = store.events[currentDayId].find(
+    const selectedEvent = eventsStore.events[currentDayId].find(
       (event) => event.id === eventId,
     )!;
 
     //si no se ha movido, es porque se ha seleccionado el evento
-    if (event.delta.x === 0 && event.delta.y === 0) {
-      store.setSelectedEvent(selectedEvent);
-      store.setShowEventView(true);
+    console.log(event.delta);
+    if (
+      event.delta.x < 2 &&
+      event.delta.x > -2 &&
+      event.delta.y < 2 &&
+      event.delta.y > -2
+    ) {
+      eventsStore.setSelectedEvent(selectedEvent);
+      calendarStore.setShowEventView(true);
+      return;
+    }
+
+    const { startDateTime, endDateTime } = selectedEvent;
+
+    if (calendarStore.selectedViewIsMonth) {
+      const newDay = parse(event.over!.id as string, DateKeyFormat, new Date());
+      eventsStore.updateEvent({
+        ...selectedEvent,
+        startDateTime: setHoursAndMinutes(newDay)(getHours(startDateTime))(
+          getMinutes(startDateTime),
+        ),
+        endDateTime: setHoursAndMinutes(newDay)(getHours(endDateTime))(
+          getMinutes(endDateTime),
+        ),
+      });
       return;
     }
 
@@ -37,7 +59,6 @@ export const useMoveEventOnDrag = () => {
       DateKeyFormat,
       new Date(),
     );
-    const { startDateTime, endDateTime } = selectedEvent;
 
     //Los movimientos de horario son en rangos definidos en la constante CalendarMinutesSteps
     const minutesToMove = getMinutesInSteps(
@@ -51,7 +72,7 @@ export const useMoveEventOnDrag = () => {
       getMinutes(endDateTime),
     );
 
-    store.updateEvent({
+    eventsStore.updateEvent({
       ...selectedEvent,
       startDateTime: addMinutes(newStartDate, minutesToMove),
       endDateTime: addMinutes(newEndDate, minutesToMove),

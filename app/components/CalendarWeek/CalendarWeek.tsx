@@ -1,14 +1,14 @@
-import { DayOfMonth } from "@/app/types/DayOfMonth";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/app/store/storeContext";
 import { twJoin } from "tailwind-merge";
-import { Views } from "@/app/store/calendarStore";
 import { endOfDay, isWithinInterval } from "date-fns";
-import CalendarHours from "../CalendarHours";
-import { CalendarMonthDay } from "./CalendarMonthDay";
+import { generateDateAsKey } from "@/app/libs/date";
+import { formatTime } from "@/app/libs/format";
+import CalendarDay from "../CalendarDay";
+import { hoursOfDay } from "@/app/constants";
 
 type CaledarWeekProps = {
-  daysOfWeek: DayOfMonth[];
+  daysOfWeek: Date[];
 };
 /**
  * Componente `CalendarWeek` que renderiza la vista semanal del calendario.
@@ -22,27 +22,53 @@ type CaledarWeekProps = {
  */
 export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
   ({ daysOfWeek }) => {
-    const store = useStore();
+    const { calendarStore, eventsStore } = useStore();
 
+    //al cambiar a vista de semana o dia oculta las semanas no seleccionadas
     const showWeek =
-      store.selectedView !== Views.Month &&
-      isWithinInterval(store.date, {
-        start: daysOfWeek[0].date,
-        end: endOfDay(daysOfWeek[6].date),
+      !calendarStore.selectedViewIsMonth &&
+      isWithinInterval(calendarStore.date, {
+        start: daysOfWeek[0],
+        end: endOfDay(daysOfWeek[6]),
       });
+
+    const generateHour = (hour: number) => {
+      return (
+        <div key={hour} className="h-20 text-xs w-min ml-10">
+          <div className="-translate-x-8 -translate-y-2 w-min absolute">
+            {formatTime(hour)}
+          </div>
+        </div>
+      );
+    };
+    if (!calendarStore.selectedViewIsMonth && !showWeek) return null;
 
     return (
       <div
-        role="calendar-week"
         className={twJoin(
           "w-screen bg-primary h-full",
-          !store.selectedViewIsMonth && !showWeek && "hidden",
+          calendarStore.selectedViewIsMonth && "border-t-2 border-zinc-600",
+          !calendarStore.selectedViewIsMonth && "flex flex-row",
         )}
       >
-        {store.selectedViewIsMonth && (
-          <CalendarMonthDay daysOfWeek={daysOfWeek} />
+        {!calendarStore.selectedViewIsMonth && (
+          <div className="w-min">
+            {hoursOfDay.map(generateHour)}
+            {generateHour(0)}
+          </div>
         )}
-        {store.selectedView !== Views.Month && showWeek && <CalendarHours />}
+        <div
+          className={twJoin(
+            "w-full",
+            !calendarStore.selectedViewIsDay && "grid grid-cols-7 gap-y-0.5",
+          )}
+        >
+          {daysOfWeek.map((day) => {
+            const key = generateDateAsKey(day);
+            const events = eventsStore.getDayEvents(key);
+            return <CalendarDay key={key} day={day} events={events} />;
+          })}
+        </div>
       </div>
     );
   },

@@ -19,19 +19,26 @@ type WeatherProps = {
  * @returns {JSX.Element} Un elemento que representa las condiciones climáticas
  *                        o un ícono de carga si los datos aún están siendo recuperados.
  */
-export const Weather: React.FC<WeatherProps> = ({ locationId, date }) => {
-  const weatherCondition = useWeatherConditionsApi({
+export const Weather: React.FC<WeatherProps> = ({
+  locationId,
+  date,
+}: {
+  locationId: number;
+  date: Date;
+}): JSX.Element => {
+  const { loading, weatherConditions } = useWeatherConditionsApi({
     location: locationId,
     date,
   });
 
   return (
-    <div role="weather" className="border-t border-gray-600 pt-4">
+    <div className="border-t border-gray-600 pt-4">
       <p className="text-lg">Condiciones climaticas: </p>
       <div className="flex flex-col justify-end">
-        {weatherCondition ? (
-          <WeatherContent weatherCondition={weatherCondition} />
-        ) : (
+        {weatherConditions && (
+          <WeatherContent weatherCondition={weatherConditions} />
+        )}
+        {loading && (
           <div className="flex flex-row justify-end p-10">
             <ArrowPathIcon className="animate-spin" width={30} height={30} />
           </div>

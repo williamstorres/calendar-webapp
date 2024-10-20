@@ -5,18 +5,28 @@ import {
   WeatherConditionSchema,
 } from "../api/domain/entities/WeatherInfo";
 import { getWeatherConditions } from "../services/locationsService";
+import { toast } from "react-toastify";
 
 export const useWeatherConditionsApi = ({
   location,
   date,
 }: GetWeatherFilters) => {
-  const [condition, setCondition] = useState<WeatherCondition>();
+  const [weatherConditions, setWeatherConditions] =
+    useState<WeatherCondition>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getWeatherConditions({ location, date }).then((result) => {
-      setCondition(WeatherConditionSchema.parse(result));
-    });
+    setLoading(true);
+    getWeatherConditions({ location, date })
+      .then((result) => {
+        const { success, data } = WeatherConditionSchema.safeParse(result);
+        if (success) return setWeatherConditions(data);
+        toast.warning("No se ha logrado obtener información del clima", {
+          toastId: "weather-conditions-error",
+        });
+      })
+      .finally(() => setLoading(false));
   }, [location, date]);
 
-  return condition;
+  return { loading, weatherConditions };
 };

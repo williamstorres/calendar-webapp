@@ -1,9 +1,10 @@
+import { daysOfTheWeekNames } from "@/app/constants";
 import { getDaysOfWeek } from "@/app/libs/date";
 import { Views } from "@/app/store/calendarStore";
 import { useStore } from "@/app/store/storeContext";
-import { isSameDay } from "date-fns";
 import { observer } from "mobx-react-lite";
 import { twJoin } from "tailwind-merge";
+import { DayOfWeekHeader } from "./DayOfWeekHeader";
 
 /**
  * Componente `CalendarContentHeaders` que renderiza los encabezados de los días de la semana
@@ -15,52 +16,30 @@ import { twJoin } from "tailwind-merge";
  *
  * @returns {JSX.Element} Un elemento que representa los encabezados de los días de la semana.
  */
-export const CalendarContentHeaders: React.FC = observer(() => {
-  const store = useStore();
+export const CalendarDaysOfWeekHeader: React.FC = observer(() => {
+  const { calendarStore } = useStore();
 
-  const daysOfTheWeekNames = [
-    "Lunes",
-    "Martes",
-    "Míercoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-    "Domingo",
-  ];
-  const daysOfWeek = getDaysOfWeek(store.date);
-  const today = new Date();
+  const daysOfWeek = getDaysOfWeek(calendarStore.date);
+
   return (
     <div
-      role="calendar-content-headers"
       className={twJoin(
         "w-screen min-h-14 grid grid-cols-7 gap-y-0.5 bg-primary",
-        !store.selectedViewIsMonth && "pl-10",
+        !calendarStore.selectedViewIsMonth && "pl-10",
       )}
     >
       {daysOfTheWeekNames.map((dayName, index) => (
         <button
           key={dayName}
-          role="calendar-day-header"
           className="p-2 text-xs text-center font-bold flex flex-col"
           onClick={() => {
-            store.setDate(daysOfWeek[index]);
-            store.setSelectedView(Views.Day);
+            calendarStore.setDate(daysOfWeek[index]);
+            calendarStore.setSelectedView(Views.Day);
           }}
         >
           <span>{dayName.substring(0, 3)}</span>
-          {!store.selectedViewIsMonth && (
-            <span
-              className={twJoin(
-                store.selectedViewIsDay &&
-                  isSameDay(store.date, daysOfWeek[index]) &&
-                  "rounded-full bg-blue-600 p-1",
-                store.selectedViewIsWeek &&
-                  isSameDay(today, daysOfWeek[index]) &&
-                  "rounded-full bg-blue-600 p-1",
-              )}
-            >
-              {daysOfWeek[index].getDate()}
-            </span>
+          {!calendarStore.selectedViewIsMonth && (
+            <DayOfWeekHeader day={daysOfWeek[index]} />
           )}
         </button>
       ))}

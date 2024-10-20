@@ -25,12 +25,13 @@ export const useEventForm = ({
         endTime: getTime(selectedEvent.endDateTime),
       }
     : {
+        isAllDay: false,
         startTime: getTime(initialDate),
         endTime: getTime(addHours(initialDate, 1)),
       };
 
   return useForm<FormFields>({
-    mode: "onBlur",
+    mode: "onChange",
     reValidateMode: "onBlur",
     resolver: zodResolver(eventFormSchema),
     defaultValues,

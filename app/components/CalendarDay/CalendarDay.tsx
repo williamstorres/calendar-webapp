@@ -1,65 +1,60 @@
 import { CalendarEventType } from "@/app/types/CalendarEvent";
-import { DayOfMonth } from "@/app/types/DayOfMonth";
-import { isToday } from "date-fns";
 import CalendarEvent from "../CalendarEvent";
+import { observer } from "mobx-react-lite";
+import CalendarHours from "../CalendarHours";
+import { useStore } from "@/app/store/storeContext";
 import { useDroppable } from "@dnd-kit/core";
 import { generateDateAsKey } from "@/app/libs/date";
-import { useStore } from "@/app/store/storeContext";
-import { observer } from "mobx-react-lite";
+import { isSameDay } from "date-fns";
+import { twJoin } from "tailwind-merge";
 
 type CalendarDayProps = {
-  day: DayOfMonth;
+  day: Date;
   events: CalendarEventType[];
 };
-/**
- * Componente `CalendarDay` que representa un día en el calendario.
- *
- * Este componente muestra el número del día y renderiza los eventos
- * asociados a ese día. También utiliza DnD Kit para permitir la
- * funcionalidad de arrastrar y soltar.
- *
- * @param {CalendarDayProps} props - Props del componente.
- * @returns {JSX.Element} El componente `CalendarDay`.
- *
- * @example
- * const day = { dayOfMonth: 1, date: new Date("2024-10-01") };
- * const events = [{ id: "event1", ... }, { id: "event2", ... }];
- * <CalendarDay day={day} events={events} />
- */
 export const CalendarDay: React.FC<CalendarDayProps> = observer(
-  ({ day, events }: CalendarDayProps): JSX.Element => {
-    const store = useStore();
+  ({ day, events }: CalendarDayProps) => {
+    const { calendarStore } = useStore();
 
     const { setNodeRef } = useDroppable({
-      id: generateDateAsKey(day.date),
+      id: generateDateAsKey(day),
     });
+    //Si la vista es dia, se ocultan los dias que no son el seleccionado
+    if (
+      calendarStore.selectedViewIsDay &&
+      !isSameDay(calendarStore.date, day)
+    ) {
+      return null;
+    }
 
     const handleOnClickToAddNewEvent = () => {
-      store.setDate(day.date);
-      store.setShowEventForm(true);
+      calendarStore.setDate(day);
+      calendarStore.setShowEventForm(true);
     };
+
+    const generateEvents = () =>
+      events.map((event) => (
+        <CalendarEvent key={event.id} event={event} overlaping={1} index={0} />
+      ));
 
     return (
       <div
-        ref={setNodeRef}
-        role="calendar-day"
         onClick={handleOnClickToAddNewEvent}
-        className="bg-zinc-900 p-2 min-h-24 text-sm"
+        className={twJoin(
+          "flex w-full border-r-2 border-zinc-600 last:border-0",
+        )}
       >
-        <span
-          className={`${isToday(day.date) && "rounded-full bg-blue-600 p-1"}`}
+        <div
+          data-testid="calendar-day"
+          ref={setNodeRef}
+          className={twJoin(
+            "w-full",
+            !calendarStore.selectedViewIsMonth && "relative",
+            calendarStore.selectedViewIsMonth &&
+              "bg-zinc-900 p-2 min-h-24 text-sm border-r-2 border-zinc-600 last:border-r-0",
+          )}
         >
-          {day.dayOfMonth}
-        </span>
-        <div>
-          {events.map((event) => (
-            <CalendarEvent
-              key={event.id}
-              event={event}
-              overlaping={1}
-              index={0}
-            />
-          ))}
+          <CalendarHours day={day}>{generateEvents()}</CalendarHours>
         </div>
       </div>
     );

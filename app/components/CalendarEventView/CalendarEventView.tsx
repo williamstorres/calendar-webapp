@@ -15,24 +15,23 @@ import Weather from "../Weather";
  * @returns {JSX.Element|null} El componente `CalendarEventView` o `null` si no hay un evento seleccionado.
  */
 export const CalendarEventView: React.FC = observer(() => {
-  const store = useStore();
+  const { calendarStore, eventsStore } = useStore();
 
-  if (!store.selectedEvent) return null;
+  if (!eventsStore.selectedEvent) return null;
 
   const handleEdit = useCallback(() => {
-    store.showEventForm = true;
-    store.showEventView = false;
-  }, [store]);
+    calendarStore.setShowEventForm(true);
+  }, [calendarStore]);
 
   const handleBack = useCallback(() => {
-    store.cleanSelectedEvent();
-    store.showEventView = false;
-  }, [store]);
+    eventsStore.cleanSelectedEvent();
+    calendarStore.setShowEventView(false);
+  }, [calendarStore, eventsStore]);
 
   const handleDelete = useCallback(() => {
-    store.deleteEvent();
-    store.showEventView = false;
-  }, [store]);
+    eventsStore.deleteEvent();
+    calendarStore.setShowEventView(false);
+  }, [calendarStore, eventsStore]);
 
   return (
     <>
@@ -52,25 +51,28 @@ export const CalendarEventView: React.FC = observer(() => {
         </Button>
       </div>
       <h2 data-testid="event-title" className="font-bold text-lg">
-        {store.selectedEvent.title}
+        {eventsStore.selectedEvent.title}
       </h2>
       <p className="text-sm text-red-500">
-        En {store.selectedEvent.location.name}
+        En {eventsStore.selectedEvent.location.name}
       </p>
       <p className="text-sm leading-relaxed  py-5">
         {format(
-          store.selectedEvent.startDateTime,
+          eventsStore.selectedEvent.startDateTime,
           "'Comienza el 'dd' de 'MMMM' del 'yyyy' desde las ' HH:mm'hrs '",
         )}
-        {format(store.selectedEvent.endDateTime, "'hasta las 'HH:mm'hrs'")}
+        {format(
+          eventsStore.selectedEvent.endDateTime,
+          "'hasta las 'HH:mm'hrs'",
+        )}
       </p>
       <p className="text-sm leading-relaxed font-bold">Descripción:</p>
       <p className="text-sm leading-relaxed pb-5 pt-2">
-        {store.selectedEvent.description}
+        {eventsStore.selectedEvent.description}
       </p>
       <Weather
-        locationId={store.selectedEvent.location.id}
-        date={store.selectedEvent.startDateTime}
+        locationId={eventsStore.selectedEvent.location.id}
+        date={eventsStore.selectedEvent.startDateTime}
       />
       <div className="flex w-full justify-end mt-10">
         <Button onClick={handleDelete} className="text-red-500">

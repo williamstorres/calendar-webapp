@@ -8,15 +8,8 @@ import {
   setMinutes,
 } from "date-fns";
 import { makeAutoObservable } from "mobx";
-import {
-  addNewEvent,
-  deleteEvent,
-  getMonthlyEvents,
-  updateEvent,
-} from "../services/eventsService";
-import { CalendarEventType } from "../types/CalendarEvent";
-import { CalendarType } from "../types/CalendarType";
-import { generateDateAsKey } from "../libs/date";
+import { Month } from "../types/CalendarType";
+import RootStore from "./rootStore";
 
 export enum Views {
   Month,
@@ -24,21 +17,21 @@ export enum Views {
   Day,
 }
 export default class CalendarStore {
+  root: RootStore;
   isLoading = false;
   showEventForm = false;
   selectedView = Views.Month;
   date = setMinutes(new Date(), 0);
-  events: Record<string, CalendarEventType[]> = {};
   //set utiliza un listado para en un futuro precargar por lo menos tres calendarios
   //el actual, el posterior y el siguiente, asi poder animar el cambio de un mes a otro
-  calendars: CalendarType[] = [];
+  calendars: Month[] = [];
   error: string = "";
-  selectedEvent: CalendarEventType | undefined;
   showEventView = false;
 
-  constructor() {
-    makeAutoObservable(this);
+  constructor(root: RootStore) {
+    this.root = root;
     this.calendars = [{ month: this.month, year: this.year }];
+    makeAutoObservable(this);
   }
 
   get day() {
@@ -70,32 +63,27 @@ export default class CalendarStore {
 
   setSelectedView(view: Views) {
     this.selectedView = view;
+    if (view === Views.Week) this.date = new Date();
   }
 
   setDate(date: Date) {
     this.date = date;
     this.calendars = [{ month: this.month, year: this.year }];
-    this.fethMonthlyEvents();
   }
 
   setIsLoading(isLoading: boolean) {
     this.isLoading = isLoading;
   }
 
-  setEvents(events: Record<string, CalendarEventType[]>) {
-    this.events = events;
-  }
   setShowEventForm(showEventFrom: boolean) {
     this.showEventForm = showEventFrom;
-    if (!showEventFrom) this.cleanSelectedEvent();
+    if (showEventFrom) this.setShowEventView(false);
   }
   setShowEventView(showEventView: boolean) {
     this.showEventView = showEventView;
+    if (showEventView) this.setShowEventForm(false);
   }
-  setSelectedEvent(event: CalendarEventType) {
-    this.selectedEvent = event;
-  }
-  setCalendars(calendars: CalendarType[]) {
+  setCalendars(calendars: Month[]) {
     this.calendars = calendars;
   }
 
@@ -124,109 +112,7 @@ export default class CalendarStore {
     this.setDate(new Date());
     this.setCalendars([{ month: this.month, year: this.year }]);
   }
-
-  getDayEvents(day: string) {
-    return this.events[day] ?? [];
+  setError(error: string) {
+    this.error = error;
   }
-
-  editEvent(event: CalendarEventType) {
-    this.selectedEvent = event;
-    this.setShowEventForm(true);
-  }
-
-  async saveEvent(event: CalendarEventType) {
-    if (this.selectedEvent?.id) {
-      await this.updateEvent({ ...event, id: this.selectedEvent.id });
-    } else {
-      await this.addNewEvent(event);
-    }
-    this.selectedEvent = undefined;
-    this.showEventForm = false;
-  }
-
-  cleanSelectedEvent() {
-    delete this.selectedEvent;
-  }
-
-  async fethMonthlyEvents() {
-    const _events = await this.loading(
-      getMonthlyEvents(this.date)
-        .then((response) => {
-          return {
-            ...response,
-            startDateTime: new Date(response.startDateTime),
-            endDateTime: new Date(response.endDateTime),
-          };
-        })
-        .catch((err) => {
-          console.error(err);
-          this.error = "Ha ocurrido un error al obtener los eventos";
-          return {} as Record<string, CalendarEventType[]>;
-        }),
-    );
-    this.setEvents(_events);
-  }
-
-  async addNewEvent(newEvent: CalendarEventType) {
-    this.events[generateDateAsKey(newEvent.startDateTime)]?.push(newEvent);
-    await this.loading(
-      addNewEvent(newEvent).catch((err) => {
-        console.error(err);
-        this.error = "Ha ocurrido un error al agregar el evento";
-      }),
-    );
-    this.fethMonthlyEvents();
-  }
-
-  updateEventInEvents(event: CalendarEventType) {
-    const eventsToUpdate = this.events;
-    for (const date in this.events) {
-      if (Array.isArray(eventsToUpdate[date])) {
-        eventsToUpdate[date] = this.events[date].filter(
-          (item) => item.id !== event.id,
-        );
-      }
-    }
-
-    const dateKey = generateDateAsKey(event.startDateTime);
-    if (!eventsToUpdate[dateKey]) eventsToUpdate[dateKey] = [];
-    eventsToUpdate[dateKey] = [...eventsToUpdate[dateKey], event];
-    this.setEvents(eventsToUpdate);
-  }
-
-  async updateEvent(event: CalendarEventType) {
-    //primero se actualiza en el listado de eventos, para que los cambios en el calendario sean instantaneos
-    this.updateEventInEvents(event);
-    await this.loading(
-      updateEvent(event).catch((err) => {
-        console.error(err);
-        this.error = "Ha ocurrido un error al actualizar el evento";
-      }),
-    );
-    this.fethMonthlyEvents();
-  }
-
-  async deleteEvent() {
-    if (!this.selectedEvent?.id) return;
-    await this.loading(
-      deleteEvent(this.selectedEvent.id).catch((err) => {
-        console.error(err);
-        this.error = "Ha ocurrido un error al eliminar el evento";
-      }),
-    );
-    this.cleanSelectedEvent();
-    this.fethMonthlyEvents();
-  }
-
-  loading = async <T>(prom: Promise<T>) => {
-    this.setIsLoading(true);
-    return prom.finally(() => {
-      this.setIsLoading(false);
-    });
-  };
-
-  hydrate = (initData: { events: Record<string, CalendarEventType[]> }) => {
-    this.events = initData.events;
-    return this;
-  };
 }

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
-    "test": "jest"
+    "test": "jest",
+    "e2e": "playwright test"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
@@ -33,6 +34,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
+    "react-toastify": "^10.0.6",
     "tailwind-merge": "^2.5.3",
     "zod": "^3.23.8"
   },
@@ -41,6 +43,7 @@
     "@playwright/test": "^1.48.1",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.13",
     "@types/lodash": "^4.17.10",
     "@types/node": "^20",

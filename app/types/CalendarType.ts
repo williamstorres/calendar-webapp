@@ -1,4 +1,4 @@
-export type CalendarType = {
+export type Month = {
   month: number;
   year: number;
 };

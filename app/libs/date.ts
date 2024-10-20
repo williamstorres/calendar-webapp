@@ -5,14 +5,12 @@ import {
   endOfMonth,
   endOfWeek,
   format,
-  getDayOfYear,
   setHours,
   setMinutes,
   startOfMonth,
   startOfWeek,
 } from "date-fns";
 import { formatDate } from "./format";
-import { DayOfMonth } from "../types/DayOfMonth";
 import { CalendarEventType } from "../types/CalendarEvent";
 import { calendarMinutesSteps, DateKeyFormat } from "../constants";
 
@@ -24,30 +22,19 @@ export const getDaysOfWeek = (date: Date) =>
     end: endOfWeek(date),
   });
 
-export const hoursOfDay = [
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-  22, 23,
-];
-
 export const generateDateAsKey = (date: Date) =>
   formatDate(date, DateKeyFormat);
 
 export const getCalendarWeeksWithDays = (
   month: number,
   year: number,
-): DayOfMonth[][] => {
+): Date[][] => {
   const firstDayOfTheMonth = new Date(year, month, 1);
   const start = startOfMonth(firstDayOfTheMonth);
   const end = endOfMonth(firstDayOfTheMonth);
   const weeks = eachWeekOfInterval({ start, end });
 
-  return weeks.map((weekStartDay) =>
-    getDaysOfWeek(weekStartDay).map((date) => ({
-      date: date,
-      dayOfMonth: date.getDate(),
-      dayOfYear: getDayOfYear(date),
-    })),
-  );
+  return weeks.map((weekStartDay) => getDaysOfWeek(weekStartDay));
 };
 
 //TODO refactorizar
