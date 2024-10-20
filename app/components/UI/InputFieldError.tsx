@@ -12,10 +12,12 @@ type InputFieldErrorProps = {
  * @param {InputFieldErrorProps} props - Propiedades del componente.
  * @returns {JSX.Element} Un elemento que muestra el mensaje de error si está presente.
  */
-export const InputFieldError: React.FC<InputFieldErrorProps> = ({ error }) => {
+export const InputFieldError: React.FC<InputFieldErrorProps> = ({
+  error,
+}: InputFieldErrorProps): JSX.Element => {
   return (
     <div className="w-full h-4">
-      <span className="text-xs text-red-500 w-full">
+      <span data-testid="error" className="text-xs text-red-500 w-full">
         {error && error.message}
       </span>
     </div>

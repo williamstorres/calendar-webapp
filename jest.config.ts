@@ -14,7 +14,7 @@ const config: Config = {
   testEnvironment: "jsdom",
   modulePathIgnorePatterns: ["<rootDir>/__tests__/e2e/"],
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/app/$1",
+    "^@/(.*)$": "<rootDir>/$1",
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };

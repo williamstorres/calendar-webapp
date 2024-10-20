@@ -17,7 +17,6 @@ import { getLocations } from "@/app/services/locationsService";
 import { useEventForm } from "@/app/hooks/useEventForm";
 import { observer } from "mobx-react-lite";
 import { toast } from "react-toastify";
-import { FormFields } from "./eventFormSchema";
 
 type LocationAutocomplete = Location & AutocompleteOption;
 
@@ -34,7 +33,7 @@ export const EventForm: React.FC = observer(() => {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useEventForm({
     selectedEvent: eventsStore.selectedEvent,
     initialDate: calendarStore.date,
@@ -73,14 +72,8 @@ export const EventForm: React.FC = observer(() => {
     [setValue],
   );
 
-  const handleSave = (formFields: FormFields) => {
-    if (isValid) return save(formFields);
-    toast.warning("Hay algunos errores en el formulario");
-    console.log(errors);
-  };
-
   return (
-    <form role="event-form" onSubmit={handleSubmit(handleSave)}>
+    <form role="event-form" onSubmit={handleSubmit(save)}>
       <div className="grid grid-cols-2 mt-0 w-full mb-8 items-center">
         <Button
           onClick={() => {

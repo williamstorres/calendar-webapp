@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 //import { getMonthlyEvents } from './app/services/eventsService'; // Ajusta la ruta según tu estructura
 
 // jest.mock("./app/services/eventsService", () => ({

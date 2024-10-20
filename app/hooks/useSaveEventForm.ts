@@ -27,7 +27,7 @@ export const useSaveEventForm = (location: Location) => {
       durationInMinutes: differenceInMinutes(endDateTime, startDateTime),
       color: "",
     };
-    console.log(eventToSave);
+
     eventsStore
       .saveEvent(eventToSave)
       .then(() => toast.success("Evento guardado con éxito"));
