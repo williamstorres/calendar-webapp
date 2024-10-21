@@ -16,8 +16,8 @@ import { useEventForm } from "@/app/hooks/useEventForm";
 import { observer } from "mobx-react-lite";
 import { toast } from "react-toastify";
 import { InputFieldGroup } from "../UI/InputFieldGroup";
-import { currentTimezone } from "@/app/constants";
 import { useStore } from "@/app/hooks/useStore";
+import { currentTimezone } from "@/app/libs/constants";
 
 export const EventForm: React.FC = observer(() => {
   const { eventsStore, calendarStore, loading } = useStore();

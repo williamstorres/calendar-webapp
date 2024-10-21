@@ -4,8 +4,8 @@ import { endOfDay, isWithinInterval } from "date-fns";
 import { generateDateAsKey } from "@/app/libs/date";
 import { formatTime } from "@/app/libs/format";
 import CalendarDay from "../CalendarDay";
-import { hoursOfDay } from "@/app/constants";
 import { useStore } from "@/app/hooks/useStore";
+import { hoursOfDay } from "@/app/libs/constants";
 
 type CaledarWeekProps = {
   daysOfWeek: Date[];

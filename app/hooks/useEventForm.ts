@@ -7,7 +7,7 @@ import {
   FormFields,
 } from "../components/EventForm/eventFormSchema";
 import { useForm } from "react-hook-form";
-import { currentTimezone } from "../constants";
+import { currentTimezone } from "../libs/constants";
 
 type UseEventFormParams = {
   selectedEvent: CalendarEventType | undefined;

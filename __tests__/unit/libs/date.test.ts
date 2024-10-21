@@ -1,4 +1,4 @@
-import { setTime } from "./date";
+import { setTime } from "@/app/libs/date";
 
 describe("date functions", () => {
   it("set time to date", () => {

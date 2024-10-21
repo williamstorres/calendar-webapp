@@ -1,9 +1,9 @@
 import { DragEndEvent } from "@dnd-kit/core";
 import { addMinutes, getHours, getMinutes, parse } from "date-fns";
-import { DateKeyFormat, PxInOneHour } from "../constants";
 import { getMinutesInSteps, setHoursAndMinutes } from "../libs/date";
 import { minutesInHour } from "date-fns/constants";
 import { useStore } from "./useStore";
+import { dateKeyFormat, pxInOneHour } from "../libs/constants";
 
 export const useMoveEventOnDrag = () => {
   const { eventsStore, calendarStore } = useStore();
@@ -39,7 +39,7 @@ export const useMoveEventOnDrag = () => {
     const { startDateTime, endDateTime } = selectedEvent;
 
     if (calendarStore.selectedViewIsMonth) {
-      const newDay = parse(event.over!.id as string, DateKeyFormat, new Date());
+      const newDay = parse(event.over!.id as string, dateKeyFormat, new Date());
       eventsStore.updateEvent({
         ...selectedEvent,
         startDateTime: setHoursAndMinutes(newDay)(getHours(startDateTime))(
@@ -55,13 +55,13 @@ export const useMoveEventOnDrag = () => {
     //en caso de que la vista seleccionada sea dia, event.over es undefined ya que no cambia de dia, por eso se debe utilizar currentDayId
     const newDate = parse(
       (event.over ? event.over.id : currentDayId) as string,
-      DateKeyFormat,
+      dateKeyFormat,
       new Date(),
     );
 
     //Los movimientos de horario son en rangos definidos en la constante CalendarMinutesSteps
     const minutesToMove = getMinutesInSteps(
-      Math.round((event.delta.y * minutesInHour) / PxInOneHour),
+      Math.round((event.delta.y * minutesInHour) / pxInOneHour),
     );
 
     const newStartDate = setHoursAndMinutes(newDate)(getHours(startDateTime))(

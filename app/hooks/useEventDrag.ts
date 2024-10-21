@@ -1,7 +1,7 @@
 import { MutableRefObject } from "react";
-import { WeekEventHeightInRem } from "../constants";
 import { getHours, getMinutes } from "date-fns";
 import { minutesInHour } from "date-fns/constants";
+import { weekEventHeightInRem } from "../libs/constants";
 
 type Transform = {
   x: number;
@@ -54,7 +54,7 @@ export const useCalendarEvent = ({
 };
 
 const calculateDistanceFromTopInRem = (startHour: number, startDate: Date) =>
-  WeekEventHeightInRem * (startHour + getMinutes(startDate) / minutesInHour);
+  weekEventHeightInRem * (startHour + getMinutes(startDate) / minutesInHour);
 
 const calculateHeightInRem = (durationInMinutes: number) =>
-  (WeekEventHeightInRem / minutesInHour) * durationInMinutes;
+  (weekEventHeightInRem / minutesInHour) * durationInMinutes;
