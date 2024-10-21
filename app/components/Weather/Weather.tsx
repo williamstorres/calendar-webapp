@@ -5,6 +5,7 @@ import { ArrowPathIcon } from "@heroicons/react/24/solid";
 type WeatherProps = {
   locationId: number;
   date: Date;
+  timezone: string;
 };
 /**
  * Componente `Weather` que muestra las condiciones climáticas para una ubicación y fecha específicas.
@@ -22,13 +23,16 @@ type WeatherProps = {
 export const Weather: React.FC<WeatherProps> = ({
   locationId,
   date,
+  timezone,
 }: {
   locationId: number;
   date: Date;
+  timezone: string;
 }): JSX.Element => {
   const { loading, weatherConditions } = useWeatherConditionsApi({
     location: locationId,
     date,
+    timezone,
   });
 
   return (

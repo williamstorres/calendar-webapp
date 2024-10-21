@@ -30,6 +30,7 @@ export const calendarEventsTable = pgTable("calendar_events", {
   description: text(),
   startDateTime: timestamp({ mode: "date" }).notNull(),
   endDateTime: timestamp({ mode: "date" }).notNull(),
+  timezone: varchar({ length: 255 }).notNull(),
   isAllDay: boolean().notNull().default(false),
   color: varchar({ length: 5 }),
   durationInMinutes: integer().notNull(),

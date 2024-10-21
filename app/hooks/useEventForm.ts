@@ -7,6 +7,7 @@ import {
   FormFields,
 } from "../components/EventForm/eventFormSchema";
 import { useForm } from "react-hook-form";
+import { currentTimezone } from "../constants";
 
 type UseEventFormParams = {
   selectedEvent: CalendarEventType | undefined;
@@ -20,14 +21,16 @@ export const useEventForm = ({
     ? {
         ...selectedEvent,
         location: selectedEvent.location.name,
+        timezone: selectedEvent.timezone,
         description: String(selectedEvent.description),
-        startTime: getTime(selectedEvent.startDateTime),
-        endTime: getTime(selectedEvent.endDateTime),
+        startTime: getTime(selectedEvent.startDateTime, selectedEvent.timezone),
+        endTime: getTime(selectedEvent.endDateTime, selectedEvent.timezone),
       }
     : {
         isAllDay: false,
         startTime: getTime(initialDate),
         endTime: getTime(addHours(initialDate, 1)),
+        timezone: currentTimezone,
       };
 
   return useForm<FormFields>({

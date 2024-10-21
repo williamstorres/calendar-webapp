@@ -2,16 +2,17 @@ import { firstLeft, isLeft, Left, Right } from "@/app/api/core/Either";
 import { CalendarEvent } from "../entities/CalendarEvent";
 import { SaveEvent } from "../ports/eventRepository";
 import { CreateEventSpec } from "../specs/CreateEventSpec";
-import { nanoid } from "nanoid";
 import { Logger } from "../ports/logger";
 import { differenceInMinutes } from "date-fns";
+import { GenerateId } from "../ports/idGenerator";
 
 type CreateEventDependencies = {
   logger: Logger;
   saveEvent: SaveEvent;
+  generateId: GenerateId;
 };
 const createEvent =
-  ({ logger, saveEvent }: CreateEventDependencies) =>
+  ({ logger, saveEvent, generateId }: CreateEventDependencies) =>
   async (newEvent: CalendarEvent) => {
     logger.debug("createEvent", newEvent);
 
@@ -20,7 +21,7 @@ const createEvent =
 
     return await saveEvent({
       ...newEvent,
-      id: nanoid(),
+      id: generateId(),
       durationInMinutes: differenceInMinutes(
         newEvent.endDateTime,
         newEvent.startDateTime,

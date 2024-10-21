@@ -14,7 +14,7 @@ export const DayOfWeekHeader = observer(({ day }: DayOfWeekHeaderProps) => {
   return (
     <span
       data-testid={isSelected && "active-day"}
-      className={isSelected ? "rounded-full bg-blue-600 p-1" : ""}
+      className={isSelected ? "rounded-full bg-secondary p-1" : ""}
     >
       {day.getDate()}
     </span>

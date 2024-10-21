@@ -2,8 +2,9 @@ import React, { useCallback } from "react";
 import { Button, ButtonType } from "../UI";
 import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
-import { format } from "date-fns";
 import Weather from "../Weather";
+import { TZDate } from "@date-fns/tz";
+import { formatDate } from "@/app/libs/format";
 
 /**
  * Componente `CalendarEventView` que muestra la vista detallada de un evento de calendario.
@@ -33,6 +34,10 @@ export const CalendarEventView: React.FC = observer(() => {
     calendarStore.setShowEventView(false);
   }, [calendarStore, eventsStore]);
 
+  const zoneStartDate = new TZDate(
+    eventsStore.selectedEvent.startDateTime,
+  ).withTimeZone(eventsStore.selectedEvent.timezone);
+
   return (
     <>
       <div className="grid grid-cols-2 mt-0 w-full mb-8 items-center">
@@ -57,14 +62,17 @@ export const CalendarEventView: React.FC = observer(() => {
         En {eventsStore.selectedEvent.location.name}
       </p>
       <p className="text-sm leading-relaxed  py-5">
-        {format(
-          eventsStore.selectedEvent.startDateTime,
+        {formatDate(
+          zoneStartDate,
           "'Comienza el 'dd' de 'MMMM' del 'yyyy' desde las ' HH:mm'hrs '",
+          eventsStore.selectedEvent.timezone,
         )}
-        {format(
+        {formatDate(
           eventsStore.selectedEvent.endDateTime,
           "'hasta las 'HH:mm'hrs'",
-        )}
+          eventsStore.selectedEvent.timezone,
+        )}{" "}
+        en {eventsStore.selectedEvent.timezone}
       </p>
       <p className="text-sm leading-relaxed font-bold">Descripción:</p>
       <p className="text-sm leading-relaxed pb-5 pt-2">
@@ -73,6 +81,7 @@ export const CalendarEventView: React.FC = observer(() => {
       <Weather
         locationId={eventsStore.selectedEvent.location.id}
         date={eventsStore.selectedEvent.startDateTime}
+        timezone={eventsStore.selectedEvent.timezone}
       />
       <div className="flex w-full justify-end mt-10">
         <Button onClick={handleDelete} className="text-red-500">

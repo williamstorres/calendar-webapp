@@ -8,6 +8,9 @@ import {
   updateEvent,
 } from "../services/eventsService";
 import { generateDateAsKey } from "../libs/date";
+import { pino } from "pino";
+
+const logger = pino();
 
 export default class EventsStore {
   root: RootStore;
@@ -56,7 +59,7 @@ export default class EventsStore {
             return this.events;
           })
           .catch((err) => {
-            console.error(err);
+            logger.error(err);
             this.root.calendarStore.setError(
               "Ha ocurrido un error al obtener los eventos",
             );
@@ -67,10 +70,12 @@ export default class EventsStore {
   }
 
   async addNewEvent(newEvent: CalendarEventType) {
-    this.events[generateDateAsKey(newEvent.startDateTime)]?.push(newEvent);
+    this.events[
+      generateDateAsKey(newEvent.startDateTime, newEvent.timezone)
+    ]?.push(newEvent);
     await this.root.loading(
       addNewEvent(newEvent).catch((err) => {
-        console.error(err);
+        logger.error(err);
         this.root.calendarStore.setError(
           "Ha ocurrido un error al agregar el evento",
         );
@@ -88,8 +93,7 @@ export default class EventsStore {
         );
       }
     }
-
-    const dateKey = generateDateAsKey(event.startDateTime);
+    const dateKey = generateDateAsKey(event.startDateTime, event.timezone);
     if (!eventsToUpdate[dateKey]) eventsToUpdate[dateKey] = [];
     eventsToUpdate[dateKey] = [...eventsToUpdate[dateKey], event];
     this.setEvents(eventsToUpdate);
@@ -100,7 +104,7 @@ export default class EventsStore {
     this.optimisticUpdateEvent(event);
     await this.root.loading(
       updateEvent(event).catch((err) => {
-        console.error(err);
+        logger.error(err);
         this.root.calendarStore.setError(
           "Ha ocurrido un error al actualizar el evento",
         );
@@ -110,16 +114,11 @@ export default class EventsStore {
   }
 
   optimisticDeleteEvent(event: CalendarEventType) {
-    // for (const key in this.events) {
-    //   if (key === generateDateAsKey(event.startDateTime))
-    // }
-    const index = this.events[generateDateAsKey(event.startDateTime)].findIndex(
-      (_event) => event.id === _event.id,
-    );
-    console.log(index);
+    const index = this.events[
+      generateDateAsKey(event.startDateTime, event.timezone)
+    ].findIndex((_event) => event.id === _event.id);
 
     this.events[generateDateAsKey(event.startDateTime)].splice(index, 1);
-    console.log(JSON.stringify(this.events));
   }
 
   async deleteEvent() {
@@ -127,7 +126,7 @@ export default class EventsStore {
     this.optimisticDeleteEvent(this.selectedEvent);
     await this.root.loading(
       deleteEvent(this.selectedEvent.id).catch((err) => {
-        console.error(err);
+        logger.error(err);
         this.root.calendarStore.setError(
           "Ha ocurrido un error al eliminar el evento",
         );

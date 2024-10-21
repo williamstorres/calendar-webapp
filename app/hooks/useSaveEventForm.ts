@@ -1,22 +1,18 @@
-import { tzOffset } from "@date-fns/tz";
-import { addDays, addMinutes, differenceInMinutes } from "date-fns";
+import { addDays, differenceInMinutes } from "date-fns";
 import { FormFields } from "../components/EventForm/eventFormSchema";
-import { setTime } from "../libs/date";
+import { fixTimezone, setTime } from "../libs/date";
 import { Location } from "@/app/api/domain/entities/CalendarEvent";
 import { useStore } from "../store/storeContext";
 import { toast } from "react-toastify";
 
-export const useSaveEventForm = (location: Location) => {
+export const useSaveEventForm = (location: Location, timezone: string) => {
   const { eventsStore } = useStore();
 
   const saveEvent = ({ date, startTime, endTime, ...data }: FormFields) => {
-    const timezoneOffSet = tzOffset("America/Santiago", date);
-    const dateWithTimezoneFixed = addMinutes(
-      date,
-      timezoneOffSet >= 0 ? timezoneOffSet : timezoneOffSet * -1,
-    );
-    const startDateTime = setTime(dateWithTimezoneFixed, startTime);
-    const endDateTime = setTime(dateWithTimezoneFixed, endTime);
+    const dateWithCorrectTimezone = fixTimezone(date, timezone);
+
+    const startDateTime = setTime(dateWithCorrectTimezone, startTime);
+    const endDateTime = setTime(dateWithCorrectTimezone, endTime);
 
     const eventToSave = {
       ...data,

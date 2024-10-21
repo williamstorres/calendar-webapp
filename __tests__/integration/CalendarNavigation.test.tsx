@@ -14,7 +14,7 @@ describe("Calendar", function () {
 
     const activeDay = screen.getByTestId("active-day");
 
-    expect(activeDay.textContent).toContain("19");
+    expect(activeDay.textContent).toContain("22");
   });
 
   it("select previous day", function () {
@@ -28,7 +28,7 @@ describe("Calendar", function () {
 
     const activeDay = screen.getByTestId("active-day");
 
-    expect(activeDay.textContent).toContain("17");
+    expect(activeDay.textContent).toContain("20");
   });
 
   it("select today", function () {
@@ -44,6 +44,6 @@ describe("Calendar", function () {
 
     const activeDay = screen.getByTestId("active-day");
 
-    expect(activeDay.textContent).toContain("18");
+    expect(activeDay.textContent).toContain("21");
   });
 });
