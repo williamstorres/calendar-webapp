@@ -12,7 +12,7 @@ export const LocationSchema = z.object({
 });
 export type Location = z.infer<typeof LocationSchema>;
 
-export const CalendarEvent = z.object({
+export const CalendarEventSchema = z.object({
   id: CalendarEventId,
   title: z.string(),
   location: LocationSchema,
@@ -24,7 +24,7 @@ export const CalendarEvent = z.object({
   color: z.string().nullable().default(null),
   durationInMinutes: z.number().default(0),
 });
-export type CalendarEvent = Readonly<z.infer<typeof CalendarEvent>>;
+export type CalendarEvent = Readonly<z.infer<typeof CalendarEventSchema>>;
 
 export const GetEventsFilters = z.object({
   month: z.coerce.number(),

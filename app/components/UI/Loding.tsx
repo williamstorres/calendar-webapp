@@ -9,7 +9,9 @@ type LoadingProps = {
  * @param {LoadingProps} props - Propiedades del componente.
  * @returns {JSX.Element} Un elemento que representa el indicador de carga.
  */
-export const Loading: React.FC<LoadingProps> = ({ loading }) => {
+export const Loading: React.FC<LoadingProps> = ({
+  loading,
+}: LoadingProps): JSX.Element => {
   return (
     <div className="w-full h-[2px] bg-background relative overflow-hidden">
       {loading && (

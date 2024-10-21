@@ -10,9 +10,9 @@ import { connection } from "./db/connection";
 import { calendarEventsTable } from "./db/schema";
 import { and, eq, getTableColumns, gte, lte } from "drizzle-orm";
 import {
-  CalendarEvent,
   CalendarEventId,
   GetEventsFilters,
+  CalendarEvent,
 } from "../domain/entities/CalendarEvent";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

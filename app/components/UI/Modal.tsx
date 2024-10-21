@@ -1,10 +1,10 @@
 "use client";
-import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
 import EventForm from "../EventForm";
 import { CalendarEventView } from "../CalendarEventView/CalendarEventView";
 import { twJoin } from "tailwind-merge";
 import { useEffect, useState } from "react";
+import { useStore } from "@/app/hooks/useStore";
 
 /**
  * Componente `Modal` que muestra un formulario de evento o una vista de evento.

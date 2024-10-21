@@ -36,8 +36,11 @@ test.describe("Calendar Events", () => {
   test("Update title and date to an event", async ({ page }) => {
     const newDate = faker.date.soon();
     const newEventName = faker.company.buzzPhrase();
-
     await page.getByTestId("event").first().click();
+
+    await page.waitForTimeout(2000);
+
+    await page.getByTestId("event").first().click({ force: true });
 
     await page.getByRole("button", { name: "Editar" }).click();
 
@@ -50,16 +53,26 @@ test.describe("Calendar Events", () => {
 
     await page.getByRole("button", { name: "Guardar" }).click();
 
+    await page.getByRole("button", { name: "MEs" }).click();
+    await page.waitForTimeout(2000);
+
     await expect(
       page.getByRole("button", { name: newEventName }).first(),
     ).toBeVisible();
   });
 
   test("Delete event", async ({ page }) => {
+    await page.getByTestId("event").first().click();
+
+    await page.waitForTimeout(2000);
+
     await page.getByTestId("event").last().click();
 
     const eventName = await page.getByTestId("event-title").textContent();
     await page.getByRole("button", { name: "Eliminar" }).click();
+
+    await page.getByRole("button", { name: "Mes" }).click();
+    await page.waitForTimeout(2000);
 
     await expect(
       page.getByRole("button", { name: eventName! }),

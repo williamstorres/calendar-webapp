@@ -63,7 +63,6 @@ export default class CalendarStore {
 
   setSelectedView(view: Views) {
     this.selectedView = view;
-    if (view === Views.Week) this.date = new Date();
   }
 
   setDate(date: Date) {
@@ -114,5 +113,14 @@ export default class CalendarStore {
   }
   setError(error: string) {
     this.error = error;
+  }
+  handleClickOnDay(date: Date) {
+    if (this.selectedViewIsMonth) {
+      this.setSelectedView(Views.Day);
+      this.setDate(date);
+      return;
+    }
+    this.setDate(date);
+    this.setShowEventForm(true);
   }
 }

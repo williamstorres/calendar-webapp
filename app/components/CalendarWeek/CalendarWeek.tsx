@@ -1,24 +1,24 @@
 import { observer } from "mobx-react-lite";
-import { useStore } from "@/app/store/storeContext";
 import { twJoin } from "tailwind-merge";
 import { endOfDay, isWithinInterval } from "date-fns";
 import { generateDateAsKey } from "@/app/libs/date";
 import { formatTime } from "@/app/libs/format";
 import CalendarDay from "../CalendarDay";
-import { hoursOfDay } from "@/app/constants";
+import { useStore } from "@/app/hooks/useStore";
+import { hoursOfDay } from "@/app/libs/constants";
+import { motion } from "framer-motion";
 
 type CaledarWeekProps = {
   daysOfWeek: Date[];
 };
 /**
- * Componente `CalendarWeek` que renderiza la vista semanal del calendario.
+ * CalendarWeek component displays a week view of the calendar.
+ * It shows the days of the week along with the events for each day.
+ * It hides the week if not in the appropriate view or if the week
+ * is not selected.
  *
- * Este componente muestra los días de la semana y, dependiendo de la vista seleccionada,
- * puede mostrar los días del mes o las horas del calendario.
- *
- * @param {Object} props - Las propiedades del componente.
- * @param {DayOfMonth[]} props.daysOfWeek - Un arreglo de objetos que representan los días del mes.
- * @returns {JSX.Element} Un elemento que representa la vista semanal del calendario.
+ * @param {CaledarWeekProps} props - The component props.
+ * @returns {JSX.Element | null} The rendered component or null if the week should not be shown.
  */
 export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
   ({ daysOfWeek }) => {
@@ -44,9 +44,11 @@ export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
     if (!calendarStore.selectedViewIsMonth && !showWeek) return null;
 
     return (
-      <div
+      <motion.div
+        layout
+        transition={{ duration: 0.3 }}
         className={twJoin(
-          "w-screen bg-primary h-full",
+          "w-screen bg-primary h-full transition-opacity duration-300 opacity-100",
           calendarStore.selectedViewIsMonth && "border-t-2 border-zinc-600",
           !calendarStore.selectedViewIsMonth && "flex flex-row",
         )}
@@ -69,7 +71,7 @@ export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
             return <CalendarDay key={key} day={day} events={events} />;
           })}
         </div>
-      </div>
+      </motion.div>
     );
   },
 );

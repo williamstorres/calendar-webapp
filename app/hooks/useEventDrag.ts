@@ -1,7 +1,7 @@
 import { MutableRefObject } from "react";
-import { WeekEventHeightInRem } from "../constants";
 import { getHours, getMinutes } from "date-fns";
 import { minutesInHour } from "date-fns/constants";
+import { weekEventHeightInRem } from "../libs/constants";
 
 type Transform = {
   x: number;
@@ -18,6 +18,27 @@ type UseCalendarEventType = {
   selectedViewIsMonth: boolean;
   selectedViewIsDay: boolean;
 };
+/**
+ * Hook que calcula las propiedades de estilo y dimensiones para un evento en el calendario a medida que este se mueve mediante drag a drop
+ *
+ * @param {UseCalendarEventType} param0 - Propiedades para el evento del calendario.
+ * @returns {{ style: React.CSSProperties | undefined, height: number, width: number, top: number }} Un objeto que contiene:
+ *  - `style`: Propiedades de estilo CSS para la transformación del evento.
+ *  - `height`: Altura del evento en rem.
+ *  - `width`: Ancho del evento como un porcentaje basado en el número de eventos que se superponen.
+ *  - `top`: Distancia desde la parte superior en rem.
+ *
+ * @example
+ * const { style, height, width, top } = useCalendarEvent({
+ *   transform: { x: 10, y: 20, scaleX: 1, scaleY: 1 },
+ *   eventDurationInMinutes: 60,
+ *   overlaping: 2,
+ *   startDateTime: new Date(),
+ *   node: useRef(null),
+ *   selectedViewIsMonth: false,
+ *   selectedViewIsDay: true,
+ * });
+ */
 export const useCalendarEvent = ({
   transform,
   eventDurationInMinutes,
@@ -26,7 +47,12 @@ export const useCalendarEvent = ({
   node,
   selectedViewIsMonth,
   selectedViewIsDay,
-}: UseCalendarEventType) => {
+}: UseCalendarEventType): {
+  style: React.CSSProperties | undefined;
+  height: number;
+  width: number;
+  top: number;
+} => {
   const deltaY = (node: MutableRefObject<HTMLElement | null>) =>
     (node.current!.offsetHeight + 2) / 4;
   const deltaX = (node: MutableRefObject<HTMLElement | null>) =>
@@ -54,7 +80,7 @@ export const useCalendarEvent = ({
 };
 
 const calculateDistanceFromTopInRem = (startHour: number, startDate: Date) =>
-  WeekEventHeightInRem * (startHour + getMinutes(startDate) / minutesInHour);
+  weekEventHeightInRem * (startHour + getMinutes(startDate) / minutesInHour);
 
 const calculateHeightInRem = (durationInMinutes: number) =>
-  (WeekEventHeightInRem / minutesInHour) * durationInMinutes;
+  (weekEventHeightInRem / minutesInHour) * durationInMinutes;

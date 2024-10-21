@@ -12,6 +12,14 @@ type AutocompleteProps = React.ComponentPropsWithoutRef<"input"> & {
   fetchOptions: (query: string) => Promise<unknown[]>;
   renderOption: (value: unknown) => React.ReactNode;
 };
+/**
+ * Componente Autocomplete permite a los usuarios buscar y seleccionar opciones de un conjunto de datos.
+ * Proporciona un campo de entrada y una lista de opciones sugeridas que se muestran en función de la consulta del usuario.
+ *
+ * @param {AutocompleteProps} props - Las propiedades del componente.
+ * @param {React.Ref<HTMLInputElement>} ref - Referencia al elemento input.
+ * @returns {JSX.Element} El componente Autocomplete renderizado.
+ */
 export const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
   function Autocomplete(
     { children, name, setValue, error, fetchOptions, onBlur, renderOption },

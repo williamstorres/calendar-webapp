@@ -7,6 +7,9 @@ type GetLocationsDependencies = {
   logger: Logger;
   getLocations: GetLocations;
 };
+/**
+ * Caso de uso para obtener ubicaciones según un criterio de búsqueda.
+ */
 const getLocationsUseCase =
   ({ logger, getLocations }: GetLocationsDependencies) =>
   async ({ query }: GetLocationsFilters) => {

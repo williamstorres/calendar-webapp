@@ -16,24 +16,43 @@ import { CalendarEventType } from "../types/CalendarEvent";
 import {
   calendarMinutesSteps,
   currentTimezone,
-  DateKeyFormat,
-} from "../constants";
+  dateKeyFormat,
+  timeDivisor,
+} from "./constants";
 import { TZDate, tzOffset } from "@date-fns/tz";
 import { UTCDate } from "@date-fns/utc";
 
-export const TimeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-export const getDaysOfWeek = (date: Date) =>
+/**
+ * Devuelve los días de la semana de la fecha proporcionada.
+ *
+ * @param {Date} date - Fecha para calcular la semana.
+ * @returns {Date[]} - Array con los días de la semana.
+ */
+export const getDaysOfWeek = (date: Date): Date[] =>
   eachDayOfInterval({
     start: startOfWeek(date),
     end: endOfWeek(date),
   });
 
+/**
+ * Genera una cadena que representa la fecha como clave en un formato específico.
+ *
+ * @param {Date} date - Fecha a formatear como clave.
+ * @param {string} [timezone=currentTimezone] - Zona horaria a utilizar.
+ * @returns {string} - Fecha formateada como clave.
+ */
 export const generateDateAsKey = (
   date: Date,
   timezone: string = currentTimezone,
-) => formatDate(date, DateKeyFormat, timezone);
+): string => formatDate(date, dateKeyFormat, timezone);
 
+/**
+ * Devuelve un array bidimensional con las semanas y días del mes especificado.
+ *
+ * @param {number} month - Mes del calendario (0 para enero, 11 para diciembre).
+ * @param {number} year - Año del calendario.
+ * @returns {Date[][]} - Array bidimensional donde cada subarray contiene los días de una semana.
+ */
 export const getCalendarWeeksWithDays = (
   month: number,
   year: number,
@@ -46,12 +65,17 @@ export const getCalendarWeeksWithDays = (
   return weeks.map((weekStartDay) => getDaysOfWeek(weekStartDay));
 };
 
-//TODO refactorizar
-// return cuantity of overlaping events and the max duration
+/**
+ * Cuenta la cantidad de eventos que se solapan con el evento dado.
+ *
+ * @param {CalendarEventType} event - Evento de referencia.
+ * @param {CalendarEventType[]} events - Lista de eventos para comparar.
+ * @returns {number} - Cantidad de eventos que se solapan.
+ */
 export const countEventsOverlaping = (
   event: CalendarEventType,
   events: CalendarEventType[],
-) => {
+): number => {
   let overlaping = 0;
   events.forEach((eventToCompare) => {
     if (
@@ -69,25 +93,57 @@ export const countEventsOverlaping = (
   return overlaping;
 };
 
-const TimeDivisor = ":";
-export const setTime = (date: Date | UTCDate | TZDate, time: string) => {
+/**
+ * Establece las horas y minutos de una fecha basándose en una cadena de tiempo en formato HH:mm.
+ *
+ * @param {Date | UTCDate | TZDate} date - Objeto de fecha.
+ * @param {string} time - Tiempo en formato HH:mm.
+ * @returns {Date} - Objeto de fecha con el tiempo ajustado.
+ */
+export const setTime = (date: Date | UTCDate | TZDate, time: string): Date => {
   if (!time) return date;
-  const [hours, minutes] = time.split(TimeDivisor).map((num) => Number(num));
+  const [hours, minutes] = time.split(timeDivisor).map((num) => Number(num));
   return setMinutes(setHours(date, hours), minutes);
 };
 
-export const getTime = (date: Date, timezone?: string) => {
+/**
+ * Devuelve la hora de una fecha en formato HH:mm.
+ *
+ * @param {Date} date - Objeto de fecha.
+ * @param {string} [timezone] - Zona horaria opcional.
+ * @returns {string} - Hora en formato HH:mm.
+ */
+export const getTime = (date: Date, timezone?: string): string => {
   return formatDate(date, "HH:mm", timezone);
 };
 
+/**
+ * Función curried que establece las horas y minutos de una fecha.
+ *
+ * @param {Date} date - Objeto de fecha.
+ * @returns {function(number): function(number): Date} - Función curried para establecer horas y minutos.
+ */
 export const setHoursAndMinutes =
   (date: Date) => (hours: number) => (minutes: number) =>
     setMinutes(setHours(date, hours), minutes);
 
-export const getMinutesInSteps = (minutes: number) =>
+/**
+ * Redondea los minutos a los pasos definidos en `calendarMinutesSteps`.
+ *
+ * @param {number} minutes - Minutos a redondear.
+ * @returns {number} - Minutos redondeados al paso más cercano.
+ */
+export const getMinutesInSteps = (minutes: number): number =>
   Math.round(minutes / calendarMinutesSteps) * calendarMinutesSteps;
 
-export const fixTimezone = (date: Date, timezone: string) => {
+/**
+ * Corrige la zona horaria de una fecha basándose en el desfase de la zona horaria proporcionada.
+ *
+ * @param {Date} date - Objeto de fecha a corregir.
+ * @param {string} timezone - Zona horaria a utilizar.
+ * @returns {TZDate} - Nueva fecha con la zona horaria corregida.
+ */
+export const fixTimezone = (date: Date, timezone: string): TZDate => {
   const timezoneOffSet = tzOffset(currentTimezone, date);
   const dateWithTimezoneFixed = addMinutes(
     date,

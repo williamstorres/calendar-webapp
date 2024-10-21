@@ -8,6 +8,9 @@ type GetEventsDependencies = {
   logger: Logger;
   getEvents: GetEvents;
 };
+/**
+ * Obtiene eventos filtrados por mes y año, y los agrupa por fecha de inicio.
+ */
 const getEvents =
   ({ logger, getEvents }: GetEventsDependencies) =>
   async ({ month, year }: GetEventsFilters) => {

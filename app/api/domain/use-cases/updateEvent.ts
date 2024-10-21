@@ -8,6 +8,9 @@ type UpdateEventDependencies = {
   logger: Logger;
   updateEvent: UpdateEvent;
 };
+/**
+ * Caso de uso para actualizar un evento del calendario.
+ */
 const updateEvent =
   ({ logger, updateEvent }: UpdateEventDependencies) =>
   async (event: CalendarEvent) => {

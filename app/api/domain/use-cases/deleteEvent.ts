@@ -7,6 +7,9 @@ type DeleteEventDependencies = {
   logger: Logger;
   deleteEvent: DeleteEvent;
 };
+/**
+ * Elimina un evento según el ID proporcionado. La eliminación es lógica
+ */
 const deleteEvent =
   ({ logger, deleteEvent }: DeleteEventDependencies) =>
   async (id: CalendarEventId) => {

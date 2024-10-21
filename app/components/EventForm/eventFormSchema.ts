@@ -1,4 +1,5 @@
-import { setTime, TimeRegex } from "@/app/libs/date";
+import { timeRegex } from "@/app/libs/constants";
+import { setTime } from "@/app/libs/date";
 import { isAfter, addDays } from "date-fns";
 import { z } from "zod";
 
@@ -13,11 +14,11 @@ export const eventFormSchema = z
     startTime: z
       .string()
       .min(1, "Debes ingresar la hora de inicio")
-      .regex(TimeRegex),
+      .regex(timeRegex),
     endTime: z
       .string()
       .min(1, "Debes ingresar la hora de termino")
-      .regex(TimeRegex),
+      .regex(timeRegex),
   })
   .refine(
     (data) => {

@@ -9,6 +9,7 @@ import {
 } from "../services/eventsService";
 import { generateDateAsKey } from "../libs/date";
 import { pino } from "pino";
+import { CalendarEventSchema } from "../api/domain/entities/CalendarEvent";
 
 const logger = pino();
 
@@ -26,7 +27,7 @@ export default class EventsStore {
     this.events = events;
   }
   setSelectedEvent(event: CalendarEventType) {
-    this.selectedEvent = event;
+    this.selectedEvent = CalendarEventSchema.parse(event);
   }
   getDayEvents(day: string) {
     return this.events[day] ?? [];

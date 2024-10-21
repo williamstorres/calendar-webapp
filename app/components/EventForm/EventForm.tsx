@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSaveEventForm } from "@/app/hooks/useSaveEventForm";
 import { format } from "date-fns";
-import { useStore } from "@/app/store/storeContext";
 import {
   Switch,
   Autocomplete,
@@ -17,18 +16,25 @@ import { useEventForm } from "@/app/hooks/useEventForm";
 import { observer } from "mobx-react-lite";
 import { toast } from "react-toastify";
 import { InputFieldGroup } from "../UI/InputFieldGroup";
-import { currentTimezone } from "@/app/constants";
+import { useStore } from "@/app/hooks/useStore";
+import { currentTimezone } from "@/app/libs/constants";
 
+/**
+ * Componente EventForm permite a los usuarios crear o editar un evento.
+ * Proporciona campos para título, descripción, ubicación, fecha, hora
+ * y si el evento es todo el día o no. Los usuarios también pueden eliminar
+ * el evento seleccionado si está disponible.
+ *
+ * @returns {JSX.Element} El componente EventForm renderizado.
+ */
 export const EventForm: React.FC = observer(() => {
   const { eventsStore, calendarStore, loading } = useStore();
-
   const [selectedTimezone, setSelectedTimezone] = useState(
     eventsStore.selectedEvent?.timezone ?? currentTimezone,
   );
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     eventsStore.selectedEvent?.location as Location,
   );
-
   const {
     register,
     handleSubmit,
@@ -39,7 +45,6 @@ export const EventForm: React.FC = observer(() => {
     selectedEvent: eventsStore.selectedEvent,
     initialDate: calendarStore.date,
   });
-
   const save = useSaveEventForm(selectedLocation as Location, selectedTimezone);
 
   const isAllDay = watch("isAllDay");
@@ -178,15 +183,17 @@ export const EventForm: React.FC = observer(() => {
         </InputField>
       </InputFieldGroup>
       {eventsStore.selectedEvent?.id && (
-        <Button
-          onClick={() => {
-            eventsStore.deleteEvent();
-            toast.success("Evento eliminado");
-          }}
-          className="text-red-500 justify-self-end"
-        >
-          Eliminar
-        </Button>
+        <div className="flex w-full justify-end">
+          <Button
+            onClick={() => {
+              eventsStore.deleteEvent();
+              toast.success("Evento eliminado");
+            }}
+            className="text-red-500"
+          >
+            Eliminar
+          </Button>
+        </div>
       )}
     </form>
   );

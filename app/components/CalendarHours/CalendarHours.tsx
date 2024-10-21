@@ -1,5 +1,5 @@
-import { hoursOfDay } from "@/app/constants";
-import { useStore } from "@/app/store/storeContext";
+import { useStore } from "@/app/hooks/useStore";
+import { hoursOfDay } from "@/app/libs/constants";
 import { isToday, setHours } from "date-fns";
 import { observer } from "mobx-react-lite";
 
@@ -7,6 +7,16 @@ type CalendarHours = {
   children: React.ReactNode;
   day: Date;
 };
+/**
+ * Componente que muestra las horas del día en el calendario.
+ * Permite al usuario agregar un nuevo evento al hacer clic en una hora específica.
+ *
+ * @component
+ * @param {CalendarHours} props - Las propiedades del componente.
+ * @param {React.ReactNode} props.children - Los elementos secundarios que se renderizarán dentro del componente.
+ * @param {Date} props.day - La fecha del día para el cual se muestran las horas.
+ * @returns {JSX.Element} Un elemento que representa las horas del día en el calendario.
+ */
 export const CalendarHours: React.FC<CalendarHours> = observer(
   ({ children, day }) => {
     const { calendarStore } = useStore();

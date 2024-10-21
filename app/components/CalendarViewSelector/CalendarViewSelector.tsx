@@ -1,17 +1,14 @@
-"use client";
+import { useStore } from "@/app/hooks/useStore";
 import { Views } from "@/app/store/calendarStore";
-import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
 import { twJoin } from "tailwind-merge";
 
 /**
- * Componente `CalendarViewSelector` que permite al usuario seleccionar la vista
- * del calendario entre Mes, Semana o Día.
+ * CalendarViewSelector component allows users to select the calendar view
+ * (Month, Week, or Day). It updates the selected view in the calendar store
+ * when a label is clicked.
  *
- * Este componente utiliza el estado global del store para gestionar la vista
- * seleccionada y actualizarla cuando el usuario interactúa con las etiquetas.
- *
- * @returns {JSX.Element} El selector de vista del calendario.
+ * @returns {JSX.Element} The rendered component containing view selection labels.
  */
 export const CalendarViewSelector: React.FC = observer(() => {
   const { calendarStore } = useStore();
@@ -24,6 +21,7 @@ export const CalendarViewSelector: React.FC = observer(() => {
     <div className="flex justify-center mt-3 mb-5 w-full">
       <div className="w-max bg-zinc-900 rounded-full relative gap-5">
         <label
+          role="button"
           onClick={() => calendarStore.setSelectedView(Views.Month)}
           className={twJoin(
             baseLabelStyle,
@@ -33,6 +31,7 @@ export const CalendarViewSelector: React.FC = observer(() => {
           Mes
         </label>
         <label
+          role="button"
           onClick={() => calendarStore.setSelectedView(Views.Week)}
           className={twJoin(
             baseLabelStyle,
@@ -42,6 +41,7 @@ export const CalendarViewSelector: React.FC = observer(() => {
           Semana
         </label>
         <label
+          role="button"
           onClick={() => calendarStore.setSelectedView(Views.Day)}
           className={twJoin(
             baseLabelStyle,

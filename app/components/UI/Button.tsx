@@ -25,7 +25,7 @@ export const Button: React.FC<ButtonProps> = ({
   onClick,
   className,
   disabled,
-}) => {
+}: ButtonProps): JSX.Element => {
   return (
     <button
       className={twMerge("h-8 disabled:text-opacity-50", className)}

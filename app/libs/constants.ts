@@ -1,11 +1,11 @@
-export const WeekEventHeightInRem = 5;
-export const DateKeyFormat = "yyyyMMdd";
-export const PxInOneRem = parseFloat(
+export const weekEventHeightInRem = 5;
+export const dateKeyFormat = "yyyyMMdd";
+export const pxInOneRem = parseFloat(
   typeof window === "undefined"
     ? "16"
     : getComputedStyle(document.documentElement).fontSize,
 );
-export const PxInOneHour = WeekEventHeightInRem * PxInOneRem;
+export const pxInOneHour = weekEventHeightInRem * pxInOneRem;
 export const calendarMinutesSteps = 15;
 export const daysOfTheWeekNames = [
   "Lunes",
@@ -22,3 +22,11 @@ export const hoursOfDay = [
 ];
 
 export const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+/**
+ * Expresión regular para validar tiempos en formato HH:mm (24 horas).
+ * @type {RegExp}
+ */
+export const timeRegex: RegExp = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+export const timeDivisor = ":";

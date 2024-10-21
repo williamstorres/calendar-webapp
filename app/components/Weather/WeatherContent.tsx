@@ -23,18 +23,19 @@ export const WeatherContent: React.FC<WeatherContentProps> = ({
   weatherCondition: WeatherCondition;
 }): JSX.Element => {
   const dayOrNight = weatherCondition.condition.is_day ? "day" : "night";
-  const weatherDescription = getCondition(weatherCondition.condition.code)[
-    dayOrNight
-  ];
+  const condition = getCondition(weatherCondition.condition.code);
+
   return (
     <>
       <div className="flex flex-row justify-end items-center ">
-        <p className="text-lg font-semibold">{weatherDescription}</p>
+        <p className="text-lg font-semibold">
+          {condition && condition[dayOrNight]}
+        </p>
         <img
           src={`https:${weatherCondition.condition.icon}`}
           width={64}
           height={64}
-          alt={weatherDescription}
+          alt={condition && condition[dayOrNight]}
         />
       </div>
       <p className="text-lg font-semibold text-right">

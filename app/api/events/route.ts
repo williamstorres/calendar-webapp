@@ -6,7 +6,7 @@ import {
 } from "@/app/api/adapters/eventPostgresRepository";
 import { isLeft } from "@/app/api/core/Either";
 import {
-  CalendarEvent,
+  CalendarEventSchema,
   GetEventsFilters,
 } from "@/app/api/domain/entities/CalendarEvent";
 import createEvent from "@/app/api/domain/use-cases/createEvent";
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: Request) {
-  const { success, data, error } = CalendarEvent.safeParse(
+  const { success, data, error } = CalendarEventSchema.safeParse(
     await request.json(),
   );
   if (!success) return Response.json(error, { status: 400 });
@@ -67,7 +67,7 @@ export async function PUT(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
   if (id === null) return Response.json({}, { status: 400 });
 
-  const { success, data, error } = CalendarEvent.safeParse(
+  const { success, data, error } = CalendarEventSchema.safeParse(
     await request.json(),
   );
   if (!success) return Response.json(error, { status: 400 });

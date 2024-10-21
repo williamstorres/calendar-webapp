@@ -14,6 +14,10 @@ type GetWeatherInfoDependencies = {
   logger: Logger;
   getWeather: GetWeather;
 };
+/**
+ * Obtiene la información del clima según la ubicación, fecha y zona horaria especificadas.
+ *
+ */
 const getWeatherInfo =
   ({ logger, getWeather }: GetWeatherInfoDependencies) =>
   async ({ location, date, timezone }: GetWeatherFilters) => {

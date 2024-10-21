@@ -7,16 +7,31 @@ import {
   FormFields,
 } from "../components/EventForm/eventFormSchema";
 import { useForm } from "react-hook-form";
-import { currentTimezone } from "../constants";
+import { currentTimezone } from "../libs/constants";
 
 type UseEventFormParams = {
   selectedEvent: CalendarEventType | undefined;
   initialDate: Date;
 };
+/**
+ * Hook que maneja la lógica del formulario de eventos del calendario y la implementación de react-hook-form
+ *
+ * Este hook utiliza react-hook-form para manejar la validación y el estado del formulario,
+ * y utiliza un esquema Zod para la validación de los datos del evento.
+ *
+ * @param {UseEventFormParams} param0 - Parámetros para inicializar el formulario del evento.
+ * @returns {ReturnType<typeof useForm<FormFields>>} Un objeto que contiene las funciones y propiedades del formulario.
+ *
+ * @example
+ * const { register, handleSubmit, formState } = useEventForm({
+ *   selectedEvent: myEvent,
+ *   initialDate: new Date(),
+ * });
+ */
 export const useEventForm = ({
   selectedEvent,
   initialDate,
-}: UseEventFormParams) => {
+}: UseEventFormParams): ReturnType<typeof useForm<FormFields>> => {
   const defaultValues = selectedEvent
     ? {
         ...selectedEvent,

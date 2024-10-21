@@ -1,16 +1,26 @@
-import { useStore } from "@/app/store/storeContext";
 import { CalendarEventType } from "@/app/types/CalendarEvent";
 import { observer } from "mobx-react-lite";
 import { twJoin } from "tailwind-merge";
 import { useDraggable } from "@dnd-kit/core";
 import { generateDateAsKey } from "@/app/libs/date";
 import { useCalendarEvent } from "@/app/hooks/useEventDrag";
+import { useStore } from "@/app/hooks/useStore";
 
 type CalendarEventProps = {
   event: CalendarEventType;
   overlaping: number;
   index: number;
 };
+/**
+ * Componente que representa un evento en el calendario.
+ *
+ * Este componente permite la representación visual de un evento y
+ * su interacción para poder ser arrastrado y soltado.
+ *
+ * @component
+ * @param {CalendarEventProps} props - Las propiedades del componente.
+ * @returns {JSX.Element} El componente del evento del calendario.
+ */
 export const CalendarEvent: React.FC<CalendarEventProps> = observer(
   ({ event, overlaping, index }) => {
     const { calendarStore } = useStore();
@@ -36,6 +46,12 @@ export const CalendarEvent: React.FC<CalendarEventProps> = observer(
       selectedViewIsDay: calendarStore.selectedViewIsDay,
     });
 
+    const styleHeight = !calendarStore.selectedViewIsMonth
+      ? {
+          height: `${height}rem`,
+        }
+      : undefined;
+
     return (
       <div
         data-testid="event"
@@ -44,16 +60,17 @@ export const CalendarEvent: React.FC<CalendarEventProps> = observer(
         {...attributes}
         style={{
           ...style,
+          ...styleHeight,
           top: `${top}rem`,
           left:
             overlaping > 1 ? `calc((100% / ${overlaping}) * ${index})` : "auto",
-          height: !calendarStore.selectedViewIsMonth ? `${height}rem` : "auto",
           width: `${width}%`,
         }}
         className={twJoin(
           "bg-green-500 px-1 rounded-md overflow-hidden text-primary box-border shadow-sm border z-[100]",
           !calendarStore.selectedViewIsMonth && "absolute",
           calendarStore.selectedViewIsDay ? "text-xs" : "text-xxs",
+          calendarStore.selectedViewIsMonth && "max-h-4",
         )}
       >
         {event.title}
