@@ -1,7 +1,6 @@
 "use client";
 import CalendarMonthView from "../CalendarMonthView";
 import { observer } from "mobx-react-lite";
-import { useStore } from "@/app/store/storeContext";
 import CalendarsContainer from "../CalendarsContainer";
 import { Month } from "@/app/types/CalendarType";
 import { PlusIcon } from "@heroicons/react/24/solid";
@@ -10,6 +9,7 @@ import { Loading } from "../UI";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useStore } from "@/app/hooks/useStore";
 
 export const Calendar: React.FC = observer(() => {
   const { eventsStore, calendarStore } = useStore();

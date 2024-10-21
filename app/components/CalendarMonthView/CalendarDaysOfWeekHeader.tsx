@@ -1,10 +1,10 @@
 import { daysOfTheWeekNames } from "@/app/constants";
 import { getDaysOfWeek } from "@/app/libs/date";
 import { Views } from "@/app/store/calendarStore";
-import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
 import { twJoin } from "tailwind-merge";
 import { DayOfWeekHeader } from "./DayOfWeekHeader";
+import { useStore } from "@/app/hooks/useStore";
 
 /**
  * Componente `CalendarContentHeaders` que renderiza los encabezados de los días de la semana

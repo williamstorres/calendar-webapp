@@ -1,6 +1,6 @@
 "use client";
+import { useStore } from "@/app/hooks/useStore";
 import { Views } from "@/app/store/calendarStore";
-import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
 import { twJoin } from "tailwind-merge";
 

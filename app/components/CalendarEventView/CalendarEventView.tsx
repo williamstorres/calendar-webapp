@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
 import { Button, ButtonType } from "../UI";
-import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
 import Weather from "../Weather";
 import { TZDate } from "@date-fns/tz";
 import { formatDate } from "@/app/libs/format";
+import { useStore } from "@/app/hooks/useStore";
 
 /**
  * Componente `CalendarEventView` que muestra la vista detallada de un evento de calendario.

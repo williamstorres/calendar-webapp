@@ -1,5 +1,5 @@
 import { hoursOfDay } from "@/app/constants";
-import { useStore } from "@/app/store/storeContext";
+import { useStore } from "@/app/hooks/useStore";
 import { isToday, setHours } from "date-fns";
 import { observer } from "mobx-react-lite";
 

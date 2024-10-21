@@ -2,11 +2,11 @@ import { CalendarEventType } from "@/app/types/CalendarEvent";
 import CalendarEvent from "../CalendarEvent";
 import { observer } from "mobx-react-lite";
 import CalendarHours from "../CalendarHours";
-import { useStore } from "@/app/store/storeContext";
 import { useDroppable } from "@dnd-kit/core";
 import { generateDateAsKey } from "@/app/libs/date";
 import { isSameDay } from "date-fns";
 import { twJoin } from "tailwind-merge";
+import { useStore } from "@/app/hooks/useStore";
 
 type CalendarDayProps = {
   day: Date;

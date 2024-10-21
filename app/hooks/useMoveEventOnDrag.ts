@@ -3,7 +3,7 @@ import { addMinutes, getHours, getMinutes, parse } from "date-fns";
 import { DateKeyFormat, PxInOneHour } from "../constants";
 import { getMinutesInSteps, setHoursAndMinutes } from "../libs/date";
 import { minutesInHour } from "date-fns/constants";
-import { useStore } from "../store/storeContext";
+import { useStore } from "./useStore";
 
 export const useMoveEventOnDrag = () => {
   const { eventsStore, calendarStore } = useStore();

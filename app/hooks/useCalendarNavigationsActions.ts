@@ -1,5 +1,5 @@
 import { Views } from "../store/calendarStore";
-import { useStore } from "../store/storeContext";
+import { useStore } from "./useStore";
 
 export const useCalendarNavigationsActions = () => {
   const { calendarStore } = useStore();

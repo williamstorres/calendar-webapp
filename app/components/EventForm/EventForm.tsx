@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSaveEventForm } from "@/app/hooks/useSaveEventForm";
 import { format } from "date-fns";
-import { useStore } from "@/app/store/storeContext";
 import {
   Switch,
   Autocomplete,
@@ -18,6 +17,7 @@ import { observer } from "mobx-react-lite";
 import { toast } from "react-toastify";
 import { InputFieldGroup } from "../UI/InputFieldGroup";
 import { currentTimezone } from "@/app/constants";
+import { useStore } from "@/app/hooks/useStore";
 
 export const EventForm: React.FC = observer(() => {
   const { eventsStore, calendarStore, loading } = useStore();

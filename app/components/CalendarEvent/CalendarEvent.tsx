@@ -1,10 +1,10 @@
-import { useStore } from "@/app/store/storeContext";
 import { CalendarEventType } from "@/app/types/CalendarEvent";
 import { observer } from "mobx-react-lite";
 import { twJoin } from "tailwind-merge";
 import { useDraggable } from "@dnd-kit/core";
 import { generateDateAsKey } from "@/app/libs/date";
 import { useCalendarEvent } from "@/app/hooks/useEventDrag";
+import { useStore } from "@/app/hooks/useStore";
 
 type CalendarEventProps = {
   event: CalendarEventType;

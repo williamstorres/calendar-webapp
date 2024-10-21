@@ -2,8 +2,8 @@ import { addDays, differenceInMinutes } from "date-fns";
 import { FormFields } from "../components/EventForm/eventFormSchema";
 import { fixTimezone, setTime } from "../libs/date";
 import { Location } from "@/app/api/domain/entities/CalendarEvent";
-import { useStore } from "../store/storeContext";
 import { toast } from "react-toastify";
+import { useStore } from "./useStore";
 
 export const useSaveEventForm = (location: Location, timezone: string) => {
   const { eventsStore } = useStore();

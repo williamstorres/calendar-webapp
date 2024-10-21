@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { useStore } from "@/app/store/storeContext";
 import { twJoin } from "tailwind-merge";
 import { endOfDay, isWithinInterval } from "date-fns";
 import { generateDateAsKey } from "@/app/libs/date";
 import { formatTime } from "@/app/libs/format";
 import CalendarDay from "../CalendarDay";
 import { hoursOfDay } from "@/app/constants";
+import { useStore } from "@/app/hooks/useStore";
 
 type CaledarWeekProps = {
   daysOfWeek: Date[];
