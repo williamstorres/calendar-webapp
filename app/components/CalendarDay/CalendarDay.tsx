@@ -7,6 +7,7 @@ import { generateDateAsKey } from "@/app/libs/date";
 import { isSameDay } from "date-fns";
 import { twJoin } from "tailwind-merge";
 import { useStore } from "@/app/hooks/useStore";
+import { motion } from "framer-motion";
 
 type CalendarDayProps = {
   day: Date;
@@ -43,7 +44,9 @@ export const CalendarDay: React.FC<CalendarDayProps> = observer(
       ));
 
     return (
-      <div
+      <motion.div
+        layout
+        transition={{ duration: 0.3 }}
         onClick={() => calendarStore.handleClickOnDay(day)}
         className={twJoin(
           "flex w-full border-r-2 border-zinc-600 last:border-0",
@@ -61,7 +64,7 @@ export const CalendarDay: React.FC<CalendarDayProps> = observer(
         >
           <CalendarHours day={day}>{generateEvents()}</CalendarHours>
         </div>
-      </div>
+      </motion.div>
     );
   },
 );
