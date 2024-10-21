@@ -36,8 +36,11 @@ test.describe("Calendar Events", () => {
   test("Update title and date to an event", async ({ page }) => {
     const newDate = faker.date.soon();
     const newEventName = faker.company.buzzPhrase();
+    await page.getByRole("button", { name: "Día" }).click();
 
-    await page.getByTestId("event").first().click();
+    await page.waitForTimeout(2000);
+
+    await page.getByTestId("event").first().click({ force: true });
 
     await page.getByRole("button", { name: "Editar" }).click();
 
@@ -56,6 +59,10 @@ test.describe("Calendar Events", () => {
   });
 
   test("Delete event", async ({ page }) => {
+    await page.getByRole("button", { name: "Día" }).click();
+
+    await page.waitForTimeout(2000);
+
     await page.getByTestId("event").last().click();
 
     const eventName = await page.getByTestId("event-title").textContent();

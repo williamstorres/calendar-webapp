@@ -5,12 +5,14 @@ import { minutesInHour } from "date-fns/constants";
 import { useStore } from "./useStore";
 import { dateKeyFormat, pxInOneHour } from "../libs/constants";
 import { Views } from "../store/calendarStore";
+import { toast } from "react-toastify";
 
 export const useMoveEventOnDrag = () => {
   const { eventsStore, calendarStore } = useStore();
 
   const handleDragEnd = (event: DragEndEvent) => {
     if (!event.active.data.current) return;
+    const { delta, over } = event;
 
     const {
       active: {
@@ -26,16 +28,14 @@ export const useMoveEventOnDrag = () => {
     )!;
 
     //si no se ha movido, es porque se ha seleccionado el evento
-    if (
-      event.delta.x < 2 &&
-      event.delta.x > -2 &&
-      event.delta.y < 2 &&
-      event.delta.y > -2
-    ) {
-      calendarStore.setSelectedView(Views.Day);
-      calendarStore.setDate(selectedEvent.startDateTime);
-      //eventsStore.setSelectedEvent(selectedEvent);
-      //calendarStore.setShowEventView(true);
+    if (Math.abs(delta.x) < 2 && Math.abs(delta.y) < 2) {
+      if (calendarStore.selectedViewIsMonth) {
+        calendarStore.setDate(new Date(selectedEvent.startDateTime));
+        calendarStore.setSelectedView(Views.Day);
+        return;
+      }
+      eventsStore.setSelectedEvent(selectedEvent);
+      calendarStore.setShowEventView(true);
       return;
     }
 
@@ -43,28 +43,30 @@ export const useMoveEventOnDrag = () => {
 
     if (calendarStore.selectedViewIsMonth) {
       const newDay = parse(event.over!.id as string, dateKeyFormat, new Date());
-      eventsStore.updateEvent({
-        ...selectedEvent,
-        startDateTime: setHoursAndMinutes(newDay)(getHours(startDateTime))(
-          getMinutes(startDateTime),
-        ),
-        endDateTime: setHoursAndMinutes(newDay)(getHours(endDateTime))(
-          getMinutes(endDateTime),
-        ),
-      });
+      eventsStore
+        .updateEvent({
+          ...selectedEvent,
+          startDateTime: setHoursAndMinutes(newDay)(getHours(startDateTime))(
+            getMinutes(startDateTime),
+          ),
+          endDateTime: setHoursAndMinutes(newDay)(getHours(endDateTime))(
+            getMinutes(endDateTime),
+          ),
+        })
+        .then(eventUpdateNotification);
       return;
     }
 
     //en caso de que la vista seleccionada sea dia, event.over es undefined ya que no cambia de dia, por eso se debe utilizar currentDayId
     const newDate = parse(
-      (event.over ? event.over.id : currentDayId) as string,
+      (over ? over.id : currentDayId) as string,
       dateKeyFormat,
       new Date(),
     );
 
     //Los movimientos de horario son en rangos definidos en la constante CalendarMinutesSteps
     const minutesToMove = getMinutesInSteps(
-      Math.round((event.delta.y * minutesInHour) / pxInOneHour),
+      Math.round((delta.y * minutesInHour) / pxInOneHour),
     );
 
     const newStartDate = setHoursAndMinutes(newDate)(getHours(startDateTime))(
@@ -74,11 +76,14 @@ export const useMoveEventOnDrag = () => {
       getMinutes(endDateTime),
     );
 
-    eventsStore.updateEvent({
-      ...selectedEvent,
-      startDateTime: addMinutes(newStartDate, minutesToMove),
-      endDateTime: addMinutes(newEndDate, minutesToMove),
-    });
+    eventsStore
+      .updateEvent({
+        ...selectedEvent,
+        startDateTime: addMinutes(newStartDate, minutesToMove),
+        endDateTime: addMinutes(newEndDate, minutesToMove),
+      })
+      .then(eventUpdateNotification);
   };
   return handleDragEnd;
 };
+const eventUpdateNotification = () => toast.info("Evento actualizado");

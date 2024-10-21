@@ -114,4 +114,13 @@ export default class CalendarStore {
   setError(error: string) {
     this.error = error;
   }
+  handleClickOnDay(date: Date) {
+    if (this.selectedViewIsMonth) {
+      this.setSelectedView(Views.Day);
+      this.setDate(date);
+      return;
+    }
+    this.setDate(date);
+    this.setShowEventForm(true);
+  }
 }
