@@ -9,7 +9,7 @@
     "lint": "next lint",
     "prepare": "husky",
     "test": "jest",
-    "e2e": "playwright test --workers=1"
+    "e2e": "playwright test"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

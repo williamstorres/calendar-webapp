@@ -7,6 +7,17 @@ type CalendarHeaderProps = {
   selectedYear: number;
   selectedMonth: number;
 };
+/**
+ * Componente que muestra el encabezado del calendario.
+ * Incluye un selector de vista de calendario, el nombre del mes seleccionado
+ * y botones de navegación para cambiar entre meses.
+ *
+ * @component
+ * @param {CalendarHeaderProps} props - Las propiedades del componente.
+ * @param {number} props.selectedYear - El año seleccionado en el calendario.
+ * @param {number} props.selectedMonth - El mes seleccionado en el calendario.
+ * @returns {JSX.Element} El encabezado del calendario.
+ */
 const CalendarHeader: React.FC<CalendarHeaderProps> = memo(
   function CalendarHeader({ selectedYear, selectedMonth }) {
     return (

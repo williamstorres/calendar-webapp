@@ -11,6 +11,16 @@ type CalendarEventProps = {
   overlaping: number;
   index: number;
 };
+/**
+ * Componente que representa un evento en el calendario.
+ *
+ * Este componente permite la representación visual de un evento y
+ * su interacción para poder ser arrastrado y soltado.
+ *
+ * @component
+ * @param {CalendarEventProps} props - Las propiedades del componente.
+ * @returns {JSX.Element} El componente del evento del calendario.
+ */
 export const CalendarEvent: React.FC<CalendarEventProps> = observer(
   ({ event, overlaping, index }) => {
     const { calendarStore } = useStore();

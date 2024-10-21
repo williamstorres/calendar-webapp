@@ -2,7 +2,7 @@ import { getDaysOfWeek } from "@/app/libs/date";
 import { Views } from "@/app/store/calendarStore";
 import { observer } from "mobx-react-lite";
 import { twJoin } from "tailwind-merge";
-import { DayOfWeekHeader } from "./DayOfWeekHeader";
+import DayOfWeekHeader from "../DayOfWeekHeader";
 import { useStore } from "@/app/hooks/useStore";
 import { daysOfTheWeekNames } from "@/app/libs/constants";
 

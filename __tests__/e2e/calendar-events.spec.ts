@@ -53,6 +53,9 @@ test.describe("Calendar Events", () => {
 
     await page.getByRole("button", { name: "Guardar" }).click();
 
+    await page.getByRole("button", { name: "MEs" }).click();
+    await page.waitForTimeout(2000);
+
     await expect(
       page.getByRole("button", { name: newEventName }).first(),
     ).toBeVisible();
@@ -67,6 +70,9 @@ test.describe("Calendar Events", () => {
 
     const eventName = await page.getByTestId("event-title").textContent();
     await page.getByRole("button", { name: "Eliminar" }).click();
+
+    await page.getByRole("button", { name: "Mes" }).click();
+    await page.waitForTimeout(2000);
 
     await expect(
       page.getByRole("button", { name: eventName! }),

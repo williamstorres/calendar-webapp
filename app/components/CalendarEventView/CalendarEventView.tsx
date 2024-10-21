@@ -7,13 +7,13 @@ import { formatDate } from "@/app/libs/format";
 import { useStore } from "@/app/hooks/useStore";
 
 /**
- * Componente `CalendarEventView` que muestra la vista detallada de un evento de calendario.
+ * Componente que muestra los detalles de un evento del calendario en un modal
  *
- * Este componente permite ver los detalles de un evento seleccionado,
- * así como editar o eliminar el evento. Utiliza MobX para gestionar el estado
- * del evento seleccionado.
+ * Este componente permite ver la información del evento seleccionado,
+ * así como las opciones para editar o eliminar el evento.
  *
- * @returns {JSX.Element|null} El componente `CalendarEventView` o `null` si no hay un evento seleccionado.
+ * @component
+ * @returns {JSX.Element|null} El componente que muestra la vista del evento del calendario, o null si no hay un evento seleccionado.
  */
 export const CalendarEventView: React.FC = observer(() => {
   const { calendarStore, eventsStore } = useStore();

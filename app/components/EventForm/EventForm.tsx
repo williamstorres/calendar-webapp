@@ -19,16 +19,22 @@ import { InputFieldGroup } from "../UI/InputFieldGroup";
 import { useStore } from "@/app/hooks/useStore";
 import { currentTimezone } from "@/app/libs/constants";
 
+/**
+ * Componente EventForm permite a los usuarios crear o editar un evento.
+ * Proporciona campos para título, descripción, ubicación, fecha, hora
+ * y si el evento es todo el día o no. Los usuarios también pueden eliminar
+ * el evento seleccionado si está disponible.
+ *
+ * @returns {JSX.Element} El componente EventForm renderizado.
+ */
 export const EventForm: React.FC = observer(() => {
   const { eventsStore, calendarStore, loading } = useStore();
-
   const [selectedTimezone, setSelectedTimezone] = useState(
     eventsStore.selectedEvent?.timezone ?? currentTimezone,
   );
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     eventsStore.selectedEvent?.location as Location,
   );
-
   const {
     register,
     handleSubmit,
@@ -39,7 +45,6 @@ export const EventForm: React.FC = observer(() => {
     selectedEvent: eventsStore.selectedEvent,
     initialDate: calendarStore.date,
   });
-
   const save = useSaveEventForm(selectedLocation as Location, selectedTimezone);
 
   const isAllDay = watch("isAllDay");

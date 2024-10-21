@@ -12,6 +12,16 @@ type CalendarDayProps = {
   day: Date;
   events: CalendarEventType[];
 };
+/**
+ * Componente que representa un día en el calendario.
+ *
+ * Este componente muestra los eventos programados para un día específico
+ * y permite la interacción del usuario para seleccionar un día.
+ *
+ * @component
+ * @param {CalendarDayProps} props - Las propiedades del componente.
+ * @returns {JSX.Element|null} El componente del día del calendario, o null si no se debe mostrar.
+ */
 export const CalendarDay: React.FC<CalendarDayProps> = observer(
   ({ day, events }: CalendarDayProps) => {
     const { calendarStore } = useStore();

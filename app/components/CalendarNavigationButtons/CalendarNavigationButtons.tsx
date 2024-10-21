@@ -3,12 +3,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useCalendarNavigationsActions } from "@/app/hooks/useCalendarNavigationsActions";
 
 /**
- * Componente `CalendarNavigationButtons` que permite la navegación entre diferentes vistas del calendario.
+ * CalendarNavigationButtons component provides navigation controls
+ * for the calendar, allowing users to move to the previous month,
+ * go to the current day, or move to the next month.
  *
- * Este componente proporciona botones para navegar hacia el mes anterior, el mes siguiente y para volver a la fecha actual.
- * Utiliza MobX para gestionar el estado del calendario y su vista seleccionada.
- *
- * @returns {JSX.Element} El componente `CalendarNavigationButtons`, que incluye botones de navegación.
+ * @returns {JSX.Element} The rendered component containing navigation buttons.
  */
 export const CalendarNavigationButtons: React.FC = observer(() => {
   const { handlePrevious, handleNext, today } = useCalendarNavigationsActions();

@@ -7,7 +7,23 @@ import { dateKeyFormat, pxInOneHour } from "../libs/constants";
 import { Views } from "../store/calendarStore";
 import { toast } from "react-toastify";
 
-export const useMoveEventOnDrag = () => {
+/**
+ * Hook que maneja la lógica para mover eventos mediante drag and drop.
+ *
+ * Este hook se encarga de actualizar la hora de inicio y fin de un evento
+ * en función de su nueva posición cuando se suelta el evento después de arrastrarlo.
+ * También maneja la selección de un evento si no se ha movido.
+ *
+ * @returns {(event: DragEndEvent) => void} Función que maneja el evento drag end.
+ *
+ * @example
+ * const handleDragEnd = useMoveEventOnDrag();
+ *
+ * <DndProvider>
+ *   <Draggable onDragEnd={handleDragEnd} />
+ * </DndProvider>
+ */
+export const useMoveEventOnDrag = (): ((event: DragEndEvent) => void) => {
   const { eventsStore, calendarStore } = useStore();
 
   const handleDragEnd = (event: DragEndEvent) => {

@@ -4,13 +4,19 @@ import { observer } from "mobx-react-lite";
 import CalendarsContainer from "../CalendarsContainer";
 import { Month } from "@/app/types/CalendarType";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import CalendarHeader from "./CalendarHeader";
+import CalendarHeader from "../CalendarHeader";
 import { Loading } from "../UI";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useStore } from "@/app/hooks/useStore";
 
+/**
+ * Componente principal del calendario que muestra eventos mensuales y permite agregar nuevos eventos.
+ *
+ * @component
+ * @returns {JSX.Element} El componente del calendario.
+ */
 export const Calendar: React.FC = observer(() => {
   const { eventsStore, calendarStore } = useStore();
   const [firstRender, setFirstRender] = useState(true);

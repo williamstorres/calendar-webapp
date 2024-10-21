@@ -11,6 +11,9 @@ type CreateEventDependencies = {
   saveEvent: SaveEvent;
   generateId: GenerateId;
 };
+/**
+ * Crea un evento basado en los datos proporcionados y las dependencias.
+ */
 const createEvent =
   ({ logger, saveEvent, generateId }: CreateEventDependencies) =>
   async (newEvent: CalendarEvent) => {

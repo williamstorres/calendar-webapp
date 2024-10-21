@@ -4,7 +4,8 @@ type CalendarsContainerProps<T> = {
 };
 /**
  * Componente `CalendarsContainer` que renderiza una lista de elementos utilizando
- * la función `children` proporcionada.
+ * la función `children` proporcionada. El objetivo de este componente
+ * era implementar una lista virtualizada de los meses, pero eso está pendiente
  *
  * Este componente toma un array de elementos y una función que se utiliza para
  * renderizar cada uno de esos elementos.

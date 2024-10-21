@@ -5,12 +5,19 @@ import { Month } from "@/app/types/CalendarType";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { useId, useRef } from "react";
 import CalendarWeek from "../CalendarWeek";
-import { CalendarDaysOfWeekHeader } from "./CalendarDaysOfWeekHeader";
+import CalendarDaysOfWeekHeader from "../CalendarDaysOfWeekHeader";
 import { dateKeyFormat } from "@/app/libs/constants";
 
 export type CalendarContentProps = {
   month: Month;
 };
+/**
+ * CalendarContent component displays the calendar for a given month, including
+ * days of the week and the ability to drag and drop events.
+ *
+ * @param {CalendarContentProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
 export const CalendarContent: React.FC<CalendarContentProps> = ({
   month,
 }: CalendarContentProps): JSX.Element => {

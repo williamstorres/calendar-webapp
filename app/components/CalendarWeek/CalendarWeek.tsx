@@ -11,14 +11,13 @@ type CaledarWeekProps = {
   daysOfWeek: Date[];
 };
 /**
- * Componente `CalendarWeek` que renderiza la vista semanal del calendario.
+ * CalendarWeek component displays a week view of the calendar.
+ * It shows the days of the week along with the events for each day.
+ * It hides the week if not in the appropriate view or if the week
+ * is not selected.
  *
- * Este componente muestra los días de la semana y, dependiendo de la vista seleccionada,
- * puede mostrar los días del mes o las horas del calendario.
- *
- * @param {Object} props - Las propiedades del componente.
- * @param {DayOfMonth[]} props.daysOfWeek - Un arreglo de objetos que representan los días del mes.
- * @returns {JSX.Element} Un elemento que representa la vista semanal del calendario.
+ * @param {CaledarWeekProps} props - The component props.
+ * @returns {JSX.Element | null} The rendered component or null if the week should not be shown.
  */
 export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
   ({ daysOfWeek }) => {
