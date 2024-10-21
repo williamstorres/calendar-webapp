@@ -25,7 +25,6 @@ export const useMoveEventOnDrag = () => {
     )!;
 
     //si no se ha movido, es porque se ha seleccionado el evento
-    console.log(event.delta);
     if (
       event.delta.x < 2 &&
       event.delta.x > -2 &&

@@ -8,6 +8,9 @@ import {
   updateEvent,
 } from "../services/eventsService";
 import { generateDateAsKey } from "../libs/date";
+import { pino } from "pino";
+
+const logger = pino();
 
 export default class EventsStore {
   root: RootStore;
@@ -56,7 +59,7 @@ export default class EventsStore {
             return this.events;
           })
           .catch((err) => {
-            console.error(err);
+            logger.error(err);
             this.root.calendarStore.setError(
               "Ha ocurrido un error al obtener los eventos",
             );
@@ -72,7 +75,7 @@ export default class EventsStore {
     ]?.push(newEvent);
     await this.root.loading(
       addNewEvent(newEvent).catch((err) => {
-        console.error(err);
+        logger.error(err);
         this.root.calendarStore.setError(
           "Ha ocurrido un error al agregar el evento",
         );
@@ -90,8 +93,6 @@ export default class EventsStore {
         );
       }
     }
-    console.log(event.startDateTime);
-    console.log(event.timezone);
     const dateKey = generateDateAsKey(event.startDateTime, event.timezone);
     if (!eventsToUpdate[dateKey]) eventsToUpdate[dateKey] = [];
     eventsToUpdate[dateKey] = [...eventsToUpdate[dateKey], event];
@@ -103,7 +104,7 @@ export default class EventsStore {
     this.optimisticUpdateEvent(event);
     await this.root.loading(
       updateEvent(event).catch((err) => {
-        console.error(err);
+        logger.error(err);
         this.root.calendarStore.setError(
           "Ha ocurrido un error al actualizar el evento",
         );
@@ -118,7 +119,6 @@ export default class EventsStore {
     ].findIndex((_event) => event.id === _event.id);
 
     this.events[generateDateAsKey(event.startDateTime)].splice(index, 1);
-    console.log(JSON.stringify(this.events));
   }
 
   async deleteEvent() {
@@ -126,7 +126,7 @@ export default class EventsStore {
     this.optimisticDeleteEvent(this.selectedEvent);
     await this.root.loading(
       deleteEvent(this.selectedEvent.id).catch((err) => {
-        console.error(err);
+        logger.error(err);
         this.root.calendarStore.setError(
           "Ha ocurrido un error al eliminar el evento",
         );

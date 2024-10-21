@@ -39,7 +39,7 @@ export const EventForm: React.FC = observer(() => {
     selectedEvent: eventsStore.selectedEvent,
     initialDate: calendarStore.date,
   });
-  console.log(selectedTimezone);
+
   const save = useSaveEventForm(selectedLocation as Location, selectedTimezone);
 
   const isAllDay = watch("isAllDay");
@@ -90,15 +90,14 @@ export const EventForm: React.FC = observer(() => {
   const renderLocation = useCallback(
     (location: unknown) => (
       <>
-        <span>{(location as Location).name}</span>
-        <span>{(location as Location).country}</span>
+        <span>{(location as Location).name}, </span>
+        <span className="text-xs">{(location as Location).country}</span>
       </>
     ),
     [],
   );
 
   const renderTimezone = useCallback((timezone: unknown) => {
-    console.log(timezone);
     return (timezone as string).replaceAll("_", " ");
   }, []);
 

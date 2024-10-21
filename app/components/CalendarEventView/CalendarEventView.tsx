@@ -2,9 +2,8 @@ import React, { useCallback } from "react";
 import { Button, ButtonType } from "../UI";
 import { useStore } from "@/app/store/storeContext";
 import { observer } from "mobx-react-lite";
-import { format } from "date-fns";
 import Weather from "../Weather";
-import { tz, TZDate } from "@date-fns/tz";
+import { TZDate } from "@date-fns/tz";
 import { formatDate } from "@/app/libs/format";
 
 /**
@@ -38,12 +37,6 @@ export const CalendarEventView: React.FC = observer(() => {
   const zoneStartDate = new TZDate(
     eventsStore.selectedEvent.startDateTime,
   ).withTimeZone(eventsStore.selectedEvent.timezone);
-
-  console.log(
-    format(eventsStore.selectedEvent.startDateTime, "dd/MM/yy HH:mm", {
-      in: tz(eventsStore.selectedEvent.timezone),
-    }),
-  );
 
   return (
     <>

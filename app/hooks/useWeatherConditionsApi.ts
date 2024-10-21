@@ -17,7 +17,6 @@ export const useWeatherConditionsApi = ({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log("useEffect");
     setLoading(true);
     const { cancel, request } = getWeatherConditions({
       location,
