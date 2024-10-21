@@ -17,20 +17,20 @@ export const CalendarNavigationButtons: React.FC = observer(() => {
     <div className="flex px-5">
       <button
         aria-label="previous calendar page"
-        className="bg-zinc-500 px-2 my-2 mx-2 rounded-md"
+        className="text-zinc-900 bg-zinc-400 px-2 my-2 mx-2 rounded-md"
         onClick={() => handlePrevious()}
       >
         <ChevronLeftIcon className="size-4" />
       </button>
       <button
-        className="bg-zinc-500 px-2 my-2 rounded-md font-bold text-sm"
+        className="text-zinc-900 bg-zinc-400 px-2 my-2 rounded-md font-bold text-sm"
         onClick={() => today()}
       >
         Hoy
       </button>
       <button
         aria-label="next calendar page"
-        className="bg-zinc-500 px-2 my-2 mx-2 rounded-md"
+        className="text-zinc-900 bg-zinc-400 px-2 my-2 mx-2 rounded-md"
         onClick={() => handleNext()}
       >
         <ChevronRightIcon className="size-4" />

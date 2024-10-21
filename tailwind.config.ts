@@ -15,7 +15,7 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: "#18181b",
-        secondary: "#2563eb",
+        secondary: "#134CC9",
       },
       keyframes: {
         slide: {

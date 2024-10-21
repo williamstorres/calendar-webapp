@@ -14,10 +14,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = memo(
         <CalendarViewSelector />
         <div className="flex justify-between">
           <div className="flex">
-            <h2
-              role="month-label"
-              className="font-bold text-lg px-2 py-3 capitalize"
-            >
+            <h2 className="font-bold text-lg px-2 py-3 capitalize">
               {formatDate(new Date(selectedYear, selectedMonth, 1), "MMMM")}
             </h2>
           </div>

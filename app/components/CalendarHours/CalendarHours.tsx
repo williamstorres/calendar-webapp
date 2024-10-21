@@ -39,7 +39,7 @@ export const CalendarHours: React.FC<CalendarHours> = observer(
         {calendarStore.selectedViewIsMonth && (
           <span
             data-testid={isToday(day) && "active-day"}
-            className={`${isToday(day) && "rounded-full bg-blue-600 p-1"}`}
+            className={`${isToday(day) && "rounded-full bg-secondary p-1"}`}
           >
             {day.getDate()}
           </span>

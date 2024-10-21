@@ -57,6 +57,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
             {options.map((option, index) => (
               <li
                 key={index}
+                data-testid={`location-${index}`}
                 className="px-4 py-2 cursor-pointer"
                 onClick={() => handleClick(option)}
               >

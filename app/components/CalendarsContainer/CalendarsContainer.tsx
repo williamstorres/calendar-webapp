@@ -19,5 +19,5 @@ export const CalendarsContainer = <T,>({
 }: CalendarsContainerProps<T>): JSX.Element => {
   const childrens = items.map((item) => children(item));
 
-  return <div role="calendars-container">{childrens}</div>;
+  return <div>{childrens}</div>;
 };

@@ -86,9 +86,9 @@ describe("EventForm", function () {
       target: { value: faker.location.city() },
     });
     await waitFor(() => {
-      expect(screen.getByText("Santiago")).toBeInTheDocument();
+      expect(screen.getByTestId("location-0")).toBeInTheDocument();
     });
-    const option = screen.getByText("Santiago");
+    const option = screen.getByTestId("location-0");
     fireEvent.click(option);
 
     fireEvent.change(screen.getByLabelText("Hora de inicio"), {
