@@ -11,7 +11,7 @@ type GetEventsDependencies = {
 const getEvents =
   ({ logger, getEvents }: GetEventsDependencies) =>
   async ({ month, year }: GetEventsFilters) => {
-    logger.debug("getEvents", month, year);
+    logger.debug("getEvents", { month, year });
 
     const events = await getEvents({ month, year })
       .then(Right)

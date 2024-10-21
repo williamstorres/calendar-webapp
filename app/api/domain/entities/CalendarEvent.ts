@@ -19,6 +19,7 @@ export const CalendarEvent = z.object({
   description: z.string().nullable().default(null),
   startDateTime: z.coerce.date(),
   endDateTime: z.coerce.date(),
+  timezone: z.string(),
   isAllDay: z.boolean().default(false),
   color: z.string().nullable().default(null),
   durationInMinutes: z.number().default(0),

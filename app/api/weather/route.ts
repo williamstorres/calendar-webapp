@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
   const { success, data, error } = GetWeatherFiltersSchema.safeParse({
     location: request.nextUrl.searchParams.get("location"),
     date: request.nextUrl.searchParams.get("date"),
+    timezone: request.nextUrl.searchParams.get("timezone"),
   });
 
   if (!success) return Response.json(error, { status: 400 });

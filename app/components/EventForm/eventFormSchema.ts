@@ -8,6 +8,7 @@ export const eventFormSchema = z
     location: z.string().min(1, "Debes ingresar la ubicación"),
     description: z.string(),
     date: z.coerce.date(),
+    timezone: z.string().min(1, "Debes ingresar la zona horaria"),
     isAllDay: z.boolean(),
     startTime: z
       .string()

@@ -3,7 +3,7 @@ import { CalendarEvent } from "../entities/CalendarEvent";
 import {
   StartDateMustBeBeforeEndDate,
   TitleMustNotBeEmpty,
-} from "./SpecPredicates";
+} from "./EventSpecPredicates";
 
 export const UpdateEventSpec: Pair<Predicate<CalendarEvent>, string>[] = [
   [TitleMustNotBeEmpty, "Se debe ingresar un titulo"],

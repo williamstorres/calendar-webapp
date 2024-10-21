@@ -1,1 +1,1 @@
-export type generateId = () => string;
+export type GenerateId = () => string;

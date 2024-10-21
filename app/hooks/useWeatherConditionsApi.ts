@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 
 export const useWeatherConditionsApi = ({
   location,
+  timezone,
   date,
 }: GetWeatherFilters) => {
   const [weatherConditions, setWeatherConditions] =
@@ -16,8 +17,15 @@ export const useWeatherConditionsApi = ({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log("useEffect");
     setLoading(true);
-    getWeatherConditions({ location, date })
+    const { cancel, request } = getWeatherConditions({
+      location,
+      timezone,
+      date,
+    });
+
+    request
       .then((result) => {
         const { success, data } = WeatherConditionSchema.safeParse(result);
         if (success) return setWeatherConditions(data);
@@ -26,7 +34,9 @@ export const useWeatherConditionsApi = ({
         });
       })
       .finally(() => setLoading(false));
-  }, [location, date]);
+
+    return () => cancel();
+  }, [location, timezone, date, setLoading]);
 
   return { loading, weatherConditions };
 };

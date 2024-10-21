@@ -1,14 +1,13 @@
-import {
-  differenceInCalendarDays,
-  isSameDay,
-  isSameHour,
-  subMinutes,
-} from "date-fns";
-import { tzOffset } from "@date-fns/tz";
-import { UTCDate } from "@date-fns/utc";
+import { differenceInCalendarDays, isSameDay, isSameHour } from "date-fns";
+import { TZDate } from "@date-fns/tz";
+import { utc, UTCDate } from "@date-fns/utc";
 import { isLeft, Left, Right } from "@/app/api/core/Either";
 import { Logger } from "../ports/logger";
-import { GetWeather } from "../ports/weatherRepository";
+import {
+  ForecastDay,
+  GetWeather,
+  WeatherResponse,
+} from "../ports/weatherRepository";
 import { GetWeatherFilters } from "../entities/WeatherInfo";
 
 type GetWeatherInfoDependencies = {
@@ -17,11 +16,12 @@ type GetWeatherInfoDependencies = {
 };
 const getWeatherInfo =
   ({ logger, getWeather }: GetWeatherInfoDependencies) =>
-  async ({ location, date }: GetWeatherFilters) => {
-    logger.debug("getWeatherInfo", location, date);
+  async ({ location, date, timezone }: GetWeatherFilters) => {
+    logger.debug("getWeatherInfo", { location, date });
 
     const today = new Date();
 
+    //el api de forecast solo soporta consultar por los siguientes 10 dias (plan gratis)
     const days = differenceInCalendarDays(date, today) + 2;
     if (days > 10) return Left("No soportado");
 
@@ -33,21 +33,29 @@ const getWeatherInfo =
       });
     if (isLeft(result)) return result;
 
-    const offsetMinutes = tzOffset(result.value.location.tz_id, date);
-    const normaliceDate = subMinutes(new UTCDate(date), offsetMinutes);
+    //debido a que llegan en utc y se deben pasar al timezone de consulta
+    const normalizedDate = new TZDate(date, timezone);
 
-    const condition = result.value.forecast.forecastday
-      .filter((forecast) => {
-        return isSameDay(normaliceDate, new Date(forecast.date_epoch * 1000));
-      })
-      .map((forecast) =>
-        forecast.hour.find((hour) =>
-          isSameHour(normaliceDate, new Date(hour.time_epoch * 1000)),
-        ),
-      )[0];
+    const condition = filterByDay(result.value, normalizedDate).map(
+      findByHour(normalizedDate),
+    )[0];
+
     if (!condition)
       return Left("No se han encontrado las condiciones de clima");
 
     return Right(condition);
   };
+
+const filterByDay = (response: WeatherResponse, date: TZDate) => {
+  return response.forecast.forecastday.filter((forecast) => {
+    return isSameDay(date, new UTCDate(forecast.date_epoch * 1000), {
+      in: utc,
+    });
+  });
+};
+const findByHour = (date: TZDate) => (forecastDay: ForecastDay) => {
+  return forecastDay.hour.find((hour) => {
+    return isSameHour(date, new UTCDate(hour.time_epoch * 1000), { in: utc });
+  })!;
+};
 export default getWeatherInfo;

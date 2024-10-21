@@ -13,6 +13,7 @@ import createEvent from "@/app/api/domain/use-cases/createEvent";
 import deleteEvent from "@/app/api/domain/use-cases/deleteEvent";
 import getEvents from "@/app/api/domain/use-cases/getEvents";
 import updateEvent from "@/app/api/domain/use-cases/updateEvent";
+import { nanoid } from "nanoid";
 import { NextRequest } from "next/server";
 import { pino } from "pino";
 
@@ -39,9 +40,11 @@ export async function POST(request: Request) {
   );
   if (!success) return Response.json(error, { status: 400 });
 
-  const result = await createEvent({ logger, saveEvent: saveEventPostgres })(
-    data,
-  );
+  const result = await createEvent({
+    logger,
+    saveEvent: saveEventPostgres,
+    generateId: nanoid,
+  })(data);
   if (isLeft(result)) Response.json(result.value, { status: 400 });
 
   return Response.json(result.value, { status: 201 });

@@ -5,7 +5,6 @@ import { useStore } from "@/app/store/storeContext";
 import {
   Switch,
   Autocomplete,
-  AutocompleteOption,
   InputTextArea,
   InputFieldType,
   InputField,
@@ -13,20 +12,22 @@ import {
   ButtonType,
 } from "../UI";
 import { Location } from "@/app/api/domain/entities/CalendarEvent";
-import { getLocations } from "@/app/services/locationsService";
+import { getLocations, getTimezones } from "@/app/services/locationsService";
 import { useEventForm } from "@/app/hooks/useEventForm";
 import { observer } from "mobx-react-lite";
 import { toast } from "react-toastify";
-
-type LocationAutocomplete = Location & AutocompleteOption;
+import { InputFieldGroup } from "../UI/InputFieldGroup";
+import { currentTimezone } from "@/app/constants";
 
 export const EventForm: React.FC = observer(() => {
   const { eventsStore, calendarStore, loading } = useStore();
 
-  const [selectedLocation, setSelectedLocation] =
-    useState<LocationAutocomplete | null>(
-      eventsStore.selectedEvent?.location as LocationAutocomplete,
-    );
+  const [selectedTimezone, setSelectedTimezone] = useState(
+    eventsStore.selectedEvent?.timezone ?? currentTimezone,
+  );
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    eventsStore.selectedEvent?.location as Location,
+  );
 
   const {
     register,
@@ -38,7 +39,8 @@ export const EventForm: React.FC = observer(() => {
     selectedEvent: eventsStore.selectedEvent,
     initialDate: calendarStore.date,
   });
-  const save = useSaveEventForm(selectedLocation as Location);
+  console.log(selectedTimezone);
+  const save = useSaveEventForm(selectedLocation as Location, selectedTimezone);
 
   const isAllDay = watch("isAllDay");
 
@@ -65,12 +67,40 @@ export const EventForm: React.FC = observer(() => {
   );
 
   const setLocation = useCallback(
-    (value: AutocompleteOption) => {
-      setSelectedLocation(value as LocationAutocomplete);
-      setValue("location", value.text);
+    (value: unknown) => {
+      setSelectedLocation(value as Location);
+      setValue("location", (value as Location).name);
     },
-    [setValue],
+    [setValue, setSelectedLocation],
   );
+
+  const fetchTimezones = useCallback(
+    async (query: string) => getTimezones(query),
+    [],
+  );
+
+  const setTimezone = useCallback(
+    (value: unknown) => {
+      setSelectedTimezone(value as string);
+      setValue("timezone", value as string);
+    },
+    [setValue, setSelectedTimezone],
+  );
+
+  const renderLocation = useCallback(
+    (location: unknown) => (
+      <>
+        <span>{(location as Location).name}</span>
+        <span>{(location as Location).country}</span>
+      </>
+    ),
+    [],
+  );
+
+  const renderTimezone = useCallback((timezone: unknown) => {
+    console.log(timezone);
+    return (timezone as string).replaceAll("_", " ");
+  }, []);
 
   return (
     <form role="event-form" onSubmit={handleSubmit(save)}>
@@ -99,25 +129,37 @@ export const EventForm: React.FC = observer(() => {
         fetchOptions={fetchLocations}
         setValue={setLocation}
         error={errors.location}
+        renderOption={renderLocation}
       >
         Ubicación
       </Autocomplete>
       <InputTextArea {...register("description")}>Descripción</InputTextArea>
-      <InputField
-        type={InputFieldType.Date}
-        {...register("date")}
-        error={errors.date}
-        defaultValue={format(
-          eventsStore.selectedEvent
-            ? eventsStore.selectedEvent.startDateTime
-            : calendarStore.date,
-          "yyyy-MM-dd",
-        )}
-      >
-        Fecha
-      </InputField>
+      <InputFieldGroup>
+        <InputField
+          type={InputFieldType.Date}
+          {...register("date")}
+          error={errors.date}
+          defaultValue={format(
+            eventsStore.selectedEvent
+              ? eventsStore.selectedEvent.startDateTime
+              : calendarStore.date,
+            "yyyy-MM-dd",
+          )}
+        >
+          Fecha
+        </InputField>
+        <Autocomplete
+          {...register("timezone")}
+          fetchOptions={fetchTimezones}
+          setValue={setTimezone}
+          error={errors.timezone}
+          renderOption={renderTimezone}
+        >
+          Zona Horaria
+        </Autocomplete>
+      </InputFieldGroup>
       <Switch {...register("isAllDay")}>Todo el día?</Switch>
-      <div className="flex w-full place-content-between">
+      <InputFieldGroup>
         <InputField
           type={InputFieldType.Time}
           {...register("startTime")}
@@ -135,7 +177,7 @@ export const EventForm: React.FC = observer(() => {
         >
           Hora de termino
         </InputField>
-      </div>
+      </InputFieldGroup>
       {eventsStore.selectedEvent?.id && (
         <Button
           onClick={() => {

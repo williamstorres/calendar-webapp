@@ -67,7 +67,9 @@ export default class EventsStore {
   }
 
   async addNewEvent(newEvent: CalendarEventType) {
-    this.events[generateDateAsKey(newEvent.startDateTime)]?.push(newEvent);
+    this.events[
+      generateDateAsKey(newEvent.startDateTime, newEvent.timezone)
+    ]?.push(newEvent);
     await this.root.loading(
       addNewEvent(newEvent).catch((err) => {
         console.error(err);
@@ -88,8 +90,9 @@ export default class EventsStore {
         );
       }
     }
-
-    const dateKey = generateDateAsKey(event.startDateTime);
+    console.log(event.startDateTime);
+    console.log(event.timezone);
+    const dateKey = generateDateAsKey(event.startDateTime, event.timezone);
     if (!eventsToUpdate[dateKey]) eventsToUpdate[dateKey] = [];
     eventsToUpdate[dateKey] = [...eventsToUpdate[dateKey], event];
     this.setEvents(eventsToUpdate);
@@ -110,13 +113,9 @@ export default class EventsStore {
   }
 
   optimisticDeleteEvent(event: CalendarEventType) {
-    // for (const key in this.events) {
-    //   if (key === generateDateAsKey(event.startDateTime))
-    // }
-    const index = this.events[generateDateAsKey(event.startDateTime)].findIndex(
-      (_event) => event.id === _event.id,
-    );
-    console.log(index);
+    const index = this.events[
+      generateDateAsKey(event.startDateTime, event.timezone)
+    ].findIndex((_event) => event.id === _event.id);
 
     this.events[generateDateAsKey(event.startDateTime)].splice(index, 1);
     console.log(JSON.stringify(this.events));

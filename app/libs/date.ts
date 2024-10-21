@@ -1,10 +1,11 @@
 import {
+  addMinutes,
   areIntervalsOverlapping,
   eachDayOfInterval,
   eachWeekOfInterval,
   endOfMonth,
   endOfWeek,
-  format,
+  getDate,
   setHours,
   setMinutes,
   startOfMonth,
@@ -12,7 +13,13 @@ import {
 } from "date-fns";
 import { formatDate } from "./format";
 import { CalendarEventType } from "../types/CalendarEvent";
-import { calendarMinutesSteps, DateKeyFormat } from "../constants";
+import {
+  calendarMinutesSteps,
+  currentTimezone,
+  DateKeyFormat,
+} from "../constants";
+import { TZDate, tzOffset } from "@date-fns/tz";
+import { UTCDate } from "@date-fns/utc";
 
 export const TimeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
@@ -22,8 +29,10 @@ export const getDaysOfWeek = (date: Date) =>
     end: endOfWeek(date),
   });
 
-export const generateDateAsKey = (date: Date) =>
-  formatDate(date, DateKeyFormat);
+export const generateDateAsKey = (
+  date: Date,
+  timezone: string = currentTimezone,
+) => formatDate(date, DateKeyFormat, timezone);
 
 export const getCalendarWeeksWithDays = (
   month: number,
@@ -61,14 +70,14 @@ export const countEventsOverlaping = (
 };
 
 const TimeDivisor = ":";
-export const setTime = (date: Date, time: string) => {
+export const setTime = (date: Date | UTCDate | TZDate, time: string) => {
   if (!time) return date;
   const [hours, minutes] = time.split(TimeDivisor).map((num) => Number(num));
   return setMinutes(setHours(date, hours), minutes);
 };
 
-export const getTime = (date: Date) => {
-  return format(date, "HH:mm");
+export const getTime = (date: Date, timezone?: string) => {
+  return formatDate(date, "HH:mm", timezone);
 };
 
 export const setHoursAndMinutes =
@@ -77,3 +86,18 @@ export const setHoursAndMinutes =
 
 export const getMinutesInSteps = (minutes: number) =>
   Math.round(minutes / calendarMinutesSteps) * calendarMinutesSteps;
+
+export const fixTimezone = (date: Date, timezone: string) => {
+  const timezoneOffSet = tzOffset(currentTimezone, date);
+  const dateWithTimezoneFixed = addMinutes(
+    date,
+    timezoneOffSet >= 0 ? timezoneOffSet : timezoneOffSet * -1,
+  );
+  const newDate = new TZDate(
+    dateWithTimezoneFixed.getFullYear(),
+    dateWithTimezoneFixed.getMonth(),
+    getDate(dateWithTimezoneFixed),
+    timezone,
+  );
+  return newDate;
+};
