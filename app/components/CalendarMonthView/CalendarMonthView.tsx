@@ -7,6 +7,7 @@ import { useId, useRef } from "react";
 import CalendarWeek from "../CalendarWeek";
 import { CalendarDaysOfWeekHeader } from "./CalendarDaysOfWeekHeader";
 import { dateKeyFormat } from "@/app/libs/constants";
+import { AnimatePresence } from "framer-motion";
 
 export type CalendarContentProps = {
   month: Month;
@@ -31,12 +32,14 @@ export const CalendarContent: React.FC<CalendarContentProps> = ({
     >
       <div ref={calendarContentRef} className="w-screen bg-primary h-full">
         <CalendarDaysOfWeekHeader />
-        {weeksOfMonth.map((week) => (
-          <CalendarWeek
-            key={formatDate(week[0], dateKeyFormat)}
-            daysOfWeek={week}
-          />
-        ))}
+        <AnimatePresence>
+          {weeksOfMonth.map((week) => (
+            <CalendarWeek
+              key={formatDate(week[0], dateKeyFormat)}
+              daysOfWeek={week}
+            />
+          ))}
+        </AnimatePresence>
       </div>
     </DndContext>
   );

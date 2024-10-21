@@ -63,7 +63,6 @@ export default class CalendarStore {
 
   setSelectedView(view: Views) {
     this.selectedView = view;
-    if (view === Views.Week) this.date = new Date();
   }
 
   setDate(date: Date) {

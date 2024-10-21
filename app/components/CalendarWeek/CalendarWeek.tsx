@@ -6,6 +6,7 @@ import { formatTime } from "@/app/libs/format";
 import CalendarDay from "../CalendarDay";
 import { useStore } from "@/app/hooks/useStore";
 import { hoursOfDay } from "@/app/libs/constants";
+import { motion } from "framer-motion";
 
 type CaledarWeekProps = {
   daysOfWeek: Date[];
@@ -44,9 +45,11 @@ export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
     if (!calendarStore.selectedViewIsMonth && !showWeek) return null;
 
     return (
-      <div
+      <motion.div
+        layout
+        transition={{ duration: 0.3 }}
         className={twJoin(
-          "w-screen bg-primary h-full",
+          "w-screen bg-primary h-full transition-opacity duration-300 opacity-100",
           calendarStore.selectedViewIsMonth && "border-t-2 border-zinc-600",
           !calendarStore.selectedViewIsMonth && "flex flex-row",
         )}
@@ -69,7 +72,7 @@ export const CalendarWeek: React.FC<CaledarWeekProps> = observer(
             return <CalendarDay key={key} day={day} events={events} />;
           })}
         </div>
-      </div>
+      </motion.div>
     );
   },
 );

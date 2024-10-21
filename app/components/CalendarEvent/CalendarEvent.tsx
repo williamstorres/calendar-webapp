@@ -36,6 +36,12 @@ export const CalendarEvent: React.FC<CalendarEventProps> = observer(
       selectedViewIsDay: calendarStore.selectedViewIsDay,
     });
 
+    const styleHeight = !calendarStore.selectedViewIsMonth
+      ? {
+          height: `${height}rem`,
+        }
+      : undefined;
+
     return (
       <div
         data-testid="event"
@@ -44,16 +50,17 @@ export const CalendarEvent: React.FC<CalendarEventProps> = observer(
         {...attributes}
         style={{
           ...style,
+          ...styleHeight,
           top: `${top}rem`,
           left:
             overlaping > 1 ? `calc((100% / ${overlaping}) * ${index})` : "auto",
-          height: !calendarStore.selectedViewIsMonth ? `${height}rem` : "auto",
           width: `${width}%`,
         }}
         className={twJoin(
           "bg-green-500 px-1 rounded-md overflow-hidden text-primary box-border shadow-sm border z-[100]",
           !calendarStore.selectedViewIsMonth && "absolute",
           calendarStore.selectedViewIsDay ? "text-xs" : "text-xxs",
+          calendarStore.selectedViewIsMonth && "max-h-4",
         )}
       >
         {event.title}

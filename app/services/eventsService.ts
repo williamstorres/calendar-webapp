@@ -12,7 +12,9 @@ export const getMonthlyEvents = (
   return handleCancelable((signal) =>
     API.get(`/events?month=${date.getMonth()}&year=${date.getFullYear()}`, {
       signal,
-    }).then((response) => response.data),
+    }).then((response) => {
+      return response.data;
+    }),
   );
 };
 

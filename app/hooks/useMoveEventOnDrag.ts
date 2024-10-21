@@ -4,6 +4,7 @@ import { getMinutesInSteps, setHoursAndMinutes } from "../libs/date";
 import { minutesInHour } from "date-fns/constants";
 import { useStore } from "./useStore";
 import { dateKeyFormat, pxInOneHour } from "../libs/constants";
+import { Views } from "../store/calendarStore";
 
 export const useMoveEventOnDrag = () => {
   const { eventsStore, calendarStore } = useStore();
@@ -31,8 +32,10 @@ export const useMoveEventOnDrag = () => {
       event.delta.y < 2 &&
       event.delta.y > -2
     ) {
-      eventsStore.setSelectedEvent(selectedEvent);
-      calendarStore.setShowEventView(true);
+      calendarStore.setSelectedView(Views.Day);
+      calendarStore.setDate(selectedEvent.startDateTime);
+      //eventsStore.setSelectedEvent(selectedEvent);
+      //calendarStore.setShowEventView(true);
       return;
     }
 
