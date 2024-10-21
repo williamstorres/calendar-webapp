@@ -178,15 +178,17 @@ export const EventForm: React.FC = observer(() => {
         </InputField>
       </InputFieldGroup>
       {eventsStore.selectedEvent?.id && (
-        <Button
-          onClick={() => {
-            eventsStore.deleteEvent();
-            toast.success("Evento eliminado");
-          }}
-          className="text-red-500 justify-self-end"
-        >
-          Eliminar
-        </Button>
+        <div className="flex w-full justify-end">
+          <Button
+            onClick={() => {
+              eventsStore.deleteEvent();
+              toast.success("Evento eliminado");
+            }}
+            className="text-red-500"
+          >
+            Eliminar
+          </Button>
+        </div>
       )}
     </form>
   );
